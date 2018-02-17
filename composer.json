@@ -1,10 +1,11 @@
 {
-    "name": "noemie/jaya-site",
+    "name": "akitae/jaya-site",
     "license": "proprietary",
     "type": "project",
     "autoload": {
         "psr-4": {
-            "AppBundle\\": "src/AppBundle"
+            "AppBundle\\": "src/AppBundle",
+            "UpjvBundle\\": "src/UpjvBundle"
         },
         "classmap": [
             "app/AppKernel.php",

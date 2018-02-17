@@ -1,0 +1,20 @@
+UpjvBundle\Entity\Parcours:
+    type: entity
+    table: null
+    repositoryClass: UpjvBundle\Repository\ParcoursRepository
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        code:
+            type: string
+            length: 255
+        nom:
+            type: string
+            length: 255
+        annee:
+            type: integer
+    lifecycleCallbacks: {  }
