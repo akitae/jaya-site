@@ -53,6 +53,17 @@ class Matiere
     private $optionnelles;
 
     /**
+     * @ORM\ManyToOne(targetEntity="Semestre", inversedBy="matiere")
+     * @ORM\JoinColumn(name="semestre_id", referencedColumnName="id")
+     */
+    private $semestre;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Groupe", mappedBy="groupe")
+     */
+    private $groupes;
+
+    /**
      * Get id.
      *
      * @return int
@@ -218,5 +229,65 @@ class Matiere
     public function getOptionnelles()
     {
         return $this->optionnelles;
+    }
+
+    /**
+     * Set semestre.
+     *
+     * @param \UpjvBundle\Entity\Semestre|null $semestre
+     *
+     * @return Matiere
+     */
+    public function setSemestre(\UpjvBundle\Entity\Semestre $semestre = null)
+    {
+        $this->semestre = $semestre;
+
+        return $this;
+    }
+
+    /**
+     * Get semestre.
+     *
+     * @return \UpjvBundle\Entity\Semestre|null
+     */
+    public function getSemestre()
+    {
+        return $this->semestre;
+    }
+
+    /**
+     * Add groupe.
+     *
+     * @param \UpjvBundle\Entity\Groupe $groupe
+     *
+     * @return Matiere
+     */
+    public function addGroupe(\UpjvBundle\Entity\Groupe $groupe)
+    {
+        $this->groupes[] = $groupe;
+
+        return $this;
+    }
+
+    /**
+     * Remove groupe.
+     *
+     * @param \UpjvBundle\Entity\Groupe $groupe
+     *
+     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
+     */
+    public function removeGroupe(\UpjvBundle\Entity\Groupe $groupe)
+    {
+        return $this->groupes->removeElement($groupe);
+    }
+
+    /**
+     * Get groupes.
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getGroupes()
+    {
+        return $this->groupes;
     }
 }

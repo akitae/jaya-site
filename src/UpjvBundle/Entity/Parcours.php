@@ -47,6 +47,10 @@ class Parcours
      */
     private $polesDeCompetences;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="UpjvBundle\Entity\Semestre", cascade={"persist"})
+     */
+    private $semestres;
 
     /**
      * Get id.
@@ -177,5 +181,41 @@ class Parcours
     public function removePolesDeCompetence(\UpjvBundle\Entity\PoleDeCompetence $polesDeCompetence)
     {
         return $this->polesDeCompetences->removeElement($polesDeCompetence);
+    }
+
+    /**
+     * Add semestre.
+     *
+     * @param \UpjvBundle\Entity\Semestre $semestre
+     *
+     * @return Parcours
+     */
+    public function addSemestre(\UpjvBundle\Entity\Semestre $semestre)
+    {
+        $this->semestres[] = $semestre;
+
+        return $this;
+    }
+
+    /**
+     * Remove semestre.
+     *
+     * @param \UpjvBundle\Entity\Semestre $semestre
+     *
+     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
+     */
+    public function removeSemestre(\UpjvBundle\Entity\Semestre $semestre)
+    {
+        return $this->semestres->removeElement($semestre);
+    }
+
+    /**
+     * Get semestres.
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getSemestres()
+    {
+        return $this->semestres;
     }
 }
