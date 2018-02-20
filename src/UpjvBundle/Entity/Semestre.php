@@ -56,6 +56,16 @@ class Semestre
      */
     private $dateFinChoix;
 
+    /**
+     * @ORM\OneToMany(targetEntity="Matiere", mappedBy="semestre")
+     */
+    private $matieres;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="UpjvBundle\Entity\Parcours", cascade={"persist"})
+     */
+    private $parcours;
+
 
     /**
      * Get id.
@@ -185,5 +195,85 @@ class Semestre
     public function getDateFinChoix()
     {
         return $this->dateFinChoix;
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->matieres = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->parcours = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add matiere.
+     *
+     * @param \UpjvBundle\Entity\Matiere $matiere
+     *
+     * @return Semestre
+     */
+    public function addMatiere(\UpjvBundle\Entity\Matiere $matiere)
+    {
+        $this->matieres[] = $matiere;
+
+        return $this;
+    }
+
+    /**
+     * Remove matiere.
+     *
+     * @param \UpjvBundle\Entity\Matiere $matiere
+     *
+     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
+     */
+    public function removeMatiere(\UpjvBundle\Entity\Matiere $matiere)
+    {
+        return $this->matieres->removeElement($matiere);
+    }
+
+    /**
+     * Get matieres.
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getMatieres()
+    {
+        return $this->matieres;
+    }
+
+    /**
+     * Add parcour.
+     *
+     * @param \UpjvBundle\Entity\Parcours $parcour
+     *
+     * @return Semestre
+     */
+    public function addParcour(\UpjvBundle\Entity\Parcours $parcour)
+    {
+        $this->parcours[] = $parcour;
+
+        return $this;
+    }
+
+    /**
+     * Remove parcour.
+     *
+     * @param \UpjvBundle\Entity\Parcours $parcour
+     *
+     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
+     */
+    public function removeParcour(\UpjvBundle\Entity\Parcours $parcour)
+    {
+        return $this->parcours->removeElement($parcour);
+    }
+
+    /**
+     * Get parcours.
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getParcours()
+    {
+        return $this->parcours;
     }
 }

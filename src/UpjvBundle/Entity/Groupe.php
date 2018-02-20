@@ -33,6 +33,12 @@ class Groupe
      */
     private $utilisateurs;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="Matiere", inversedBy="matiere")
+     * @ORM\JoinColumn(name="groupe_id", referencedColumnName="id")
+     */
+    private $matiere;
+
 
     /**
      * Get id.
@@ -115,5 +121,29 @@ class Groupe
     public function removeUtilisateur(\UpjvBundle\Entity\Utilisateur $utilisateur)
     {
         return $this->utilisateurs->removeElement($utilisateur);
+    }
+
+    /**
+     * Set matiere.
+     *
+     * @param \UpjvBundle\Entity\Matiere|null $matiere
+     *
+     * @return Groupe
+     */
+    public function setMatiere(\UpjvBundle\Entity\Matiere $matiere = null)
+    {
+        $this->matiere = $matiere;
+
+        return $this;
+    }
+
+    /**
+     * Get matiere.
+     *
+     * @return \UpjvBundle\Entity\Matiere|null
+     */
+    public function getMatiere()
+    {
+        return $this->matiere;
     }
 }
