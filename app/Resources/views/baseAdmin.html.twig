@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>{% block title %}Welcome!{% endblock %}</title>
+    {% block stylesheets %}{% endblock %}
+
+    <link rel="stylesheet" type="text/css" href="/vendor/bordercloud/startbootstrap-sb-admin-2/dist/css/sb-admin-2.css"/>
+    <link rel="stylesheet" type="text/css" href="/vendor/twbs/bootstrap/dist/css/bootstrap.min.css"/>
+
+    {% stylesheets
+        'css/main.css'
+        'css/bootstrap.min.css'
+        'css/sb-admin-2.css'
+        'css/fontawesome.min.css'
+        'css/bootstrap-social.css'
+        'css/fontawesome-all.min.css'
+        output='css/compiled/app.css'
+    %}
+        <link rel="stylesheet" href="{{ asset_url }}" />
+        <link rel="stylesheet" href="{{ asset('vendor/twbs/bootstrap/dist/css/bootstrap.min.css') }}">
+    {% endstylesheets %}
+
+</head>
+<body>
+
+    {% block navbar %}
+        {% include 'admin/nav.html' %}
+    {% endblock %}
+    {% block header %}header{% endblock %}
+    {% block body %}{% endblock %}
+    {% block javascripts %}{% endblock %}
+</body>
+</html>
