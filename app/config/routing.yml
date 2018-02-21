@@ -1,6 +1,6 @@
 upjv:
-    resource: "@UpjvBundle/Resources/config/routing.yml"
-    prefix:   /
+    resource: "@UpjvBundle/Controller/"
+    type:   annotation
 
 app:
     resource: '@AppBundle/Controller/'

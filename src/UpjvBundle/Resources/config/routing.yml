@@ -1,3 +1,0 @@
-upjv_homepage:
-    path:     /
-    defaults: { _controller: UpjvBundle:Default:index }
