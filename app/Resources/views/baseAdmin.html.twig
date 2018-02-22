@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 <head>
     <meta charset="UTF-8" />
     <title>{% block title %}Welcome!{% endblock %}</title>
@@ -8,19 +8,9 @@
     <link rel="stylesheet" type="text/css" href="/vendor/bordercloud/startbootstrap-sb-admin-2/dist/css/sb-admin-2.css"/>
     <link rel="stylesheet" type="text/css" href="/vendor/twbs/bootstrap/dist/css/bootstrap.min.css"/>
 
-
-    {#CDN#}
-    {#<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">#}
-
-    {#<!-- Optional theme -->#}
-    {#<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">#}
-
-    {#<!-- Latest compiled and minified JavaScript -->#}
-    {#<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>#}
-
+    {#Font awesome with CDN#}
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"/>
     {#end CDN#}
-
-
 
     {% stylesheets
         'css/main.css'
@@ -28,31 +18,38 @@
         'css/sb-admin-2.css'
         'css/fontawesome.min.css'
         'css/bootstrap-social.css'
-        'css/fontawesome-all.min.css'
         output='css/compiled/app.css'
     %}
         <link rel="stylesheet" href="{{ asset_url }}" />
         <link rel="stylesheet" href="{{ asset('vendor/twbs/bootstrap/dist/css/bootstrap.min.css') }}">
     {% endstylesheets %}
 
-    {% javascripts
-        'js/jquery.min.js'
-        'js/bootstrap.min.js'
-        'js/dataTable.js'
-        'js/dataTables.bootstrap.min.js'
-        'js/jquery.min.js'
-        output='js/compiled/app.js' %}
-        <script src="{{ asset_url }}"></script>
-    {% endjavascripts %}
 
 </head>
 <body>
-
     {% block navbar %}
         {% include 'admin/nav.html' %}
     {% endblock %}
-    {% block header %}header{% endblock %}
+    {% block header %}{% endblock %}
     {% block body %}{% endblock %}
     {% block javascripts %}{% endblock %}
 </body>
+
+{% javascripts
+    'js/jquery.min.js'
+    'js/bootstrap.min.js'
+    'js/dataTable.js'
+    'js/dataTables.bootstrap.min.js'
+    'js/jquery.min.js'
+    'js/main.js'
+    'js/jquery1.11.3.js'
+    output='js/compiled/app.js' %}
+    <script src="{{ asset_url }}"></script>
+{% endjavascripts %}
+
+<script type="text/javascript" charset="utf-8">
+    $(document).ready(function() {
+        $('#tableAdmin').DataTable();
+    } );
+</script>
 </html>
