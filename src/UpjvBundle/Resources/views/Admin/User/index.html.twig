@@ -11,33 +11,13 @@
             <!-- /.panel-heading -->
             <div class="panel-body">
                 <div class="dataTables_wrapper form-inline dt-bootstrap no-footer"><div class="row">
-                        {#Choix du nombre de lignes#}
-                        <div class="col-sm-6"><div class="dataTables_length" id="dataTables-example_length">
-                                <label>Afficher
-                                    <select name="dataTables-example_length" aria-controls="dataTables-example" class="form-control input-sm">
-                                        <option value="10">10</option><option value="25">25</option>
-                                        <option value="50">50</option><option value="100">100</option>
-                                    </select>
-                                </label>
-                            </div>
-                        </div>
-
-                        {#Filtre#}
-                        <div class="col-sm-6">
-                            <div id="dataTables-example_filter" class="dataTables_filter">
-                                <label>Search:
-                                    <input type="search" class="form-control input-sm" placeholder="" aria-controls="dataTables-example">
-                                </label>
-                            </div>
-                        </div>
-
                         <button> Ajouter un utilisateur </button>
                     </div>
 
                     {#Tableau#}
                     <div class="row">
                         <div class="col-sm-12">
-                            <table width="100%" class="table table-striped table-bordered table-hover">
+                            <table id="tableUser" class="table table-striped table-bordered dataTable">
                                 <thead>
                                     <tr role="row">
                                         <th>Id</th>
@@ -74,6 +54,16 @@
 
     </div>
 </div>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('#tableUser').DataTable();
+    } );
+    // For demo to fit into DataTables site builder...
+    $('#tableUser')
+        .removeClass( 'display' )
+        .addClass('table table-striped table-bordered');
+</script>
 
 
 {% endblock %}
