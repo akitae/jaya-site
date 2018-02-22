@@ -21,6 +21,13 @@
         <link rel="stylesheet" href="{{ asset('vendor/twbs/bootstrap/dist/css/bootstrap.min.css') }}">
     {% endstylesheets %}
 
+    {% javascripts
+        'js/jquery.min.js'
+        'js/bootstrap.min.js'
+        output='js/compiled/app.js' %}
+        <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+
 </head>
 <body>
 
