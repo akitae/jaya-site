@@ -97,6 +97,12 @@ class UserController extends Controller
         $user = $em->getRepository(Utilisateur::class)->find($id);
         $em->remove($user);
         $em->flush();
-        return $this->redirectToRoute('admin_user');
+
+        $listUser = $this->getDoctrine()->getRepository(Utilisateur::class)->findAll();
+
+        return $this->render('UpjvBundle:Admin/User:index.html.twig',[
+            'listUser' => $listUser,
+            'deleteResponse' => true
+        ]);
     }
 }

@@ -12,6 +12,12 @@
                     L'utilisateur a bien été enregistré.
                 </div>
             {% endif %}
+            {% if deleteResponse is defined %}
+                <div class="alert alert-success alert-dismissable">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                    L'utilisateur a bien été supprimé.
+                </div>
+            {% endif %}
 
             <div class="panel panel-default">
                 <div class="col-lg-12">
@@ -51,9 +57,9 @@
                                                 <td>{{ user.type }}</td>
                                                 <td>{{ user.valide }}</td>
                                                 <td>
-                                                    <a href="{{ path('admin_user_show',{'id':user.id}) }}" class="button">Voir</a>
-                                                    <a href="{{ path('admin_user_edit',{'id':user.id}) }}" class="button">Modifier</a>
-                                                    <a href="{{ path('admin_user_delete',{'id':user.id}) }}" class="button">Supprimer</a>
+                                                    <button type="button" onclick="location.href='{{ path('admin_user_show',{'id':user.id}) }}';" class="btn btn-default">Voir</button>
+                                                    <button type="button" onclick="location.href='{{ path('admin_user_edit',{'id':user.id}) }}';" class="btn btn-primary">Modifier</button>
+                                                    <button type="button" onclick="location.href='{{ path('admin_user_delete',{'id':user.id}) }}';" class="btn btn-danger">Supprimer</button>
                                                 </td>
                                             </tr>
                                         {% endfor %}
