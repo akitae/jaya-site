@@ -10,6 +10,8 @@
 
     {#Font awesome with CDN#}
     <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
+
     {#end CDN#}
 
     {% stylesheets
@@ -45,11 +47,13 @@
     'js/jquery1.11.3.js'
     output='js/compiled/app.js' %}
     <script src="{{ asset_url }}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
 {% endjavascripts %}
 
 <script type="text/javascript" charset="utf-8">
     $(document).ready(function() {
         $('#tableAdmin').DataTable();
+        $('.select2').select2();
     } );
 </script>
 </html>
