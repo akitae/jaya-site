@@ -8,8 +8,10 @@
 
 namespace UpjvBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use UpjvBundle\Entity\Utilisateur;
+use UpjvBundle\Form\UtilisateurType;
 
 class UserController extends Controller
 {
@@ -28,21 +30,40 @@ class UserController extends Controller
 
     /**
      * @param $id
-     * @Route("/admin/user/edit/{id}", name="admin_user_edit")
+     * @param $request
      * @return mixed
+     * @Route("/admin/user/edit/{id}", name="admin_user_edit")
      */
-    public function updateAction($id)
+    public function updateAction($id,Request $request)
     {
 
         $em = $this->getDoctrine()->getManager();
+        /** @var Utilisateur $user */
         $user = $em->getRepository(Utilisateur::class)->find($id);
+        $listUser = $this->getDoctrine()->getRepository(Utilisateur::class)->findAll();
 
         if (!$user instanceof Utilisateur) {
             $user = new Utilisateur();
         }
 
+        $form = $this->createForm(UtilisateurType::class,$user);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $user = $form->getData();
+            $em->persist($user);
+            $em->flush();
+
+            return $this->render('UpjvBundle:Admin/User:index.html.twig',[
+                'updateResponse' => true,
+                'listUser' => $listUser
+
+            ]);
+        }
+
         return $this->render('UpjvBundle:Admin/User:update.html.twig',[
-            'user' => $user
+            'user' => $user,
+            'form' => $form->createView()
         ]);
     }
 
@@ -63,6 +84,25 @@ class UserController extends Controller
 
         return $this->render('UpjvBundle:Admin/User:show.html.twig',[
             'user' => $user
+        ]);
+    }
+
+    /**
+     * @param $id
+     * @Route("/admin/user/delete/{id}", name="admin_user_delete")
+     * @return mixed
+     */
+    public function deleteAction($id){
+        $em = $this->getDoctrine()->getManager();
+        $user = $em->getRepository(Utilisateur::class)->find($id);
+        $em->remove($user);
+        $em->flush();
+
+        $listUser = $this->getDoctrine()->getRepository(Utilisateur::class)->findAll();
+
+        return $this->render('UpjvBundle:Admin/User:index.html.twig',[
+            'listUser' => $listUser,
+            'deleteResponse' => true
         ]);
     }
 }

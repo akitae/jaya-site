@@ -7,3 +7,4 @@ A Symfony project created on November 28, 2017, 3:23 pm.
 |------------|---------|
 | Symfony | 3.3 |
 | php | 7.1|
+|fontawesome|https://fontawesome.com/v4.7.0/|

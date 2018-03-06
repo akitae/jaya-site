@@ -1,3 +1,11 @@
 .test{
     color:red;
 }
+
+#page-wrapper{
+    min-height: 100%;
+}
+
+.select2{
+    width: 100%;
+}

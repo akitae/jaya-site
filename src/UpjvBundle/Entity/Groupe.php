@@ -35,7 +35,7 @@ class Groupe
 
     /**
      * @ORM\ManyToOne(targetEntity="Matiere", inversedBy="matiere")
-     * @ORM\JoinColumn(name="groupe_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="matiere_id", referencedColumnName="id")
      */
     private $matiere;
 
@@ -145,5 +145,10 @@ class Groupe
     public function getMatiere()
     {
         return $this->matiere;
+    }
+
+    public function __toString()
+    {
+        return $this->getId()." : ".$this->getTypeCours();
     }
 }
