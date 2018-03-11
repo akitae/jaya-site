@@ -30,14 +30,14 @@ class ParcoursController extends Controller
   * @param $id
   * @param $request
   * @return mixed
-  * @Route("/admin/pole/parcours/{id}", name="admin_parcours_edit")
+  * @Route("/admin/parcours/parcours/{id}", name="admin_parcours_edit")
   */
   public function updateAction($id,Request $request)
   {
     $em = $this->getDoctrine()->getManager();
     /** @var Parcours $user */
     $parcours = $em->getRepository(Parcours::class)->find($id);
-    $listParcours = $this->getDoctrine()->getRepository(Parcours::class)->findAll();
+
 
     if (!$parcours instanceof Parcours) {
       $parcours = new Parcours();
@@ -50,6 +50,8 @@ class ParcoursController extends Controller
       $parcours = $form->getData();
       $em->persist($parcours);
       $em->flush();
+
+      $listParcours = $this->getDoctrine()->getRepository(Parcours::class)->findAll();
 
       return $this->render('UpjvBundle:Admin/Parcours:index.html.twig',[
         'updateResponse' => true,
@@ -87,7 +89,7 @@ class ParcoursController extends Controller
 
   /**
   * @param $id
-  * @Route("/admin/pole/delete/{id}", name="admin_parcours_delete")
+  * @Route("/admin/parcours/delete/{id}", name="admin_parcours_delete")
   * @return mixed
   */
   public function deleteAction($id){
