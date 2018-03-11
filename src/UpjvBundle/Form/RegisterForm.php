@@ -50,7 +50,7 @@ class RegisterForm extends AbstractType
             ->add('save', SubmitType::class,[
                 'label' => 'Enregistrer',
                 'attr'  => [
-                    'class' => 'btn btn-primary pull-right'
+                    'class' => 'btn btn-primary large-button'
                 ]
             ])
         ;

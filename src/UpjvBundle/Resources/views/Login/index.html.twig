@@ -8,12 +8,13 @@
         <div class="wrapper-login">
             <div class="login">
                 <form action="{{ path('login') }}"  method="POST">
+
                     {% if error %}
                         <div class="alert alert-danger">
                             {{ error.message|trans }}
                         </div>
-
                     {% endif %}
+
                     <div class="form">
                         <div class="row">
                             <div class="col-md-12">
