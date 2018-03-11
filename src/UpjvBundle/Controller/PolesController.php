@@ -51,6 +51,8 @@ class PolesController extends Controller
       $em->persist($pole);
       $em->flush();
 
+      $listParcours = $this->getDoctrine()->getRepository(Parcours::class)->findAll();
+
       return $this->render('UpjvBundle:Admin/Poles:index.html.twig',[
         'updateResponse' => true,
         'listPole' => $listPole

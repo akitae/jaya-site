@@ -51,6 +51,8 @@ class ParcoursController extends Controller
       $em->persist($parcours);
       $em->flush();
 
+      $listParcours = $this->getDoctrine()->getRepository(Parcours::class)->findAll();
+
       return $this->render('UpjvBundle:Admin/Parcours:index.html.twig',[
         'updateResponse' => true,
         'listParcours' => $listParcours
