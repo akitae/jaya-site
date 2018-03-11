@@ -12,7 +12,7 @@ body {
     background-color: #fafafa;
 }
 
-.wrapper {
+.wrapper-login {
     display: flex;
     align-items: center;
     flex-direction: column;
@@ -27,15 +27,17 @@ body {
     width: 20%;
     border: 1px solid #D5D5D5;
     border-radius: 4px 4px 0 0;
+}
 
+.registration {
+    margin-top: 10px;
 }
 
 .form {
-    padding: 20px;
+    padding: 20px 20px 10px 20px;
 }
 
 .large-button {
     width: 100%;
-    margin-top: 10px;
     border-radius: 0;
 }

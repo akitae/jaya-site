@@ -1,17 +1,22 @@
 {% extends 'jaya/baseJaya.html.twig' %}
+{% block title %}
+    Inscription
+{% endblock %}
 {% block body %}
 
     <div class="container-fluid">
-        {{ form_start(form) }}
-        <div class="row">
-            <div class="col-md-12">
-                {{ form_label(form.nom) }}
-            </div>
-            <div class="col-md-12">
-                {{ form_widget(form.nom) }}
+        <div class="wrapper-registration">
+            <div class="sign-in">
+                {{ form_start(form) }}
+                {{ form_end(form) }}
+
+                {% if error %}
+                    {% for key,value in error %}
+                        {{ value }}
+                    {% endfor %}
+                {% endif %}
             </div>
         </div>
-        {{ form_end(form) }}
     </div>
 
 {% endblock %}

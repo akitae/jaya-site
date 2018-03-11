@@ -23,7 +23,28 @@ class UtilisateurRepository extends \Doctrine\ORM\EntityRepository
             return null;
         }
 
+    }
 
+    public function findUserByEmail ($email) {
+        $queryBuilder = $this->createQueryBuilder('e');
+        $queryBuilder->where('e.email = :email')->setParameter('email', $email);
+
+        try {
+            return $queryBuilder->getQuery()->getSingleResult();
+        } catch (NoResultException $e) {
+            return null;
+        }
+    }
+
+    public function findUserByNumero ($numero) {
+        $queryBuilder = $this->createQueryBuilder('e');
+        $queryBuilder->where('e.numeroEtudiant = :numeroEtudiant')->setParameter('numeroEtudiant', $numero);
+
+        try {
+            return $queryBuilder->getQuery()->getSingleResult();
+        } catch (NoResultException $e) {
+            return null;
+        }
     }
 
 }
