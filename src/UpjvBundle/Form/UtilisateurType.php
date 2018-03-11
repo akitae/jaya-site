@@ -13,6 +13,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use UpjvBundle\Entity\Groupe;
+use UpjvBundle\Entity\Parcours;
 
 class UtilisateurType extends AbstractType
 {
@@ -58,6 +59,14 @@ class UtilisateurType extends AbstractType
                     'required' => false,
                     'attr' => [
                         'class' => 'form-control select2'
+                    ]
+                ])
+            ->add('parcours', EntityType::class,
+                [
+                    'class' => Parcours::class,
+                    'required' => false,
+                    'attr' => [
+                        'class' => 'form-control'
                     ]
                 ])
             ->add('save', SubmitType::class,[

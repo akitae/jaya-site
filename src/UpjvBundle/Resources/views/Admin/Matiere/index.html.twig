@@ -1,0 +1,79 @@
+{# empty Twig template #}
+{% extends 'baseAdmin.html.twig' %}
+
+{% block body %}
+
+
+    <div id="page-wrapper" style="min-height: 518px;">
+        <div class="row">
+
+            {% if updateResponse is defined %}
+                <div class="alert alert-success alert-dismissable">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                    La matière a bien été enregistrée.
+                </div>
+            {% endif %}
+            {% if deleteResponse is defined %}
+                <div class="alert alert-success alert-dismissable">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                    La matière a bien été supprimée.
+                </div>
+            {% endif %}
+
+            <div class="panel panel-default">
+                <div class="col-lg-12">
+                    <h1 class="page-header">Gestion des matières</h1>
+                </div>
+                <div class="col-lg-12">
+                <!-- /.panel-heading -->
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            Liste des matières
+                        </div>
+                        <div class="panel-body">
+                            <button type="button" onclick="location.href='{{ path('admin_matiere_edit',{'id': 'new ' })}}';" class="btn btn-primary pull-right"><i class="fa fa-plus"></i> Ajouter une matière</button>
+
+                            {#Tableau#}
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <table class="tableAdmin">
+                                        <thead>
+                                        <tr role="row">
+                                            <th>Id</th>
+                                            <th>Code</th>
+                                            <th>Nom</th>          
+                                            <th>Semestre</th>
+                                            <th>Nombre de place</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for matiere in listMatiere %}
+                                            <tr class="gradeA odd" role="row">
+                                                <td class="sorting_1">{{ matiere.id }}</td>
+                                                <td>{{ matiere.code }} </td>
+                                                <td>{{ matiere.nom }}</td>
+                                                <td>
+                                                    {% if matiere.semestre is not null %}
+                                                        {{ matiere.semestre.nom }}
+                                                    {% endif %}
+                                                </td>
+                                                <td>{{ matiere.place }}</td>
+                                                <td>
+                                                    <button type="button" onclick="location.href='{{ path('admin_matiere_show',{'id':matiere.id}) }}';" class="btn btn-default">Voir</button>
+                                                    <button type="button" onclick="location.href='{{ path('admin_matiere_edit',{'id':matiere.id}) }}';" class="btn btn-primary">Modifier</button>
+                                                    <button type="button" onclick="location.href='{{ path('admin_matiere_delete',{'id':matiere.id}) }}';" class="btn btn-danger">Supprimer</button>
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

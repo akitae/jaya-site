@@ -276,4 +276,12 @@ class Semestre
     {
         return $this->parcours;
     }
+
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->getNom();
+    }
 }
