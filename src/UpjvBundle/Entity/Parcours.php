@@ -218,4 +218,10 @@ class Parcours
     {
         return $this->semestres;
     }
+
+    public function __toString() {
+
+      return $this->nom;
+
+    }
 }

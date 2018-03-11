@@ -163,4 +163,10 @@ class PoleDeCompetence
     {
         return $this->matieres->removeElement($matiere);
     }
+
+    public function __toString() {
+
+      return $this->nom;
+
+    }
 }
