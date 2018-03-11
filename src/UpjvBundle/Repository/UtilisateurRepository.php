@@ -1,6 +1,7 @@
 <?php
 
 namespace UpjvBundle\Repository;
+use Doctrine\ORM\NoResultException;
 
 /**
  * UtilisateurRepository
@@ -10,4 +11,40 @@ namespace UpjvBundle\Repository;
  */
 class UtilisateurRepository extends \Doctrine\ORM\EntityRepository
 {
+
+    public function findUser ($email, $motDePasse) {
+        $queryBuilder = $this->createQueryBuilder('e');
+        $queryBuilder->where('e.email = :email')->setParameter('email', $email)
+        ->andWhere('e.motDePasse = :motDePasse')->setParameter('motDePasse', $motDePasse);
+
+        try {
+            return $queryBuilder->getQuery()->getSingleResult();
+        } catch (NoResultException $e) {
+            return null;
+        }
+
+    }
+
+    public function findUserByEmail ($email) {
+        $queryBuilder = $this->createQueryBuilder('e');
+        $queryBuilder->where('e.email = :email')->setParameter('email', $email);
+
+        try {
+            return $queryBuilder->getQuery()->getSingleResult();
+        } catch (NoResultException $e) {
+            return null;
+        }
+    }
+
+    public function findUserByNumero ($numero) {
+        $queryBuilder = $this->createQueryBuilder('e');
+        $queryBuilder->where('e.numeroEtudiant = :numeroEtudiant')->setParameter('numeroEtudiant', $numero);
+
+        try {
+            return $queryBuilder->getQuery()->getSingleResult();
+        } catch (NoResultException $e) {
+            return null;
+        }
+    }
+
 }

@@ -3,6 +3,7 @@
 namespace UpjvBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * Utilisateur
@@ -10,7 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="utilisateur")
  * @ORM\Entity(repositoryClass="UpjvBundle\Repository\UtilisateurRepository")
  */
-class Utilisateur
+class Utilisateur implements UserInterface, \Serializable
 {
     /**
      * @var int
@@ -41,6 +42,13 @@ class Utilisateur
      * @ORM\Column(name="email", type="string", length=255)
      */
     private $email;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="motDePasse", type="string", length=255, nullable=true)
+     */
+    private $motDePasse;
 
     /**
      * @var string
@@ -154,6 +162,22 @@ class Utilisateur
     public function getEmail()
     {
         return $this->email;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMotDePasse()
+    {
+        return $this->motDePasse;
+    }
+
+    /**
+     * @param string $motDePasse
+     */
+    public function setMotDePasse($motDePasse)
+    {
+        $this->motDePasse = $motDePasse;
     }
 
     /**
@@ -275,6 +299,41 @@ class Utilisateur
     public function removeGroupe(\UpjvBundle\Entity\Groupe $groupe)
     {
         return $this->groupes->removeElement($groupe);
+    }
+
+    public function getRoles()
+    {
+        return array('ROLE_ADMIN');
+    }
+
+    public function getPassword()
+    {
+        return $this->motDePasse;
+    }
+
+    public function getSalt()
+    {
+        return '';
+    }
+
+    public function getUsername()
+    {
+        return $this->email;
+    }
+
+    public function eraseCredentials()
+    {
+        // TODO: Implement eraseCredentials() method.
+    }
+
+    public function serialize()
+    {
+        return serialize(array ($this->id, $this->getUsername(), $this->getPassword()));
+    }
+
+    public function unserialize($serialized)
+    {
+        list ($this->id, $this->username, $this->motDePasse) = unserialize($serialized);
     }
 
     /**
