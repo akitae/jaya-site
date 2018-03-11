@@ -8,6 +8,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use UpjvBundle\Entity\PoleDeCompetence;
+use UpjvBundle\Entity\Parcours;
 use UpjvBundle\Form\PoleDeCompetenceType;
 
 class PolesController extends Controller
@@ -37,7 +38,7 @@ class PolesController extends Controller
     $em = $this->getDoctrine()->getManager();
     /** @var Poledecompetence $user */
     $pole = $em->getRepository(PoleDeCompetence::class)->find($id);
-    $listPole = $this->getDoctrine()->getRepository(PoleDeCompetence::class)->findAll();
+
 
     if (!$pole instanceof PoleDeCompetence) {
       $pole = new PoleDeCompetence();
@@ -51,7 +52,7 @@ class PolesController extends Controller
       $em->persist($pole);
       $em->flush();
 
-      $listParcours = $this->getDoctrine()->getRepository(Parcours::class)->findAll();
+      $listPole = $this->getDoctrine()->getRepository(PoleDeCompetence::class)->findAll();
 
       return $this->render('UpjvBundle:Admin/Poles:index.html.twig',[
         'updateResponse' => true,
