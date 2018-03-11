@@ -5,3 +5,14 @@ upjv:
 app:
     resource: '@AppBundle/Controller/'
     type: annotation
+
+
+login:
+    path: /login
+    defaults: { _controller: UpjvBundle:Login:login }
+
+login_check:
+    path: /login
+
+logout:
+    path: /logout

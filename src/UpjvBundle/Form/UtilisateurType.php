@@ -55,6 +55,7 @@ class UtilisateurType extends AbstractType
                 [
                     'class' => Groupe::class,
                     'multiple' => true,
+                    'required' => false,
                     'attr' => [
                         'class' => 'form-control select2'
                     ]
