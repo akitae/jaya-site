@@ -6,11 +6,18 @@
     <div id="page-wrapper" style="min-height: 518px;">
         <div class="row">
 
-            {% if updateResponse is defined %}
-                <div class="alert alert-success alert-dismissable">
-                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                    L'utilisateur a bien été enregistré.
-                </div>
+            {% if updateResponse is defined%}
+                {% if updateResponse == true %}
+                    <div class="alert alert-success alert-dismissable">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        L'utilisateur a bien été enregistré.
+                    </div>
+                {% else %}
+                    <div class="alert alert-danger alert-dismissable">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        Une erreur c'est produite a l'enregistrement. Le numéro étudiant doit être unique.
+                    </div>
+                {% endif %}
             {% endif %}
             {% if deleteResponse is defined %}
                 <div class="alert alert-success alert-dismissable">
@@ -38,10 +45,11 @@
                                     <table class="tableAdmin">
                                         <thead>
                                         <tr role="row">
-                                            <th>Id</th>
+                                            <th>Numéro étudiant</th>
                                             <th>Nom</th>
                                             <th>Prénom</th>
                                             <th>Email</th>
+                                            <th>Parcours</th>
                                             <th>Type</th>
                                             <th>Valide</th>
                                             <th>Action</th>
@@ -54,6 +62,7 @@
                                                 <td>{{ user.nom }}</td>
                                                 <td>{{ user.prenom }}</td>
                                                 <td>{{ user.email }}</td>
+                                                <td>{{ user.parcours }}</td>
                                                 <td>{{ user.type }}</td>
                                                 <td>{{ user.valide }}</td>
                                                 <td>

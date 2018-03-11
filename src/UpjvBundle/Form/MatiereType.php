@@ -41,7 +41,7 @@ class MatiereType extends AbstractType
                 [
                     'class' => Semestre::class,
                     'attr' => [
-                        'class' => 'form-control select2'
+                        'class' => 'form-control'
                     ]
                 ])
             ->add('save', SubmitType::class,[
