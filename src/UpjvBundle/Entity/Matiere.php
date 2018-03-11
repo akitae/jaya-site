@@ -290,4 +290,9 @@ class Matiere
     {
         return $this->groupes;
     }
+
+    public function __toString()
+    {
+        return $this->getNom();
+    }
 }

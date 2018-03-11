@@ -52,7 +52,11 @@
                                                 <td class="sorting_1">{{ matiere.id }}</td>
                                                 <td>{{ matiere.code }} </td>
                                                 <td>{{ matiere.nom }}</td>
-                                                <td>{{ matiere.semestre.nom }}</td>
+                                                <td>
+                                                    {% if matiere.semestre is not null %}
+                                                        {{ matiere.semestre.nom }}
+                                                    {% endif %}
+                                                </td>
                                                 <td>{{ matiere.place }}</td>
                                                 <td>
                                                     <button type="button" onclick="location.href='{{ path('admin_matiere_show',{'id':matiere.id}) }}';" class="btn btn-default">Voir</button>

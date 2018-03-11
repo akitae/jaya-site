@@ -40,7 +40,6 @@ class MatiereController extends Controller
         $em = $this->getDoctrine()->getManager();
  
         $matiere = $em->getRepository(Matiere::class)->find($id);
-        $listMatiere = $this->getDoctrine()->getRepository(Matiere::class)->findAll();
 
         if (!$matiere instanceof Matiere) {
             $matiere = new Matiere();
@@ -54,6 +53,7 @@ class MatiereController extends Controller
             $em->persist($matiere);
             $em->flush();
 
+            $listMatiere = $this->getDoctrine()->getRepository(Matiere::class)->findAll();
             return $this->render('UpjvBundle:Admin/Matiere:index.html.twig',[
                 'updateResponse' => true,
                 'listMatiere' => $listMatiere

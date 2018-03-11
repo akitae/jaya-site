@@ -10,9 +10,6 @@ namespace UpjvBundle\Form;
 
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -38,12 +35,11 @@ class MatiereType extends AbstractType
             ->add('place', IntegerType::class,[
                 'attr' => ['class' => 'form-control '],
                 'label' => 'Nombre de places'
-            ])          
+            ])
 
             ->add('semestre', EntityType::class,
                 [
                     'class' => Semestre::class,
-                    'multiple' => true,
                     'attr' => [
                         'class' => 'form-control select2'
                     ]
