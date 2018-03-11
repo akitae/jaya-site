@@ -1,0 +1,63 @@
+{% extends 'baseAdmin.html.twig' %}
+
+{% block body %}
+
+
+    <div id="page-wrapper" style="min-height: 518px;">
+        <div class="row">
+
+          <!--  {% if updateResponse is defined %}
+                <div class="alert alert-success alert-dismissable">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                    L'utilisateur a bien été enregistré.
+                </div>
+            {% endif %}-->
+
+            <div class="panel panel-default">
+                <div class="col-lg-12">
+                    <h1 class="page-header">Gestion des Pole de competences</h1>
+                </div>
+                <div class="col-lg-12">
+                <!-- /.panel-heading -->
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            Liste des Pole de competences
+                        </div>
+                        <div class="panel-body">
+                            <button type="button" onclick="location.href='{{ path('admin_pole_edit',{'id': 'new ' })}}';" class="btn btn-primary pull-right"><i class="fa fa-plus"></i> Ajouter un Pole de competence</button>
+
+                            {#Tableau#}
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <table class="tableAdmin">
+                                        <thead>
+                                        <tr role="row">
+                                            <th>Id</th>
+                                            <th>Nom</th>
+                                            <th>Action</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for pole in listPole %}
+                                            <tr class="gradeA odd" role="row">
+                                                <td class="sorting_1">{{ pole.id }}</td>
+                                                <td>{{ pole.nom }}</td>
+                                                <td>
+                                                    <button type="button" onclick="location.href='{{ path('admin_pole_show',{'id':pole.id}) }}';" class="btn btn-default">Voir</button>
+                                                    <button type="button" onclick="location.href='{{ path('admin_pole_edit',{'id':pole.id}) }}';" class="btn btn-primary">Modifier</button>
+                                                    <button type="button" onclick="location.href='{{ path('admin_pole_delete',{'id':pole.id}) }}';" class="btn btn-danger">Supprimer</button>
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

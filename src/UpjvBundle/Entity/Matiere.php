@@ -281,16 +281,19 @@ class Matiere
         return $this->groupes->removeElement($groupe);
     }
 
-    /**
-     * Get groupes.
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getGroupes()
-    {
-        return $this->groupes;
-    }
+  /**
+  * Get groupes.
+  *
+  * @return \Doctrine\Common\Collections\Collection
+  */
+  public function getGroupes()
+  {
+    return $this->groupes;
+  }
 
+    /**
+     * @return string
+     */
     public function __toString()
     {
         return $this->getNom();
