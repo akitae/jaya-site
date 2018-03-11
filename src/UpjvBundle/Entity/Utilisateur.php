@@ -45,7 +45,7 @@ class Utilisateur
     /**
      * @var string
      *
-     * @ORM\Column(name="numeroEtudiant", type="string", length=255)
+     * @ORM\Column(name="numeroEtudiant", type="string", length=255, unique=true)
      */
     private $numeroEtudiant;
 
@@ -67,6 +67,11 @@ class Utilisateur
      * @ORM\ManyToMany(targetEntity="UpjvBundle\Entity\Groupe", cascade={"persist"})
      */
     private $groupes;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="UpjvBundle\Entity\Parcours", inversedBy="parcours")
+     */
+    private $parcours;
 
 
     /**
@@ -270,5 +275,21 @@ class Utilisateur
     public function removeGroupe(\UpjvBundle\Entity\Groupe $groupe)
     {
         return $this->groupes->removeElement($groupe);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getParcours()
+    {
+        return $this->parcours;
+    }
+
+    /**
+     * @param mixed $parcours
+     */
+    public function setParcours($parcours)
+    {
+        $this->parcours = $parcours;
     }
 }

@@ -40,7 +40,6 @@ class UserController extends Controller
         $em = $this->getDoctrine()->getManager();
         /** @var Utilisateur $user */
         $user = $em->getRepository(Utilisateur::class)->find($id);
-        $listUser = $this->getDoctrine()->getRepository(Utilisateur::class)->findAll();
 
         if (!$user instanceof Utilisateur) {
             $user = new Utilisateur();
@@ -50,12 +49,19 @@ class UserController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $user = $form->getData();
-            $em->persist($user);
-            $em->flush();
+            try{
+                $user = $form->getData();
+                $em->persist($user);
+                $em->flush();
+                $update = true;
+            }catch (\Exception $e){
+                $update = false;
+            }
 
+
+            $listUser = $this->getDoctrine()->getRepository(Utilisateur::class)->findAll();
             return $this->render('UpjvBundle:Admin/User:index.html.twig',[
-                'updateResponse' => true,
+                'updateResponse' => $update,
                 'listUser' => $listUser
 
             ]);
