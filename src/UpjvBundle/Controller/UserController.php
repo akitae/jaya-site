@@ -9,6 +9,7 @@
 namespace UpjvBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Routing\Annotation\Route;
 use UpjvBundle\Entity\Utilisateur;
 use UpjvBundle\Form\UtilisateurType;
@@ -19,12 +20,13 @@ class UserController extends Controller
      * @Route("/admin/user", name="admin_user")
      * @return mixed
      */
-    public function indexAction()
+    public function indexAction($update = null)
     {
         $listUser = $this->getDoctrine()->getRepository(Utilisateur::class)->findAll();
 
         return $this->render('UpjvBundle:Admin/User:index.html.twig',[
-            'listUser' => $listUser
+            'listUser' => $listUser,
+            'updateResponse' => $update
         ]);
     }
 
@@ -36,7 +38,7 @@ class UserController extends Controller
      */
     public function updateAction($id,Request $request)
     {
-
+        $session = $_SESSION;
         $em = $this->getDoctrine()->getManager();
         /** @var Utilisateur $user */
         $user = $em->getRepository(Utilisateur::class)->find($id);
@@ -60,11 +62,16 @@ class UserController extends Controller
 
 
             $listUser = $this->getDoctrine()->getRepository(Utilisateur::class)->findAll();
-            return $this->render('UpjvBundle:Admin/User:index.html.twig',[
-                'updateResponse' => $update,
-                'listUser' => $listUser
+//            return $this->render('UpjvBundle:Admin/User:index.html.twig',[
+//                'updateResponse' => $update,
+//                'listUser' => $listUser
+//
+//            ]);
 
-            ]);
+            dump($session);die;
+            $session->getFlashBag()->add('notice', 'Profile updated');
+
+            $this->redirect('admin_user');
         }
 
         return $this->render('UpjvBundle:Admin/User:update.html.twig',[
