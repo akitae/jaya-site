@@ -1,4 +1,7 @@
 {% extends 'baseAdmin.html.twig' %}
+{% block stylesheets %}
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/bootstrap-datetimepicker/bootstrap-datetimepicker.min.css') }}"/>
+{% endblock %}
 {% block body %}
     <div id="page-wrapper" style="min-height: 518px;">
         <div class="row">
@@ -21,19 +24,47 @@
                                 </tr>
                                 <tr>
                                     <td>{{ form_label(form.dateDebut) }}</td>
-                                    <td>{{ form_widget(form.dateDebut)}}</td>
+                                    <td>
+                                        <div class='input-group' id="datetimepicker1">
+                                            {{ form_widget(form.dateDebut) }}
+                                            <span class="input-group-addon">
+                                                <span class="glyphicon glyphicon-calendar"></span>
+                                            </span>
+                                        </div>
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td>{{ form_label(form.dateFin) }}</td>
-                                    <td>{{ form_widget(form.dateFin)}}</td>
+                                    <td>
+                                        <div class='input-group' id="datetimepicker1">
+                                            {{ form_widget(form.dateFin) }}
+                                            <span class="input-group-addon">
+                                                <span class="glyphicon glyphicon-calendar"></span>
+                                            </span>
+                                        </div>
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td>{{ form_label(form.dateDebutChoix) }}</td>
-                                    <td>{{ form_widget(form.dateDebutChoix)}}</td>
+                                    <td>
+                                        <div class='input-group' id="datetimepicker1">
+                                            {{ form_widget(form.dateDebutChoix) }}
+                                            <span class="input-group-addon">
+                                                <span class="glyphicon glyphicon-calendar"></span>
+                                            </span>
+                                        </div>
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td>{{ form_label(form.dateFinChoix) }}</td>
-                                    <td>{{ form_widget(form.dateFinChoix)}}</td>
+                                    <td>
+                                        <div class='input-group' id="datetimepicker1">
+                                            {{ form_widget(form.dateFinChoix) }}
+                                            <span class="input-group-addon">
+                                                <span class="glyphicon glyphicon-calendar"></span>
+                                            </span>
+                                        </div>
+                                    </td>
                                 </tr>
                               
                             </table>
@@ -48,4 +79,13 @@
     </div>
 
 
+{% endblock %}
+
+{% block javascripts %}
+    {% include 'admin/footerScriptDatePicker.html.twig' %}
+    <script type="text/javascript">
+        $(function () {
+            $('#datetimepicker1').datetimepicker();
+        });
+    </script>
 {% endblock %}
