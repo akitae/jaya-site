@@ -49,16 +49,17 @@ class MatiereController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $matiere = $form->getData();
-            $em->persist($matiere);
-            $em->flush();
+            try{
+                $matiere = $form->getData();
+                $em->persist($matiere);
+                $em->flush();
+                $this->get('session')->getFlashBag()->add('success', 'La matière a bien été enregistrée.');
+            }catch (\Exception $e){
+                $this->get('session')->getFlashBag()->add('erreur', 'Une erreur s\'est produite lors de l\'enregistrement.');
+                return $this->redirectToRoute('admin_matiere_edit',['id' => $id]);
+            }
 
-            $listMatiere = $this->getDoctrine()->getRepository(Matiere::class)->findAll();
-            return $this->render('UpjvBundle:Admin/Matiere:index.html.twig',[
-                'updateResponse' => true,
-                'listMatiere' => $listMatiere
-
-            ]);
+            return $this->redirectToRoute('admin_matiere');
         }
 
         return $this->render('UpjvBundle:Admin/Matiere:update.html.twig',[
@@ -79,7 +80,8 @@ class MatiereController extends Controller
         $matiere = $em->getRepository(Matiere::class)->find($id);
 
         if (!$matiere instanceof Matiere) {
-            die('error : cette matière n existe pas');
+            $this->get('session')->getFlashBag()->add('erreur', 'La matière selectionnée n\'existe pas');
+            return $this->redirectToRoute('admin_matiere');
         }
 
         return $this->render('UpjvBundle:Admin/Matiere:show.html.twig',[
@@ -94,15 +96,14 @@ class MatiereController extends Controller
      */
     public function deleteAction($id){
         $em = $this->getDoctrine()->getManager();
-        $matiere = $em->getRepository(Matiere::class)->find($id);
-        $em->remove($matiere);
-        $em->flush();
-
-        $listMatiere = $this->getDoctrine()->getRepository(Matiere::class)->findAll();
-
-        return $this->render('UpjvBundle:Admin/Matiere:index.html.twig',[
-            'listMatiere' => $listMatiere,
-            'deleteResponse' => true
-        ]);
+        try{
+            $matiere = $em->getRepository(Matiere::class)->find($id);
+            $em->remove($matiere);
+            $em->flush();
+            $this->get('session')->getFlashBag()->add('success', 'La matière a bien été supprimée');
+        }catch (\Exception $e){
+            $this->get('session')->getFlashBag()->add('erreur', 'Une erreur s\'est produite lors de la suppression');
+        }
+        return $this->redirectToRoute('admin_matiere');
     }
 }

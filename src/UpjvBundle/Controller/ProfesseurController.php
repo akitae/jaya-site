@@ -54,18 +54,13 @@ class ProfesseurController extends Controller
                 $professeur->setType(Utilisateur::TYPE_PROFESSEUR);
                 $em->persist($professeur);
                 $em->flush();
-                $update = true;
+                $this->get('session')->getFlashBag()->add('success', 'Le professeur a bien été enregistré.');
             }catch (\Exception $e){
-                $update = false;
+                $this->get('session')->getFlashBag()->add('erreur', 'Une erreur s\'est produite lors de l\'enregistrement.');
+                return $this->redirectToRoute('admin_professeur_edit',['id' => $id]);
             }
 
-
-            $listProfesseur = $this->getDoctrine()->getRepository(Utilisateur::class)->findBy(['type' => Utilisateur::TYPE_PROFESSEUR]);
-            return $this->render('UpjvBundle:Admin/Professeur:index.html.twig',[
-                'updateResponse' => $update,
-                'listProfesseur' => $listProfesseur
-
-            ]);
+            return $this->redirectToRoute('admin_professeur');
         }
 
         return $this->render('UpjvBundle:Admin/Professeur:update.html.twig',[
@@ -86,7 +81,8 @@ class ProfesseurController extends Controller
         $professeur = $em->getRepository(Utilisateur::class)->find($id);
 
         if (!$professeur instanceof Utilisateur) {
-            die('error : cette utilistateur n existe pas');
+            $this->get('session')->getFlashBag()->add('erreur', 'Le professeur selectionné n\'a pas été trouvé');
+            return $this->redirectToRoute('admin_professeur');
         }
 
         return $this->render('UpjvBundle:Admin/professeur:show.html.twig',[
@@ -101,15 +97,15 @@ class ProfesseurController extends Controller
      */
     public function deleteAction($id){
         $em = $this->getDoctrine()->getManager();
-        $professeur = $em->getRepository(Utilisateur::class)->find($id);
-        $em->remove($professeur);
-        $em->flush();
+        try {
+            $professeur = $em->getRepository(Utilisateur::class)->find($id);
+            $em->remove($professeur);
+            $em->flush();
+            $this->get('session')->getFlashBag()->add('success', 'L\'utilisateur a bien été supprimé');
+        }catch (\Exception $e){
+            $this->get('session')->getFlashBag()->add('erreur', 'Une erreur s\'est produite lors de la suppression');
+        }
 
-        $listProfesseur = $this->getDoctrine()->getRepository(Utilisateur::class)->findBy(['type' => Utilisateur::TYPE_PROFESSEUR]);
-
-        return $this->render('UpjvBundle:Admin/Professeur:index.html.twig',[
-            'listProfesseur' => $listProfesseur,
-            'deleteResponse' => true
-        ]);
+        return $this->redirectToRoute('admin_professeur');
     }
 }

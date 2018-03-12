@@ -2,72 +2,59 @@
 
 {% block body %}
 
-
-<div id="page-wrapper" style="min-height: 518px;">
-  <div class="row">
-
-    <!--  {% if updateResponse is defined %}
-    <div class="alert alert-success alert-dismissable">
-    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-    L'utilisateur a bien été enregistré.
+<div class="panel panel-default">
+  <div class="col-lg-12">
+    <h1 class="page-header">Gestion des parcours</h1>
   </div>
-  {% endif %}-->
+  <div class="col-lg-12">
+    <!-- /.panel-heading -->
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        Liste des parcours
+      </div>
+      <div class="panel-body">
+        <button type="button" onclick="location.href='{{ path('admin_parcours_edit',{'id': 'new ' })}}';" class="btn btn-primary pull-right"><i class="fa fa-plus"></i> Ajouter un parcours</button>
 
-  <div class="panel panel-default">
-    <div class="col-lg-12">
-      <h1 class="page-header">Gestion des parcours</h1>
-    </div>
-    <div class="col-lg-12">
-      <!-- /.panel-heading -->
-      <div class="panel panel-default">
-        <div class="panel-heading">
-          Liste des parcours
-        </div>
-        <div class="panel-body">
-          <button type="button" onclick="location.href='{{ path('admin_parcours_edit',{'id': 'new ' })}}';" class="btn btn-primary pull-right"><i class="fa fa-plus"></i> Ajouter un parcours</button>
-
-          {#Tableau#}
-          <div class="row">
-            <div class="col-sm-12">
-              <table class="tableAdmin">
-                <thead>
-                  <tr role="row">
-                    <th>ID</th>
-                    <th>Code</th>
-                    <th>Nom</th>
-                    <th>Année</th>
-                    <th>Semestre</th>
-                    <th>Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {% for parcours in listParcours %}
-                  <tr class="gradeA odd" role="row">
-                    <td class="sorting_1">{{ parcours.id }}</td>
-                    <td>{{ parcours.code }}</td>
-                    <td>{{ parcours.nom }}</td>
-                    <td>{{ parcours.annee }}</td>
-                    <td>
-                      {% for semestres in parcours.semestres %}
-                      {{ semestres.getNom() }}
-                      {% endfor %}
-                    </td>
-                    <td>
-                      <button type="button" onclick="location.href='{{ path('admin_parcours_show',{'id':parcours.id}) }}';" class="btn btn-default">Voir</button>
-                      <button type="button" onclick="location.href='{{ path('admin_parcours_edit',{'id':parcours.id}) }}';" class="btn btn-primary">Modifier</button>
-                      <button type="button" onclick="location.href='{{ path('admin_parcours_delete',{'id':parcours.id}) }}';" class="btn btn-danger">Supprimer</button>
-                    </td>
-                  </tr>
-                  {% endfor %}
-                </tbody>
-              </table>
-            </div>
+        {#Tableau#}
+        <div class="row">
+          <div class="col-sm-12">
+            <table class="tableAdmin">
+              <thead>
+                <tr role="row">
+                  <th>ID</th>
+                  <th>Code</th>
+                  <th>Nom</th>
+                  <th>Année</th>
+                  <th>Semestre</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for parcours in listParcours %}
+                <tr class="gradeA odd" role="row">
+                  <td class="sorting_1">{{ parcours.id }}</td>
+                  <td>{{ parcours.code }}</td>
+                  <td>{{ parcours.nom }}</td>
+                  <td>{{ parcours.annee }}</td>
+                  <td>
+                    {% for semestres in parcours.semestres %}
+                    {{ semestres.getNom() }}
+                    {% endfor %}
+                  </td>
+                  <td>
+                    <button type="button" onclick="location.href='{{ path('admin_parcours_show',{'id':parcours.id}) }}';" class="btn btn-default">Voir</button>
+                    <button type="button" onclick="location.href='{{ path('admin_parcours_edit',{'id':parcours.id}) }}';" class="btn btn-primary">Modifier</button>
+                    <button type="button" onclick="location.href='{{ path('admin_parcours_delete',{'id':parcours.id}) }}';" class="btn btn-danger">Supprimer</button>
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
           </div>
         </div>
       </div>
     </div>
   </div>
-</div>
 </div>
 
 {% endblock %}

@@ -20,13 +20,12 @@ class UserController extends Controller
      * @Route("/admin/user", name="admin_user")
      * @return mixed
      */
-    public function indexAction($update = null)
+    public function indexAction()
     {
-        $listUser = $this->getDoctrine()->getRepository(Utilisateur::class)->findAll();
+        $listUser = $this->getDoctrine()->getRepository(Utilisateur::class)->findBy(['type' => Utilisateur::TYPE_ETUDIANT]);
 
         return $this->render('UpjvBundle:Admin/User:index.html.twig',[
-            'listUser' => $listUser,
-            'updateResponse' => $update
+            'listUser' => $listUser
         ]);
     }
 
@@ -38,7 +37,6 @@ class UserController extends Controller
      */
     public function updateAction($id,Request $request)
     {
-        $session = $_SESSION;
         $em = $this->getDoctrine()->getManager();
         /** @var Utilisateur $user */
         $user = $em->getRepository(Utilisateur::class)->find($id);
@@ -53,25 +51,16 @@ class UserController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             try{
                 $user = $form->getData();
+                $user->setType(Utilisateur::TYPE_ETUDIANT);
                 $em->persist($user);
                 $em->flush();
-                $update = true;
+                $this->get('session')->getFlashBag()->add('success', 'L\'utilisateur a bien été enregistré.');
             }catch (\Exception $e){
-                $update = false;
+                $this->get('session')->getFlashBag()->add('erreur', 'Une erreur s\'est produite lors de l\'enregistrement. Le numéro étudiant doit être unique.');
+                return $this->redirectToRoute('admin_user_edit',['id' => $id]);
             }
 
-
-            $listUser = $this->getDoctrine()->getRepository(Utilisateur::class)->findAll();
-//            return $this->render('UpjvBundle:Admin/User:index.html.twig',[
-//                'updateResponse' => $update,
-//                'listUser' => $listUser
-//
-//            ]);
-
-            dump($session);die;
-            $session->getFlashBag()->add('notice', 'Profile updated');
-
-            $this->redirect('admin_user');
+            return $this->redirectToRoute('admin_user');
         }
 
         return $this->render('UpjvBundle:Admin/User:update.html.twig',[
@@ -89,10 +78,11 @@ class UserController extends Controller
     {
 
         $em = $this->getDoctrine()->getManager();
-        $user = $em->getRepository(Utilisateur::class)->find($id);
+        $user = $em->getRepository(Utilisateur::class)->findBy(['type' => Utilisateur::TYPE_ETUDIANT]);
 
         if (!$user instanceof Utilisateur) {
-            die('error : cette utilistateur n existe pas');
+            $this->get('session')->getFlashBag()->add('erreur', 'L\'utilisateur selectionné n\'existe pas');
+            return $this->redirectToRoute('admin_user');
         }
 
         return $this->render('UpjvBundle:Admin/User:show.html.twig',[
@@ -107,15 +97,15 @@ class UserController extends Controller
      */
     public function deleteAction($id){
         $em = $this->getDoctrine()->getManager();
-        $user = $em->getRepository(Utilisateur::class)->find($id);
-        $em->remove($user);
-        $em->flush();
+        try{
+            $user = $em->getRepository(Utilisateur::class)->find($id);
+            $em->remove($user);
+            $em->flush();
+            $this->get('session')->getFlashBag()->add('success', 'L\'utilisateur a bien été supprimé');
+        }catch (\Exception $e){
+            $this->get('session')->getFlashBag()->add('erreur', 'Une erreur s\'est produite lors de la suppression');
+        }
 
-        $listUser = $this->getDoctrine()->getRepository(Utilisateur::class)->findAll();
-
-        return $this->render('UpjvBundle:Admin/User:index.html.twig',[
-            'listUser' => $listUser,
-            'deleteResponse' => true
-        ]);
+        return $this->redirectToRoute('admin_user');
     }
 }

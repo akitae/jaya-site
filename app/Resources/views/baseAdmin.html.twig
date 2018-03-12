@@ -33,7 +33,14 @@
         {% include 'admin/nav.html' %}
     {% endblock %}
     {% block header %}{% endblock %}
-    {% block body %}{% endblock %}
+    <div id="page-wrapper" style="min-height: 518px;">
+        <div class="row">
+            {% block retour %}
+                {% include 'admin/retour.html.twig' %}
+            {% endblock %}
+            {% block body %}{% endblock %}
+        </div>
+    <div>
     {% block javascripts %}{% endblock %}
 </body>
 
