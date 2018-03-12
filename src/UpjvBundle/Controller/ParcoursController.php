@@ -47,17 +47,17 @@ class ParcoursController extends Controller
     $form->handleRequest($request);
 
     if ($form->isSubmitted() && $form->isValid()) {
-      $parcours = $form->getData();
-      $em->persist($parcours);
-      $em->flush();
+        try{
+            $parcours = $form->getData();
+                $em->persist($parcours);
+                $em->flush();
+                $this->get('session')->getFlashBag()->add('success', 'Le parcours a bien été enregistré.');
+            }catch (\Exception $e){
+                $this->get('session')->getFlashBag()->add('erreur', 'Une erreur s\'est produite lors de l\'enregistrement.');
+                return $this->redirectToRoute('admin_parcours_edit',['id' => $id]);
+            }
 
-      $listParcours = $this->getDoctrine()->getRepository(Parcours::class)->findAll();
-
-      return $this->render('UpjvBundle:Admin/Parcours:index.html.twig',[
-        'updateResponse' => true,
-        'listParcours' => $listParcours
-
-      ]);
+        return $this->redirectToRoute('admin_parcours');
     }
 
     return $this->render('UpjvBundle:Admin/Parcours:update.html.twig',[
@@ -78,7 +78,8 @@ class ParcoursController extends Controller
     $parcours = $em->getRepository(Parcours::class)->find($id);
 
     if (!$parcours instanceof Parcours) {
-      die('error : ce parcour n\'existe pas');
+        $this->get('session')->getFlashBag()->add('erreur', 'Le parcours selectionné n\'existe pas');
+        return $this->redirectToRoute('admin_parcours');
     }
 
     return $this->render('UpjvBundle:Admin/Parcours:show.html.twig',[
@@ -94,16 +95,16 @@ class ParcoursController extends Controller
   */
   public function deleteAction($id){
     $em = $this->getDoctrine()->getManager();
-    $parcours = $em->getRepository(Parcours::class)->find($id);
-    $em->remove($parcours);
-    $em->flush();
+    try{
+        $parcours = $em->getRepository(Parcours::class)->find($id);
+        $em->remove($parcours);
+        $em->flush();
+        $this->get('session')->getFlashBag()->add('success', 'L\'utilisateur a bien été supprimé');
+    }catch (\Exception $e){
+        $this->get('session')->getFlashBag()->add('erreur', 'Une erreur s\'est produite lors de la suppression');
+    }
 
-    $listParcours= $this->getDoctrine()->getRepository(Parcours::class)->findAll();
-
-    return $this->render('UpjvBundle:Admin/Parcours:index.html.twig',[
-      'listParcours' => $listParcours,
-      'deleteResponse' => true
-    ]);
+      return $this->redirectToRoute('admin_parcours');
   }
 
 
