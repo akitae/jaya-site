@@ -355,4 +355,9 @@ class Utilisateur implements UserInterface, \Serializable
     {
         $this->parcours = $parcours;
     }
+
+    public function __toString()
+    {
+        return $this->getNom();
+    }
 }

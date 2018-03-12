@@ -49,16 +49,17 @@ class GroupeController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $groupe = $form->getData();
-            $em->persist($groupe);
-            $em->flush();
+            try{
+                $groupe = $form->getData();
+                $em->persist($groupe);
+                $em->flush();
+                $this->get('session')->getFlashBag()->add('success', 'Le groupe a bien été enregistré.');
+            }catch (\Exception $e){
+                $this->get('session')->getFlashBag()->add('erreur', 'Une erreur s\'est produite lors de l\'enregistrement.');
+                return $this->redirectToRoute('admin_groupe_edit',['id' => $id]);
+            }
 
-            $listGroupe = $this->getDoctrine()->getRepository(Groupe::class)->findAll();
-            return $this->render('UpjvBundle:Admin/Groupe:index.html.twig',[
-                'updateResponse' => true,
-                'listGroupe' => $listGroupe
-
-            ]);
+            return $this->redirectToRoute('admin_groupe');
         }
 
         return $this->render('UpjvBundle:Admin/Groupe:update.html.twig',[
@@ -79,7 +80,8 @@ class GroupeController extends Controller
         $groupe = $em->getRepository(Groupe::class)->find($id);
 
         if (!$groupe instanceof Groupe) {
-            die('error : cette matière n existe pas');
+            $this->get('session')->getFlashBag()->add('erreur', 'Le groupe selectionné n\'existe pas');
+            return $this->redirectToRoute('admin_groupe');
         }
 
         return $this->render('UpjvBundle:Admin/Groupe:show.html.twig',[
@@ -94,15 +96,15 @@ class GroupeController extends Controller
      */
     public function deleteAction($id){
         $em = $this->getDoctrine()->getManager();
-        $groupe = $em->getRepository(Groupe::class)->find($id);
-        $em->remove($groupe);
-        $em->flush();
+        try{
+            $groupe = $em->getRepository(Groupe::class)->find($id);
+            $em->remove($groupe);
+            $em->flush();
+            $this->get('session')->getFlashBag()->add('success', 'Le groupe a bien été supprimé');
+        }catch (\Exception $e){
+            $this->get('session')->getFlashBag()->add('erreur', 'Une erreur s\'est produite lors de la suppression');
+        }
 
-        $listGroupe = $this->getDoctrine()->getRepository(Groupe::class)->findAll();
-
-        return $this->render('UpjvBundle:Admin/Groupe:index.html.twig',[
-            'listGroupe' => $listGroupe,
-            'deleteResponse' => true
-        ]);
+        return $this->redirectToRoute('admin_groupe');
     }
 }

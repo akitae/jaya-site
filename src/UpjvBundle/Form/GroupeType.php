@@ -29,13 +29,12 @@ class GroupeType extends AbstractType
     ])
     ->add('matiere', EntityType::class,
     [
-      'class' => Groupe::class,
-      'multiple' => true,
+      'class' => Matiere::class,
       'attr' => [
         'class' => 'form-control select2'
       ]
     ])
-    ->add('utilisateur', EntityType::class,
+    ->add('utilisateurs', EntityType::class,
     [
       'class' => Utilisateur::class,
       'multiple' => true,

@@ -1,47 +1,37 @@
 {% extends 'baseAdmin.html.twig' %}
 {% block body %}
-    <div id="page-wrapper" style="min-height: 518px;">
-        <div class="row">
-            <div class="panel panel-default">
-                <div class="col-lg-12">
-                     <h1 class="page-header">Gestion des groupes</h1>
-                </div>
-                <div class="col-lg-12">
-                     <!-- /.panel-heading -->
-                     <div class="panel panel-default">
-                        <div class="panel-heading">
-                            Créer ou modifier un groupe
-                        </div>
-                        <div class="panel-body">
-                            {{ form_start(form) }}
-                            <table class="table table-bordered">
-                                <tr>
-                                    <td>{{ form_label(form.nom) }}</td>
-                                    <td>{{ form_widget(form.nom)}}</td>
-                                </tr>
-                                <tr>
-                                    <td>{{ form_label(form.code) }}</td>
-                                    <td>{{ form_widget(form.code)}}</td>
-                                </tr>
-                                <tr>
-                                    <td>{{ form_label(form.place) }}</td>
-                                    <td>{{ form_widget(form.place)}}</td>
-                                </tr>
-                                <tr>
-                                    <td>{{ form_label(form.semestre) }}</td>
-                                    <td>{{ form_widget(form.semestre)}}</td>
-                                </tr>
-
-                            </table>
-                            <button type="button" onclick="location.href='{{ path('admin_groupe')}}';" class="btn btn-default pull-left"> Retour </button>
-                            {{ form_row(form.save) }}
-                            {{ form_end(form) }}
-                        </div>
-                     </div>
-                </div>
-            </div>
-        </div>
+<div class="panel panel-default">
+    <div class="col-lg-12">
+         <h1 class="page-header">Gestion des groupes</h1>
     </div>
-
+    <div class="col-lg-12">
+         <!-- /.panel-heading -->
+         <div class="panel panel-default">
+            <div class="panel-heading">
+                Créer ou modifier un groupe
+            </div>
+            <div class="panel-body">
+                {{ form_start(form) }}
+                <table class="table table-bordered">
+                    <tr>
+                        <td>{{ form_label(form.matiere) }}</td>
+                        <td>{{ form_widget(form.matiere)}}</td>
+                    </tr>
+                    <tr>
+                        <td>{{ form_label(form.typeCours) }}</td>
+                        <td>{{ form_widget(form.typeCours)}}</td>
+                    </tr>
+                    <tr>
+                        <td>{{ form_label(form.utilisateurs) }}</td>
+                        <td>{{ form_widget(form.utilisateurs)}}</td>
+                    </tr>
+                </table>
+                <button type="button" onclick="location.href='{{ path('admin_groupe')}}';" class="btn btn-default pull-left"> Retour </button>
+                {{ form_row(form.save) }}
+                {{ form_end(form) }}
+            </div>
+         </div>
+    </div>
+</div>
 
 {% endblock %}
