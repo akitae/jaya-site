@@ -1,0 +1,51 @@
+{% extends 'baseAdmin.html.twig' %}
+{% block body %}
+    <div id="page-wrapper" style="min-height: 518px;">
+        <div class="row">
+            <div class="panel panel-default">
+                <div class="col-lg-12">
+                     <h1 class="page-header">Gestion des matières</h1>
+                </div>
+                <div class="col-lg-12">
+                     <!-- /.panel-heading -->
+                     <div class="panel panel-default">
+                        <div class="panel-heading">
+                            Créer ou modifier une matière
+                        </div>
+                        <div class="panel-body">
+                            {{ form_start(form) }}
+                            <table class="table table-bordered">
+                                <tr>
+                                    <td>{{ form_label(form.nom) }}</td>
+                                    <td>{{ form_widget(form.nom)}}</td>
+                                </tr>
+                                <tr>
+                                    <td>{{ form_label(form.dateDebut) }}</td>
+                                    <td>{{ form_widget(form.dateDebut)}}</td>
+                                </tr>
+                                <tr>
+                                    <td>{{ form_label(form.dateFin) }}</td>
+                                    <td>{{ form_widget(form.dateFin)}}</td>
+                                </tr>
+                                <tr>
+                                    <td>{{ form_label(form.dateDebutChoix) }}</td>
+                                    <td>{{ form_widget(form.dateDebutChoix)}}</td>
+                                </tr>
+                                <tr>
+                                    <td>{{ form_label(form.dateFinChoix) }}</td>
+                                    <td>{{ form_widget(form.dateFinChoix)}}</td>
+                                </tr>
+                              
+                            </table>
+                            <button type="button" onclick="location.href='{{ path('admin_semestre')}}';" class="btn btn-default pull-left"> Retour </button>
+                            {{ form_row(form.save) }}
+                            {{ form_end(form) }}
+                        </div>
+                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}

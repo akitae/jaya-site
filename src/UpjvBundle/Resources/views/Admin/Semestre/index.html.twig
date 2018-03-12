@@ -1,0 +1,78 @@
+{# empty Twig template #}
+{% extends 'baseAdmin.html.twig' %}
+
+{% block body %}
+
+
+    <div id="page-wrapper" style="min-height: 518px;">
+        <div class="row">
+
+            {% if updateResponse is defined %}
+                <div class="alert alert-success alert-dismissable">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                    Le semestre a bien été enregistré.
+                </div>
+            {% endif %}
+            {% if deleteResponse is defined %}
+                <div class="alert alert-success alert-dismissable">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                    La semestre a bien été supprimée.
+                </div>
+            {% endif %}
+
+            <div class="panel panel-default">
+                <div class="col-lg-12">
+                    <h1 class="page-header">Gestion des semestres</h1>
+                </div>
+                <div class="col-lg-12">
+                <!-- /.panel-heading -->
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            Liste des semestres
+                        </div>
+                        <div class="panel-body">
+                            <button type="button" onclick="location.href='{{ path('admin_semestre_edit',{'id': 'new ' })}}';" class="btn btn-primary pull-right"><i class="fa fa-plus"></i>Ajouter un semestre</button>
+
+                            {#Tableau#}
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <table class="tableAdmin">
+                                        <thead>
+                                        <tr role="row">
+                                            <th>Id</th>
+                                            <th>Nom</th>          
+                                            <th>Date de début</th>
+                                            <th>Date de fin</th>
+                                            <th>Ouverture des choix</th>
+                                            <th>Fermeture des choix</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for semestre in listSemestre %}
+                                            <tr class="gradeA odd" role="row">
+                                                <td class="sorting_1">{{ semestre.id }}</td>
+                                                <td>{{ semestre.nom }}</td>
+                                                <td>{{ semestre.dateDebut|date("d/m/Y") }}</td>
+                                                <td>{{ semestre.dateFin|date("d/m/Y") }}</td>
+                                                <td>{{ semestre.dateDebutChoix|date("d/m/Y H:i:s")}}</td>
+                                                <td>{{ semestre.dateFinChoix|date("d/m/Y H:i:s") }}</td>
+                                                <td>
+                                                    <button type="button" onclick="location.href='{{ path('admin_semestre_show',{'id':semestre.id}) }}';" class="btn btn-default">Voir</button>
+                                                    <button type="button" onclick="location.href='{{ path('admin_semestre_edit',{'id':semestre.id}) }}';" class="btn btn-primary">Modifier</button>
+                                                    <button type="button" onclick="location.href='{{ path('admin_semestre_delete',{'id':semestre.id}) }}';" class="btn btn-danger">Supprimer</button> 
+                                                
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

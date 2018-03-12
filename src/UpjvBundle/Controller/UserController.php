@@ -85,7 +85,7 @@ class UserController extends Controller
         $user = $em->getRepository(Utilisateur::class)->find($id);
 
         if (!$user instanceof Utilisateur) {
-            die('error : cette utilistateur n existe pas');
+            die('error : cet utilistateur n\'existe pas');
         }
 
         return $this->render('UpjvBundle:Admin/User:show.html.twig',[
