@@ -48,8 +48,14 @@ class SemestreController extends Controller
         $form = $this->createForm(SemestreType::class,$semestre);
         $form->handleRequest($request);
 
+//        if(!empty($form->getData()['dateDebut'])){
+//            $form->getData()['dateDebut'] = date_create_from_format('Y-m-d H:i:s',$form->getData()['dateDebut']);
+//        }
+//        dump($form->getData());die;
         if ($form->isSubmitted() && $form->isValid()) {
+
             $semestre = $form->getData();
+
             $em->persist($semestre);
             $em->flush();
 
