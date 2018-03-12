@@ -1,52 +1,47 @@
 {% extends 'baseAdmin.html.twig' %}
 {% block body %}
-    <div id="page-wrapper" style="min-height: 518px;">
-        <div class="row">
-            <div class="panel panel-default">
-                <div class="col-lg-12">
-                     <h1 class="page-header">Gestion des parcours</h1>
-                </div>
-                <div class="col-lg-12">
-                     <!-- /.panel-heading -->
-                     <div class="panel panel-default">
-                        <div class="panel-heading">
-                            Créer ou modifier un parcours
-                        </div>
-                        <div class="panel-body">
-                            {{ form_start(form) }}
-                            <table class="table table-bordered">
-                                <tr>
-                                    <td>{{ form_label(form.nom) }}</td>
-                                    <td>{{ form_widget(form.nom)}}</td>
-                                </tr>
-                                <tr>
-                                    <td>{{ form_label(form.code) }}</td>
-                                    <td>{{ form_widget(form.code)}}</td>
-                                </tr>
-                                <tr>
-                                    <td>{{ form_label(form.annee) }}</td>
-                                    <td>{{ form_widget(form.annee)}}</td>
-                                </tr>
-                                <tr>
-                                    <td>{{ form_label(form.polesDeCompetences) }}</td>
-                                    <td>{{ form_widget(form.polesDeCompetences)}}</td>
-                                </tr>
-                                <tr>
-                                    <td>{{ form_label(form.semestres) }}</td>
-                                    <td>{{ form_widget(form.semestres)}}</td>
-                                </tr>
-
-                            </table>
-                            <button type="button" onclick="location.href='{{ path('admin_parcours')}}';" class="btn btn-default pull-left"> Retour </button>
-                            {{ form_row(form.save) }}
-                            {{ form_end(form) }}
-                        </div>
-                     </div>
-                </div>
-            </div>
-        </div>
+<div class="panel panel-default">
+    <div class="col-lg-12">
+         <h1 class="page-header">Gestion des parcours</h1>
     </div>
+    <div class="col-lg-12">
+         <!-- /.panel-heading -->
+         <div class="panel panel-default">
+            <div class="panel-heading">
+                Créer ou modifier un parcours
+            </div>
+            <div class="panel-body">
+                {{ form_start(form) }}
+                <table class="table table-bordered">
+                    <tr>
+                        <td>{{ form_label(form.nom) }}</td>
+                        <td>{{ form_widget(form.nom)}}</td>
+                    </tr>
+                    <tr>
+                        <td>{{ form_label(form.code) }}</td>
+                        <td>{{ form_widget(form.code)}}</td>
+                    </tr>
+                    <tr>
+                        <td>{{ form_label(form.annee) }}</td>
+                        <td>{{ form_widget(form.annee)}}</td>
+                    </tr>
+                    <tr>
+                        <td>{{ form_label(form.polesDeCompetences) }}</td>
+                        <td>{{ form_widget(form.polesDeCompetences)}}</td>
+                    </tr>
+                    <tr>
+                        <td>{{ form_label(form.semestres) }}</td>
+                        <td>{{ form_widget(form.semestres)}}</td>
+                    </tr>
 
+                </table>
+                <button type="button" onclick="location.href='{{ path('admin_parcours')}}';" class="btn btn-default pull-left"> Retour </button>
+                {{ form_row(form.save) }}
+                {{ form_end(form) }}
+            </div>
+         </div>
+    </div>
+</div>
 
 
 {% endblock %}
