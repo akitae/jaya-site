@@ -2,53 +2,51 @@
 
 {% block body %}
 
-<div id="page-wrapper" style="min-height: 518px;">
-    <div class="panel panel-default">
-        <div class="col-lg-12">
-            <h1 class="page-header">Gestion des parcours</h1>
-        </div>
-        <div class="col-lg-12">
-        <!-- /.panel-heading -->
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    Supprimer un parcours
-                </div>
-                <div class="panel-body">
-                    <table width="50%" class="table table-striped table-bordered table-hover">
-                        <tr>
-                            <td>Parcours ID</td>
-                            <td>{{ parcours.id }}</td>
-                        </tr>
-                        <tr>
-                            <td>Nom</td>
-                            <td>{{ parcours.nom }}</td>
-                        </tr>
-                        <tr>
-                            <td>Poles de compétence</td>
-                            <td>
-                                <ul>
-                                    {% for pole in parcours.polesDeCompetences %}
-                                        <li>{{ pole }}</li>
-                                    {% endfor %}
-                                </ul>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Semestres</td>
-                            <td>
-                                <ul>
-                                    {% for semestre in parcours.semestres %}
-                                        <li>{{ semestre }}</li>
-                                    {% endfor %}
-                                </ul>
-                            </td>
-                        </tr>
-                    </table>
+<div class="panel panel-default">
+    <div class="col-lg-12">
+        <h1 class="page-header">Gestion des parcours</h1>
+    </div>
+    <div class="col-lg-12">
+    <!-- /.panel-heading -->
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                Supprimer un parcours
+            </div>
+            <div class="panel-body">
+                <table width="50%" class="table table-striped table-bordered table-hover">
+                    <tr>
+                        <td>Parcours ID</td>
+                        <td>{{ parcours.id }}</td>
+                    </tr>
+                    <tr>
+                        <td>Nom</td>
+                        <td>{{ parcours.nom }}</td>
+                    </tr>
+                    <tr>
+                        <td>Poles de compétence</td>
+                        <td>
+                            <ul>
+                                {% for pole in parcours.polesDeCompetences %}
+                                    <li>{{ pole }}</li>
+                                {% endfor %}
+                            </ul>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Semestres</td>
+                        <td>
+                            <ul>
+                                {% for semestre in parcours.semestres %}
+                                    <li>{{ semestre }}</li>
+                                {% endfor %}
+                            </ul>
+                        </td>
+                    </tr>
+                </table>
 
-                    <button type="button" onclick="location.href='{{ path('admin_parcours')}}';" class="btn btn-default pull-left"> Retour </button>
-                    <button type="button" onclick="location.href='{{ path('admin_parcours_edit',{'id':parcours.id}) }}';" class="btn btn-primary"> Modifier </button>
-                    <button type="button" onclick="location.href='{{ path('admin_parcours_delete',{'id':parcours.id})}}';" class="btn btn-danger pull-right"> Supprimer </button>
-                </div>
+                <button type="button" onclick="location.href='{{ path('admin_parcours')}}';" class="btn btn-default pull-left"> Retour </button>
+                <button type="button" onclick="location.href='{{ path('admin_parcours_edit',{'id':parcours.id}) }}';" class="btn btn-primary"> Modifier </button>
+                <button type="button" onclick="location.href='{{ path('admin_parcours_delete',{'id':parcours.id})}}';" class="btn btn-danger pull-right"> Supprimer </button>
             </div>
         </div>
     </div>

@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <title>{% block title %}Welcome!{% endblock %}</title>
+    {% block stylesheets %}{% endblock %}
 
     <link rel="stylesheet" type="text/css" href="/vendor/bordercloud/startbootstrap-sb-admin-2/dist/css/sb-admin-2.css"/>
     <link rel="stylesheet" type="text/css" href="/vendor/twbs/bootstrap/dist/css/bootstrap.min.css"/>
@@ -13,7 +14,7 @@
 
     {#end CDN#}
 
-    {% stylesheets filter='cssrewrite'
+    {% stylesheets
         'css/main.css'
         'css/bootstrap.min.css'
         'css/sb-admin-2.css'
@@ -24,7 +25,7 @@
         <link rel="stylesheet" href="{{ asset_url }}" />
         <link rel="stylesheet" href="{{ asset('vendor/twbs/bootstrap/dist/css/bootstrap.min.css') }}">
     {% endstylesheets %}
-    {% block stylesheets %}{% endblock %}
+
 
 </head>
 <body>
@@ -32,7 +33,15 @@
         {% include 'admin/nav.html' %}
     {% endblock %}
     {% block header %}{% endblock %}
-    {% block body %}{% endblock %}
+    <div id="page-wrapper" style="min-height: 518px;">
+        <div class="row">
+            {% block retour %}
+                {% include 'admin/retour.html.twig' %}
+            {% endblock %}
+            {% block body %}{% endblock %}
+        </div>
+    <div>
+    {% block javascripts %}{% endblock %}
 </body>
 
 {% javascripts
@@ -47,7 +56,6 @@
     <script src="{{ asset_url }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
 {% endjavascripts %}
-{% block javascripts %}{% endblock %}
 
 <script type="text/javascript" charset="utf-8">
     $(document).ready(function() {
