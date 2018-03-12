@@ -22,7 +22,6 @@ class SemestreType extends AbstractType
   public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-
             ->add('nom',TextType::class,[
                 'attr' => ['class' => 'form-control '],
                 'label' => 'Nom'
@@ -54,21 +53,23 @@ class SemestreType extends AbstractType
                 ]
             ])
         ;
-    }/**
-     * {@inheritdoc}
-     */
-    public function configureOptions(OptionsResolver $resolver)
-    {
-        $resolver->setDefaults(array(
-            'data_class' => 'UpjvBundle\Entity\Semestre'
-        ));
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+  /*  public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefaults(array(
+            'data_class' => 'UpjvBundle\Entity\Semestre'
+        ));
+    }*/
+
+    /**
+     * {@inheritdoc}
+     */
+/*    public function getBlockPrefix()
     {
         return 'upjvbundle_semestre';
-    }
+    }*/
 }
