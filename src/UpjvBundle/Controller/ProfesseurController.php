@@ -85,7 +85,7 @@ class ProfesseurController extends Controller
             return $this->redirectToRoute('admin_professeur');
         }
 
-        return $this->render('UpjvBundle:Admin/professeur:show.html.twig',[
+        return $this->render('UpjvBundle:Admin/Professeur:show.html.twig',[
             'professeur' => $professeur
         ]);
     }
