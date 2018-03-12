@@ -36,7 +36,7 @@ class PolesController extends Controller
   public function updateAction($id,Request $request)
   {
     $em = $this->getDoctrine()->getManager();
-    /** @var Poledecompetence $user */
+    /** @var Poledecompetence $pole */
     $pole = $em->getRepository(PoleDeCompetence::class)->find($id);
 
 
@@ -52,13 +52,7 @@ class PolesController extends Controller
       $em->persist($pole);
       $em->flush();
 
-      $listPole = $this->getDoctrine()->getRepository(PoleDeCompetence::class)->findAll();
-
-      return $this->render('UpjvBundle:Admin/Poles:index.html.twig',[
-        'updateResponse' => true,
-        'listPole' => $listPole
-
-      ]);
+      return $this->redirectToRoute('admin_pole');
     }
 
     return $this->render('UpjvBundle:Admin/Poles:update.html.twig',[
@@ -79,7 +73,8 @@ class PolesController extends Controller
     $pole = $em->getRepository(PoleDeCompetence::class)->find($id);
 
     if (!$pole instanceof PoleDeCompetence) {
-      die('error : ce pole de competence n\'existe pas');
+        $this->get('session')->getFlashBag()->add('erreur', 'Le pole de compétence selectionné n\'existe pas');
+        return $this->redirectToRoute('admin_pole');
     }
 
     return $this->render('UpjvBundle:Admin/Poles:show.html.twig',[
@@ -95,16 +90,16 @@ class PolesController extends Controller
   */
   public function deleteAction($id){
     $em = $this->getDoctrine()->getManager();
-    $pole = $em->getRepository(PoleDeCompetence::class)->find($id);
-    $em->remove($pole);
-    $em->flush();
+      try{
+          $pole = $em->getRepository(PoleDeCompetence::class)->find($id);
+          $em->remove($pole);
+          $em->flush();
+          $this->get('session')->getFlashBag()->add('success', 'L\'utilisateur a bien été supprimé');
+      }catch (\Exception $e){
+          $this->get('session')->getFlashBag()->add('erreur', 'Une erreur s\'est produite lors de la suppression');
+      }
 
-    $listPole = $this->getDoctrine()->getRepository(PoleDeCompetence::class)->findAll();
-
-    return $this->render('UpjvBundle:Admin/Poles:index.html.twig',[
-      'listPole' => $listPole,
-      'deleteResponse' => true
-    ]);
+      return $this->redirectToRoute('admin_pole');
   }
 
 
