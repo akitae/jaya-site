@@ -10,12 +10,12 @@ use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use UpjvBundle\Entity\Parcours;
-use UpjvBundle\Entity\PoleDeCompetence;
-use UpjvBundle\Entity\Semestre;
+use UpjvBundle\Entity\Matiere;
+use UpjvBundle\Entity\Utilisateur;
 
-class ParcoursType extends AbstractType
+class GroupeType extends AbstractType
 {
   /**
   * {@inheritdoc}
@@ -23,29 +23,20 @@ class ParcoursType extends AbstractType
   public function buildForm(FormBuilderInterface $builder, array $options)
   {
     $builder
-    ->add('nom',TextType::class,[
+    ->add('typeCours',TextType::class,[
       'attr' => ['class' => 'form-control '],
-      'label' => 'Nom'
+      'label' => 'Type cours'
     ])
-    ->add('code',TextType::class,[
-      'attr' => ['class' => 'form-control '],
-      'label' => 'Code'
-    ])
-    ->add('annee',IntegerType::class,[
-      'attr' => ['class' => 'form-control '],
-      'label' => 'Annee'
-    ])
-    ->add('polesDeCompetences', EntityType::class,
+    ->add('matiere', EntityType::class,
     [
-      'class' => PoleDeCompetence::class,
-      'multiple' => true,
+      'class' => Matiere::class,
       'attr' => [
         'class' => 'form-control select2'
       ]
     ])
-    ->add('semestres', EntityType::class,
+    ->add('utilisateurs', EntityType::class,
     [
-      'class' => Semestre::class,
+      'class' => Utilisateur::class,
       'multiple' => true,
       'attr' => [
         'class' => 'form-control select2'
@@ -64,7 +55,7 @@ class ParcoursType extends AbstractType
   public function configureOptions(OptionsResolver $resolver)
   {
     $resolver->setDefaults(array(
-      'data_class' => 'UpjvBundle\Entity\Parcours'
+      'data_class' => 'UpjvBundle\Entity\Groupe'
     ));
   }
 
@@ -73,7 +64,7 @@ class ParcoursType extends AbstractType
   */
   public function getBlockPrefix()
   {
-    return 'upjvbundle_ParcoursType';
+    return 'upjvbundle_groupe';
   }
 
 

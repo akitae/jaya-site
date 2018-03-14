@@ -13,6 +13,10 @@ use Symfony\Component\Security\Core\User\UserInterface;
  */
 class Utilisateur implements UserInterface, \Serializable
 {
+    const TYPE_ETUDIANT = 0;
+    const TYPE_PROFESSEUR = 1;
+    const TYPE_ADMIN = 2;
+
     /**
      * @var int
      *
@@ -53,7 +57,7 @@ class Utilisateur implements UserInterface, \Serializable
     /**
      * @var string
      *
-     * @ORM\Column(name="numeroEtudiant", type="string", length=255, unique=true)
+     * @ORM\Column(name="numeroEtudiant", type="string", length=255, unique=true, nullable=true)
      */
     private $numeroEtudiant;
 
@@ -350,5 +354,13 @@ class Utilisateur implements UserInterface, \Serializable
     public function setParcours($parcours)
     {
         $this->parcours = $parcours;
+    }
+
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->getNom();
     }
 }
