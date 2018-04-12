@@ -4,13 +4,9 @@ namespace UpjvBundle\Form;
 
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use UpjvBundle\Entity\Matiere;
 use UpjvBundle\Entity\Utilisateur;
@@ -23,9 +19,9 @@ class GroupeType extends AbstractType
   public function buildForm(FormBuilderInterface $builder, array $options)
   {
     $builder
-    ->add('typeCours',TextType::class,[
+    ->add('nom',TextType::class,[
       'attr' => ['class' => 'form-control '],
-      'label' => 'Type cours'
+      'label' => 'Nom du groupe'
     ])
     ->add('matiere', EntityType::class,
     [

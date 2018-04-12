@@ -58,9 +58,6 @@ class Matiere
      */
     private $semestre;
 
-    /**
-     * @ORM\OneToMany(targetEntity="Groupe", mappedBy="groupe")
-     */
     private $groupes;
 
     /**

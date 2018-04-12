@@ -9,6 +9,8 @@
 namespace UpjvBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Routing\Annotation\Route;
+use UpjvBundle\Entity\Groupe;
+use UpjvBundle\Entity\Parcours;
 use UpjvBundle\Entity\Utilisateur;
 
 class ExportUserController extends Controller
@@ -21,8 +23,13 @@ class ExportUserController extends Controller
     {
         $listUser = $this->getDoctrine()->getRepository(Utilisateur::class)->findBy(['type' => Utilisateur::TYPE_ETUDIANT]);
 
-        return $this->render('UpjvBundle:Admin/User:index.html.twig',[
-            'listUser' => $listUser
+        $listGroup = $this->getDoctrine()->getRepository(Groupe::class)->findAll();
+        $listParcours = $this->getDoctrine()->getRepository(Parcours::class)->findAll();
+
+        return $this->render('UpjvBundle:Admin/ExportUser:index.html.twig',[
+            'listUser' => $listUser,
+            'listGroup' => $listGroup,
+            'listParcours' => $listParcours
         ]);
     }
 }
