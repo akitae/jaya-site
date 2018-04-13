@@ -50,7 +50,7 @@ class RegistrationController extends Controller
 
             if (empty($error)) {
                 $user = new Utilisateur();
-                $user->setNom($form->get('nom')->getData());
+                $user->setNom(strtoupper($form->get('nom')->getData()));
                 $user->setPrenom($form->get('prenom')->getData());
                 $user->setEmail($form->get('email')->getData());
                 $user->setNumeroEtudiant($form->get('numeroEtudiant')->getData());

@@ -7,7 +7,7 @@
     <div class="container-fluid">
         <div class="wrapper-login">
             <div class="login">
-                <form action="{{ path('login') }}"  method="POST">
+                <form action="{{ path('connexion') }}"  method="POST">
 
                     {% if error %}
                         <div class="alert alert-danger">
@@ -22,7 +22,7 @@
                                     <div class="col-md-6">
                                         <div class="row">
                                             <div class="col-md-12">
-                                                <label for="username">Login</label>
+                                                <label for="username">Email</label>
                                             </div>
                                             <div class="col-md-12">
                                                 <input type="text" id="username" name="_username" value="{{ lastUsername }}" class="form-control" />

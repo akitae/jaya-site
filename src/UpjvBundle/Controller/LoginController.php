@@ -17,7 +17,7 @@ class LoginController extends Controller
 {
 
     /**
-     * @Route("/login", name="login")
+     * @Route("/connexion", name="connexion")
      * @return mixed
      */
     public function loginAction (Request $request) {

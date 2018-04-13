@@ -8,11 +8,11 @@ app:
 
 
 login:
-    path: /login
+    path: /connexion
     defaults: { _controller: UpjvBundle:Login:login }
 
 login_check:
-    path: /login
+    path: /connexion
 
 logout:
     path: /logout
