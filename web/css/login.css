@@ -19,6 +19,11 @@ label {
     padding-right: 10px;
 }
 
+.align-bottom {
+    display: flex;
+    align-items: end;
+}
+
 .bg-image {
     display: flex;
     flex-direction: column;
@@ -57,15 +62,13 @@ label {
 }
 
 .wrapper-center.large {
-    width: 450px;
+    width: 550px;
 }
 
 .container {
     width: inherit;
     padding: 10px;
 }
-
-
 
 .jaya {
     display: flex;
@@ -81,8 +84,30 @@ label {
     border-radius: 50%;
 }
 
+.container-title {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 15px;
+}
+
+.titre-inscription {
+    background-color: rgb(65, 75, 86);
+    text-align: center;
+    font-size: 1.6em;
+    font-weight: bold;
+    padding: 8px;
+    border: 3px solid #FF3366;
+    border-radius: 5px;
+}
+
 .input-login {
     border-radius: 0;
+}
+
+.contact-numero {
+    padding: 5px;
+    margin-bottom: 15px;
+    height: 100%;
 }
 
 .btn-login {
@@ -116,13 +141,3 @@ label {
     color: white;
     outline: none;
 }
-
-
-/*
-
-.login {
-    background-color: white;
-    width: 25%;
-    border: 1px solid #D5D5D5;
-    border-radius: 4px 4px 0 0;
-}*/

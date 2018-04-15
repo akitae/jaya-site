@@ -8,9 +8,12 @@
 
         <div class="wrapper-center large">
             <div class="container ">
+                <div class="row">
+                    <div class="col-md-offset-3 col-md-6 col-lg-offset-3 container-title">
+                        <div class="titre-inscription">Inscription</div>
+                    </div>
+                </div>
             {{ form_start(form) }}
-
-
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
@@ -29,7 +32,10 @@
 
                 <div class="row">
                     <div class="col-md-6">
-
+                        <div class="form-group">
+                            {{ form_label(form.identifiant) }}
+                            {{ form_widget(form.identifiant) }}
+                        </div>
                     </div>
 
                     <div class="col-md-6">
@@ -40,16 +46,16 @@
                     </div>
                 </div>
 
-                <div class="row">
-                    <div class="col-md-6">
+                <div class="row align-bottom">
+                    <div class="col-md-6 col-sm-6">
                         <div class="form-group">
                             {{ form_label(form.numeroEtudiant) }}
                             {{ form_widget(form.numeroEtudiant) }}
                         </div>
                     </div>
 
-                    <div class="col-md-6">
-                        Contacter Berquin si vous n'avez pas de numéro étudiant
+                    <div class="col-md-6 col-sm-6">
+                        <div class="alert alert-info contact-numero">Contactez l'administration si vous ne possédez pas de numéro étudiant.</div>
                     </div>
                 </div>
 

@@ -28,16 +28,19 @@ class RegisterForm extends AbstractType
                 'label' => 'Nom'
             ])
             ->add('prenom',TextType::class,[
-                'attr' => ['class' => 'form-control '],
+                'attr' => ['class' => 'form-control'],
                 'label' => 'Prénom'
             ])
-            ->add
+            ->add('identifiant', TextType::class, [
+                'attr' => ['class' => 'form-control'],
+                'label' => 'Identifiant'
+            ])
             ->add('email', EmailType::class,[
-                'attr' => ['class' => 'form-control '],
+                'attr' => ['class' => 'form-control'],
                 'label' => 'Email'
             ])
             ->add('numeroEtudiant',TextType::class,[
-                'attr' => ['class' => 'form-control '],
+                'attr' => ['class' => 'form-control'],
                 'label' => 'Numéro étudiant'
             ])
             ->add('motDePasse', PasswordType::class, [
