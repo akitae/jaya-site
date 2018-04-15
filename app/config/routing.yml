@@ -6,7 +6,6 @@ app:
     resource: '@AppBundle/Controller/'
     type: annotation
 
-
 login:
     path: /connexion
     defaults: { _controller: UpjvBundle:Login:login }

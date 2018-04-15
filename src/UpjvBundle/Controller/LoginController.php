@@ -20,18 +20,9 @@ class LoginController extends Controller
      * @Route("/connexion", name="connexion")
      * @return mixed
      */
-    public function loginAction (Request $request) {
+    public function loginAction () {
 
-        $authenticationUtils = $this->get('security.authentication_utils');
-
-        $error = $authenticationUtils->getLastAuthenticationError();
-
-        $lastUsername = $authenticationUtils->getLastUsername();
-
-        return $this->render('UpjvBundle:Login:index.html.twig', [
-            'lastUsername' => $lastUsername,
-            'error' => $error
-        ]);
+        return $this->render('UpjvBundle:Login:index.html.twig');
     }
 
 }

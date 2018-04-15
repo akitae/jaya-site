@@ -68,3 +68,19 @@ swiftmailer:
     username: '%mailer_user%'
     password: '%mailer_password%'
     spool: { type: memory }
+
+# Assetic pour que les chemins CSS soient automatiquement remplacer par les bon chemin.
+# Nécessaire pour les images et surtout les icônes.
+assetic:
+    debug:          '%kernel.debug%'
+    use_controller: '%kernel.debug%'
+    filters:
+        cssrewrite: ~
+
+fos_user:
+  db_driver: orm
+  firewall_name: admin
+  user_class: UpjvBundle\Entity\Utilisateur
+  from_email:
+    address: florian.lephore@outlook.com
+    sender_name: toto

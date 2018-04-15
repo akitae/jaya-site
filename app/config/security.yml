@@ -4,6 +4,9 @@ security:
 
     # https://symfony.com/doc/current/security.html#b-configuring-how-users-are-loaded
     providers:
+        main:
+          id: fos_user.user_provider.username_email
+
         users:
           entity:
             class: UpjvBundle:Utilisateur
@@ -30,13 +33,13 @@ security:
         admin:
           pattern: ^/
           anonymous: true
-          provider: users
+          provider: main
           form_login:
-            login_path: login
-            check_path: login
+            login_path: connexion
+            check_path: connexion
           logout:
             path: /logout
-            target: /login
+            target: /connexion
 
     access_control:
       - { path: ^/admin, roles: ROLE_ADMIN }

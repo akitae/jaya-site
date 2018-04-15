@@ -4,7 +4,91 @@
 {% endblock %}
 {% block body %}
 
-    <div class="container-fluid">
+    <div class="bg-image">
+
+        <div class="wrapper-center large">
+            <div class="container ">
+            {{ form_start(form) }}
+
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            {{ form_label(form.nom) }}
+                            {{ form_widget(form.nom) }}
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            {{ form_label(form.prenom) }}
+                            {{ form_widget(form.prenom) }}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            {{ form_label(form.email) }}
+                            {{ form_widget(form.email) }}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            {{ form_label(form.numeroEtudiant) }}
+                            {{ form_widget(form.numeroEtudiant) }}
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        Contacter Berquin si vous n'avez pas de numéro étudiant
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            {{ form_label(form.motDePasse) }}
+                            {{ form_widget(form.motDePasse) }}
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            {{ form_label(form.motDePasseValide) }}
+                            {{ form_widget(form.motDePasseValide) }}
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            {{ form_end(form) }}
+        </div>
+        </div>
+    </div>
+
+   {# <div class="container-fluid">
         <div class="wrapper-registration">
             <div class="sign-in">
                 {{ form_start(form) }}
@@ -77,6 +161,6 @@
                 {% endif %}
             </div>
         </div>
-    </div>
+    </div>#}
 
 {% endblock %}

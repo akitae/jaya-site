@@ -31,11 +31,12 @@ class RegisterForm extends AbstractType
                 'attr' => ['class' => 'form-control '],
                 'label' => 'Prénom'
             ])
+            ->add
             ->add('email', EmailType::class,[
                 'attr' => ['class' => 'form-control '],
                 'label' => 'Email'
             ])
-            ->add('numeroEtudiant',IntegerType::class,[
+            ->add('numeroEtudiant',TextType::class,[
                 'attr' => ['class' => 'form-control '],
                 'label' => 'Numéro étudiant'
             ])
@@ -43,14 +44,14 @@ class RegisterForm extends AbstractType
                 'attr' => ['class' => 'form-control'],
                 'label' => "Mot de passe"
             ])
-            ->add('motDePasseCheck', PasswordType::class, [
+            ->add('motDePasseValide', PasswordType::class, [
                 'attr' => ['class' => 'form-control'],
                 'label' => 'Confirmer le mot de passe'
             ])
             ->add('save', SubmitType::class,[
-                'label' => 'Enregistrer',
+                'label' => 'Valider',
                 'attr'  => [
-                    'class' => 'btn btn-primary large-button'
+                    'class' => 'btn btn-lg btn-block btn-inscription'
                 ]
             ])
         ;
