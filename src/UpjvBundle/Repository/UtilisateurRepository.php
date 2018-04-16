@@ -25,6 +25,24 @@ class UtilisateurRepository extends \Doctrine\ORM\EntityRepository
 
     }
 
+    /**
+     * Recherche l'utilisateur par l'identifiant.
+     * @param $identifiant
+     * @return mixed|null
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function findByIdentifiant ($identifiant) {
+        $queryBuilder = $this->createQueryBuilder('e');
+        $queryBuilder->where('e.identifiant = :identifiant')->setParameter('identifiant', $identifiant)
+            ->andWhere('e.identifiant = :identifiant')->setParameter('identifiant', $identifiant);
+
+        try {
+            return $queryBuilder->getQuery()->getSingleResult();
+        } catch (NoResultException $e) {
+            return null;
+        }
+    }
+
     public function findUserByEmail ($email) {
         $queryBuilder = $this->createQueryBuilder('e');
         $queryBuilder->where('e.email = :email')->setParameter('email', $email);

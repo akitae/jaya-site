@@ -24,4 +24,9 @@ class Utilisateur extends BaseUser
      */
     protected $id;
 
+    /**
+     * @ORM\Column(name="numeroEtudiant", type="integer")
+     */
+    private $numeroEtudiant;
+
 }

@@ -33,6 +33,9 @@ class RegistrationController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
 
+            $identifiant = $form->get('identifiant')->getData();
+            $user = $em->getRepository('Utilisateur')->findByIdentifiant($identifiant);
+
             $email = $form->get('email')->getData();
             $user = $em->getRepository('UpjvBundle:Utilisateur')->findUserByEmail($email);
 
