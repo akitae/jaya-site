@@ -13,7 +13,9 @@
                         <div class="titre-inscription">Inscription</div>
                     </div>
                 </div>
-            {{ form_start(form) }}
+
+                {{ form_start(form) }}
+
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
@@ -33,8 +35,8 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
-                            {{ form_label(form.identifiant) }}
-                            {{ form_widget(form.identifiant) }}
+                            {{ form_label(form.username) }}
+                            {{ form_widget(form.username) }}
                         </div>
                     </div>
 
@@ -62,35 +64,26 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
-                            {{ form_label(form.motDePasse) }}
-                            {{ form_widget(form.motDePasse) }}
+                            {{ form_label(form.password) }}
+                            {{ form_widget(form.password) }}
                         </div>
                     </div>
 
                     <div class="col-md-6">
                         <div class="form-group">
-                            {{ form_label(form.motDePasseValide) }}
-                            {{ form_widget(form.motDePasseValide) }}
+                            {{ form_label(form.password_check) }}
+                            {{ form_widget(form.password_check) }}
                         </div>
                     </div>
                 </div>
+                {{ form_end(form) }}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-            {{ form_end(form) }}
-        </div>
+                {% for error in errors %}
+                    <div class="alert alert-danger form-error">
+                        {{ error }}
+                    </div>
+                {% endfor %}
+            </div>
         </div>
     </div>
 

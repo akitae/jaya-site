@@ -41,21 +41,21 @@ label {
     right: 0;
     z-index: -1;
 
-    background-image: url("../images/amiens.jpg");
+    background-image: url("../images/code_coffee.jpg");
 
     height: 100%;
 
-    background-position: bottom;
+    background-position: top;
     background-repeat: no-repeat;
     background-size: cover;
 
-    filter: contrast(125%) blur(5px);
+    filter: ;
 }
 
 .wrapper-center {
     width: 350px;
 
-    background-color: rgba(65, 75, 86, 0.9);
+    background-color: rgba(65, 75, 86, 0.8);
     color: white;
 
     border-radius: 2px;
@@ -67,7 +67,7 @@ label {
 
 .container {
     width: inherit;
-    padding: 10px;
+    padding: 20px;
 }
 
 .jaya {
@@ -95,8 +95,8 @@ label {
     text-align: center;
     font-size: 1.6em;
     font-weight: bold;
-    padding: 8px;
-    border: 3px solid #FF3366;
+    padding: 5px 10px;
+    border: 2px solid #FF3366;
     border-radius: 5px;
 }
 
@@ -140,4 +140,11 @@ label {
     background-color: rgba(9, 132, 227, 1);
     color: white;
     outline: none;
+}
+
+.form-error {
+    padding: 10px;
+    margin-top: 10px;
+    margin-bottom: 0;
+    border-radius: 0;
 }

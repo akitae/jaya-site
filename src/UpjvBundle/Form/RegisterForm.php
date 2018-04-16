@@ -31,7 +31,7 @@ class RegisterForm extends AbstractType
                 'attr' => ['class' => 'form-control'],
                 'label' => 'Prénom'
             ])
-            ->add('identifiant', TextType::class, [
+            ->add('username', TextType::class, [
                 'attr' => ['class' => 'form-control'],
                 'label' => 'Identifiant'
             ])
@@ -43,11 +43,11 @@ class RegisterForm extends AbstractType
                 'attr' => ['class' => 'form-control'],
                 'label' => 'Numéro étudiant'
             ])
-            ->add('motDePasse', PasswordType::class, [
+            ->add('password', PasswordType::class, [
                 'attr' => ['class' => 'form-control'],
                 'label' => "Mot de passe"
             ])
-            ->add('motDePasseValide', PasswordType::class, [
+            ->add('password_check', PasswordType::class, [
                 'attr' => ['class' => 'form-control'],
                 'label' => 'Confirmer le mot de passe'
             ])
