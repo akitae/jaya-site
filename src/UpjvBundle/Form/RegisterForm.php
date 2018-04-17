@@ -47,7 +47,7 @@ class RegisterForm extends AbstractType
                 'attr' => ['class' => 'form-control'],
                 'label' => "Mot de passe"
             ])
-            ->add('password_check', PasswordType::class, [
+            ->add('plainPassword', PasswordType::class, [
                 'attr' => ['class' => 'form-control'],
                 'label' => 'Confirmer le mot de passe'
             ])

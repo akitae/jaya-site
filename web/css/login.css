@@ -67,7 +67,7 @@ label {
 
 .container {
     width: inherit;
-    padding: 20px;
+    padding: 15px;
 }
 
 .jaya {
@@ -80,7 +80,7 @@ label {
     font-size: 2.2em;
     font-weight: bold;
     margin: 0 auto 20px auto;
-    border: 3px solid #FF3366;
+    border: 3px solid rgb(183, 21, 64);
     border-radius: 50%;
 }
 
@@ -96,7 +96,7 @@ label {
     font-size: 1.6em;
     font-weight: bold;
     padding: 5px 10px;
-    border: 2px solid #FF3366;
+    border: 2px solid rgb(183, 21, 64);
     border-radius: 5px;
 }
 
@@ -104,21 +104,22 @@ label {
     border-radius: 0;
 }
 
-.contact-numero {
-    padding: 5px;
+.alert-light {
+    padding: 10px;
     margin-bottom: 15px;
     height: 100%;
+    border-radius: 0;
 }
 
 .btn-login {
-    background-color: rgba(255, 51, 102, 0.5);
+    background-color: rgba(183, 21, 64, 0.5);
     font-weight: bold;
     border-radius: 0;
 }
 
 .btn-login:hover, .btn-login:focus {
     color: white;
-    background-color: rgba(255, 51, 102, 1);
+    background-color: rgba(183, 21, 64, 1);
 }
 
 .or {

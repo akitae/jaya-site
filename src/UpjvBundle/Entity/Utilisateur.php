@@ -14,9 +14,16 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Utilisateur extends BaseUser
 {
-    const TYPE_ETUDIANT = 0;
-    const TYPE_PROFESSEUR = 1;
-    const TYPE_ADMIN = 2;
+
+    /**
+     * Utilisateur constructor.
+     */
+    public function __construct()
+    {
+        $this->setEnabled(false);
+        $this->setTypeUtilisateur('ETUDIANT');
+        $this->setConfirmationEmail(false);
+    }
 
     /**
      * @ORM\Column(name="id", type="integer")
@@ -28,24 +35,32 @@ class Utilisateur extends BaseUser
     /**
      * @ORM\Column(name="nom", type="string", length=180)
      */
-    private $nom;
+    private $nom = "";
 
     /**
      * @ORM\Column(name="prenom", type="string", length=180)
      */
-    private $prenom;
+    private $prenom = "";
 
     /**
      * @ORM\Column(name="numeroEtudiant", type="integer", unique=true)
      * @Assert\Regex(
      *     pattern="/^([0-9]*)$/",
      *     match=true,
-     *     message="Le numéro étudiant est invalide"
+     *     message="Le numéro étudiant est invalide."
      * )
      */
-    private $numeroEtudiant;
+    private $numeroEtudiant = "12345";
 
-    private $password_check;
+    /**
+     * @ORM\Column(name="confirmation_email", type="boolean")
+     */
+    private $confirmation_email = false;
+
+    /**
+     * @ORM\Column(name="typeUtilisateur", type="string", columnDefinition="enum('ETUDIANT', 'PROFESSEUR', 'ADMIN')")
+     */
+    private $typeUtilisateur;
 
     /**
      * @return mixed
@@ -98,17 +113,33 @@ class Utilisateur extends BaseUser
     /**
      * @return mixed
      */
-    public function getPasswordCheck()
+    public function getConfirmationEmail()
     {
-        return $this->password_check;
+        return $this->confirmation_email;
     }
 
     /**
-     * @param mixed $password_check
+     * @param mixed $confirmation_email
      */
-    public function setPasswordCheck($password_check)
+    public function setConfirmationEmail($confirmation_email)
     {
-        $this->password_check = $password_check;
+        $this->confirmation_email = $confirmation_email;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTypeUtilisateur()
+    {
+        return $this->typeUtilisateur;
+    }
+
+    /**
+     * @param mixed $typeUtilisateur
+     */
+    public function setTypeUtilisateur($typeUtilisateur)
+    {
+        $this->typeUtilisateur = $typeUtilisateur;
     }
 
 }

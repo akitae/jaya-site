@@ -2,18 +2,23 @@
 
 namespace UpjvBundle\Controller;
 
-use Monolog\Handler\Curl\Util;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use FOS\UserBundle\Controller\RegistrationController as BaseController;
 use UpjvBundle\Entity\Utilisateur;
 use UpjvBundle\Form\RegisterForm;
+use FOS\UserBundle\Controller\RegistrationController as BaseController;
 
 class RegistrationController extends BaseController
 {
 
+    /**
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
     public function registerAction(Request $request)
     {
-        $user = new Utilisateur();
+        $userManager = $this->get('fos_user.user_manager');
+        $user = $userManager->createUser();
 
         $form = $this->createForm(RegisterForm::class, $user);
         $form->handleRequest($request);
@@ -31,8 +36,6 @@ class RegistrationController extends BaseController
 
             $em = $this->getDoctrine()->getManager();
             $user = $form->getData();
-
-
 
             // Vérification de l'identifiant.
             $userBdd = $em->getRepository(Utilisateur::class)->findByUsername($user->getUsername());
@@ -52,79 +55,30 @@ class RegistrationController extends BaseController
                 array_push($errors, "Le numéro étudiant est déjà existant.");
             }
 
-            if (strcmp($user->getPassword(), $user->getPasswordCheck()) != 0) {
+            // Vérification que le mot de passe est identique.
+            if (strcmp($user->getPassword(), $user->getPlainPassword()) != 0) {
                 array_push($errors, "Les mots de passe ne sont pas identiques.");
             }
 
             if (count($errors) == 0) {
+                $tokenGenerator =$this->container->get('fos_user.util.token_generator');
+                $user->setConfirmationToken($tokenGenerator->generateToken());
 
+                $userManager->updateUser($user);
 
-                var_dump($user);
+                return $this->render('@Upjv/layout.html.twig', [
+                    'form' => $form->createView(),
+                    'error' => [],
+                    'inscription' => "test"
+                ]);
             }
-
-
-
-
-
         }
 
-        return $this->render('UpjvBundle:Registration:index.html.twig', [
+        return $this->render('@Upjv/Registration/register.html.twig', [
             'form' => $form->createView(),
             'errors' => $errors
         ]);
     }
 
-    /*public function indexAction (Request $request) {
-
-        $user = new Utilisateur();
-        $error = array();
-
-        $form = $this->createForm(RegisterForm::class);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-
-            $identifiant = $form->get('identifiant')->getData();
-            $user = $em->getRepository('Utilisateur')->findByIdentifiant($identifiant);
-
-            $email = $form->get('email')->getData();
-            $user = $em->getRepository('UpjvBundle:Utilisateur')->findUserByEmail($email);
-
-            if ($user != null) array_push($error, "Email existant");
-
-            $numero = $form->get('numeroEtudiant')->getData();
-            $user = $em->getRepository('UpjvBundle:Utilisateur')->findUserByNumero($numero);
-
-            if ($user != null) array_push($error, "Numéro étudiant existant");
-
-            $password = $form->get('motDePasse')->getData();
-            $passwordCheck = $form->get('motDePasseCheck')->getData();
-
-            if ($password != $passwordCheck) array_push($error, "Les mots de passe ne sont pas identique.");
-
-            if (empty($error)) {
-                $user = new Utilisateur();
-                $user->setNom(strtoupper($form->get('nom')->getData()));
-                $user->setPrenom($form->get('prenom')->getData());
-                $user->setEmail($form->get('email')->getData());
-                $user->setNumeroEtudiant($form->get('numeroEtudiant')->getData());
-                $user->setMotDePasse($form->get('motDePasse')->getData());
-                $user->setValide(false);
-                $user->setType(0);
-
-                $em->persist($user);
-                $em->flush();
-
-                return $this->redirectToRoute('login');
-            }
-        }
-
-        return $this->render('UpjvBundle:Registration:index.html.twig', [
-            'form' => $form->createView(),
-            'error' => $error
-        ]);
-
-    }*/
 
 }
