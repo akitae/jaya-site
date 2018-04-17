@@ -34,15 +34,21 @@
                                     <td></td>
                                     <td></td>
                                     <td>
-                                        <select id="filterGroup" class="js-example-basic-multiple filter-table" name="states[]" multiple="multiple">
+                                        <select class="js-example-basic-multiple filter-table" multiple="multiple">
                                             {% for parcours in listParcours %}
                                                 <option>{{ parcours }}</option>
                                             {% endfor %}
                                         </select>
                                     </td>
-                                    <td></td>
-                                    <td>
-                                        <select id="filterParcour" class="js-example-basic-multiple filter-table" name="states[]" multiple="multiple">
+                                    <td id="filterMatiere">
+                                        <select  class="js-example-basic-multiple filter-table" multiple="multiple" >
+                                            {% for matiere in listMatieres %}
+                                                <option>{{ matiere }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </td>
+                                    <td id="filterGroup">
+                                        <select class="js-example-basic-multiple filter-table" multiple="multiple">
                                             {% for groupe in listGroup %}
                                                 <option>{{ groupe }}</option>
                                             {% endfor %}
