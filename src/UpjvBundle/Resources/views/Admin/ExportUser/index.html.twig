@@ -24,6 +24,7 @@
                                     <th>Nom</th>
                                     <th>Prénom</th>
                                     <th>Parcours</th>
+                                    <th>Matière/UE</th>
                                     <th>Groupe</th>
                                     <th>Action</th>
                                 </tr>
@@ -39,6 +40,7 @@
                                             {% endfor %}
                                         </select>
                                     </td>
+                                    <td></td>
                                     <td>
                                         <select id="filterParcour" class="js-example-basic-multiple filter-table" name="states[]" multiple="multiple">
                                             {% for groupe in listGroup %}
@@ -57,6 +59,13 @@
                                         <td>
                                             <ul>
                                                 <li>{{ user.parcours }}</li>
+                                            </ul>
+                                        </td>
+                                        <td class="ue">
+                                            <ul>
+                                                {% for ue in user.matieres %}
+                                                    <li>{{ ue }}</li>
+                                                {% endfor %}
                                             </ul>
                                         </td>
                                         <td class="group">
