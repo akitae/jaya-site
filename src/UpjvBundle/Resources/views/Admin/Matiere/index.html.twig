@@ -21,6 +21,7 @@
                             <table class="tableAdmin">
                                 <thead>
                                 <tr role="row">
+                                    <th>Id</th>
                                     <th>Code</th>
                                     <th>Nom</th>
                                     <th>Semestre</th>
@@ -30,7 +31,8 @@
                                 <tbody>
                                 {% for matiere in listMatiere %}
                                     <tr class="gradeA odd" role="row">
-                                        <td class="sorting_1">{{ matiere.code }} </td>
+                                        <td class="sorting_1">{{ matiere.id }}</td>
+                                        <td>{{ matiere.code }} </td>
                                         <td>{{ matiere.nom }}</td>
                                         <td>
                                             {% if matiere.semestre is not null %}
