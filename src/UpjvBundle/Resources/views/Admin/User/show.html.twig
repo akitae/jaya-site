@@ -31,16 +31,6 @@
                         <td>{{ user.email }}</td>
                     </tr>
                     <tr>
-                        <td>Groupe</td>
-                        <td>
-                            <ul>
-                                {% for groupe in user.groupes %}
-                                    <li>{{ groupe }}</li>
-                                {% endfor %}
-                            </ul>
-                        </td>
-                    </tr>
-                    <tr>
                         <td>Utilisateur validé</td>
                         <td>{{ user.valide}}</td>
                     </tr>

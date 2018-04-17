@@ -21,8 +21,6 @@
             <table class="tableAdmin">
               <thead>
                 <tr role="row">
-                  <th>Id</th>
-                  <th>Type cours</th>
                   <th>Matieres</th>
                   <th>Actions</th>
                 </tr>
@@ -30,8 +28,6 @@
               <tbody>
                 {% for groupe in listGroupe %}
                 <tr class="gradeA odd" role="row">
-                  <td class="sorting_1">{{ groupe.id }}</td>
-                  <td>{{ groupe.typeCours }} </td>
                   <td>
                     {{ groupe.matiere }}
                   </td>
