@@ -24,9 +24,9 @@ class Groupe
     /**
      * @var string
      *
-     * @ORM\Column(name="typeCours", type="string", length=255)
+     * @ORM\Column(name="nom", type="string", length=255)
      */
-    private $typeCours;
+    private $nom;
 
     /**
      * @ORM\ManyToMany(targetEntity="UpjvBundle\Entity\Utilisateur", cascade={"persist"})
@@ -48,30 +48,6 @@ class Groupe
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Set typeCours.
-     *
-     * @param string $typeCours
-     *
-     * @return Groupe
-     */
-    public function setTypeCours($typeCours)
-    {
-        $this->typeCours = $typeCours;
-
-        return $this;
-    }
-
-    /**
-     * Get typeCours.
-     *
-     * @return string
-     */
-    public function getTypeCours()
-    {
-        return $this->typeCours;
     }
 
     /**
@@ -147,8 +123,28 @@ class Groupe
         return $this->matiere;
     }
 
+    /**
+     * @return string
+     */
+    public function getNom()
+    {
+        return $this->nom;
+    }
+
+    /**
+     * @param string $nom
+     */
+    public function setNom($nom)
+    {
+        $this->nom = $nom;
+    }
+
+    /**
+     * @return string
+     */
     public function __toString()
     {
-        return $this->getId()." : ".$this->getTypeCours();
+        return $this->getNom();
     }
+
 }

@@ -85,6 +85,10 @@ class Utilisateur implements UserInterface, \Serializable
      */
     private $parcours;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="Matiere", inversedBy="utilisateurs")
+     */
+    private $matieres;
 
     /**
      * Get id.
@@ -362,5 +366,43 @@ class Utilisateur implements UserInterface, \Serializable
     public function __toString()
     {
         return $this->getNom();
+    }
+
+
+
+    /**
+     * Add matiere.
+     *
+     * @param \UpjvBundle\Entity\Matiere $matiere
+     *
+     * @return Utilisateur
+     */
+    public function addMatiere(\UpjvBundle\Entity\Matiere $matiere)
+    {
+        $this->matieres[] = $matiere;
+
+        return $this;
+    }
+
+    /**
+     * Remove matiere.
+     *
+     * @param \UpjvBundle\Entity\Matiere $matiere
+     *
+     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
+     */
+    public function removeMatiere(\UpjvBundle\Entity\Matiere $matiere)
+    {
+        return $this->matieres->removeElement($matiere);
+    }
+
+    /**
+     * Get matieres.
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getMatieres()
+    {
+        return $this->matieres;
     }
 }

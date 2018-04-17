@@ -23,6 +23,33 @@ $(document).ready(function() {
             }
         }
     });
+
+    //mise a jour des groupes pour export (page d'emargement)
+    $('#filterGroup').click(function () {
+        var donneeToSend = "";
+        for (var i=0; i<$('#filterMatiere .select2-selection__choice').length; i++) {
+            donneeToSend = donneeToSend + 'matiere'+ i +'='+ $('#filterMatiere .select2-selection__choice')[i].title + '&';
+        }
+        $.ajax({
+            url : '/admin/listUser/filterGroupe', // La ressource ciblée
+            type : 'GET',
+            data : donneeToSend,
+            success : function(response, statut){
+                var select = $('#filterGroup select');
+                var liGroupe = $('.select2-results__options li');
+                for(var j=0;j<liGroupe.length;j++){
+                    var id = liGroupe[j].id;
+                    if(response.indexOf(liGroupe[j].textContent) > -1){
+                        $('#'+id).show();
+                    }else{
+                        $('#'+id).hide();
+                    }
+                }
+            }
+
+        });
+
+    });
 } );
 // For demo to fit into DataTables site builder...
 $('.tableAdmin')

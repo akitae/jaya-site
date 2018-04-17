@@ -1,0 +1,166 @@
+{% extends 'baseAdmin.html.twig' %}
+
+{% block body %}
+
+    <div class="panel panel-default">
+        <div class="col-lg-12">
+            <h1 class="page-header">Gestion des étudiants</h1>
+        </div>
+        <div class="col-lg-12">
+            <!-- /.panel-heading -->
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    Liste des étudiants
+                </div>
+                <div class="panel-body">
+                    <button type="button" onclick="location.href='{{ path('admin_user_edit',{'id': 'new ' })}}';" class="btn btn-primary pull-right"><i class="fa fa-plus"></i> Ajouter un étudiant</button>
+
+                    {#Tableau#}
+                    <div class="row" id="table-user">
+                        <div class="col-sm-12">
+                            <table class="tableAdmin">
+                                <thead>
+                                <tr role="row">
+                                    <th>Nom</th>
+                                    <th>Prénom</th>
+                                    <th>Parcours</th>
+                                    <th>Matière/UE</th>
+                                    <th>Groupe</th>
+                                    <th>Action</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td>
+                                        <select class="js-example-basic-multiple filter-table" multiple="multiple">
+                                            {% for parcours in listParcours %}
+                                                <option>{{ parcours }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </td>
+                                    <td id="filterMatiere">
+                                        <select  class="js-example-basic-multiple filter-table" multiple="multiple" >
+                                            {% for matiere in listMatieres %}
+                                                <option>{{ matiere }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </td>
+                                    <td id="filterGroup">
+                                        <select class="js-example-basic-multiple filter-table" multiple="multiple">
+                                            {% for groupe in listGroup %}
+                                                <option>{{ groupe }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <input type="submit" value="Filtrer" onclick="appliedFilter()">
+                                    </td>
+                                </tr>
+                                {% for user in listUser %}
+                                    <tr class="gradeA odd" role="row">
+                                        <td class="sorting_1">{{ user.nom }}</td>
+                                        <td>{{ user.prenom }}</td>
+                                        <td>
+                                            <ul>
+                                                <li>{{ user.parcours }}</li>
+                                            </ul>
+                                        </td>
+                                        <td class="ue">
+                                            <ul>
+                                                {% for ue in user.matieres %}
+                                                    <li>{{ ue }}</li>
+                                                {% endfor %}
+                                            </ul>
+                                        </td>
+                                        <td class="group">
+                                            <ul>
+                                                {% for groupe in user.groupes %}
+                                                    <li>{{ groupe }}</li>
+                                                {% endfor %}
+                                            </ul>
+                                        </td>
+                                        <td></td>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for names.." title="Type in a name">
+
+    <script>
+        function myFunction() {
+            var input, filter, table, tr, td, i;
+            input = document.getElementById("myInput");
+            filter = input.value.toUpperCase();
+            table = document.getElementById("myTable");
+            tr = table.getElementsByTagName("tr");
+            for (i = 0; i < tr.length; i++) {
+                td = tr[i].getElementsByTagName("td")[0];
+                if (td) {
+                    if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+                        tr[i].style.display = "";
+                    } else {
+                        tr[i].style.display = "none";
+                    }
+                }
+            }
+        }
+        
+        function appliedFilter() {
+            var table = document.getElementById("table-user"),
+            tr = table.getElementsByTagName("tr");
+            for (var i = 0; i < tr.length; i++) {
+                tr[i].style.display = "";
+            }
+
+            for(var u=0; u<$("td").length; u++){
+                if($("td")[u].getElementsByClassName('select2-selection__choice') != null){
+                    appliedOnColumn(u,$("td")[u].getElementsByClassName('select2-selection__choice'));
+                }
+            }
+        }
+
+        function appliedOnColumn(nbr, filter){
+            var
+              //  filter = $("li.select2-selection__choice"),
+                table = document.getElementById("table-user"),
+                tr = table.getElementsByTagName("tr");
+
+            for (var i = 0; i < tr.length; i++) {
+
+                td = tr[i].getElementsByTagName("td")[0];
+                if(tr[i].getElementsByTagName("td")[nbr] != null){
+                    if(tr[i].getElementsByTagName("td")[nbr].children[0] && tr[i].getElementsByTagName("td")[nbr].children[0].children[0] != null ){
+
+                        var contient = false;
+                        //On parcours les valeurs du filtre
+                        for(var k=0; k<filter.length;k++){
+
+                            //on parcour les valeurs groupes d'une ligne
+                            for(var l=0; l<tr[i].getElementsByTagName("td")[nbr].children[0].children.length;l++) {
+                                if(filter[k].title === tr[i].getElementsByTagName("td")[nbr].children[0].children[l].firstChild.data){
+                                    contient = true;
+                                }
+                            }
+                        }
+
+                        if(contient === false && i !==1 && filter.length > 0){
+                            tr[i].style.display = "none";
+                        }
+                    }
+                    else if(filter.length > 0){
+                        tr[i].style.display = "none";
+                    }
+                }
+            }
+        }
+    </script>
+
+{% endblock %}

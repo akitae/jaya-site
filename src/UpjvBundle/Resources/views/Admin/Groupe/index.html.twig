@@ -21,6 +21,7 @@
             <table class="tableAdmin">
               <thead>
                 <tr role="row">
+                  <th>Nom</th>
                   <th>Matieres</th>
                   <th>Actions</th>
                 </tr>
@@ -28,6 +29,7 @@
               <tbody>
                 {% for groupe in listGroupe %}
                 <tr class="gradeA odd" role="row">
+                  <td>{{ groupe.nom }} </td>
                   <td>
                     {{ groupe.matiere }}
                   </td>
