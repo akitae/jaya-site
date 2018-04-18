@@ -33,3 +33,6 @@ services:
     # AppBundle\Service\ExampleService:
     #     arguments:
     #         $someArgument: 'some_value'
+    swiftmailer.mailer.default.transport:
+        class:     Swift_SendmailTransport
+        arguments: ['/usr/sbin/sendmail -t']

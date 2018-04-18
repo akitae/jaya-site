@@ -21,13 +21,15 @@
                         <input type="password" class="form-control input-login" id="password" name="_password" placeholder="Mot de passe">
                     </div>
 
-                    {% if error %}
+                    {% if error is defined and error %}
                         <div class="alert alert-danger alert-light">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
                     {% endif %}
 
-                    {% if inscription %}
-                        <div>test</div>
-                    {% endif %}
+                    {% for inscription in app.session.flashbag.get('inscription') %}
+                        <div class="alert alert-info alert-light">
+                            {{ inscription }}
+                        </div>
+                    {% endfor %}
 
                     <button type="submit" class="btn btn-lg btn-block btn-login">Connexion</button>
 

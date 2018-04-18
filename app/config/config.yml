@@ -71,8 +71,8 @@ doctrine:
 swiftmailer:
     transport: '%mailer_transport%'
     host: '%mailer_host%'
-    username: '%mailer_user%'
-    password: '%mailer_password%'
+    #username: '%mailer_user%'
+    #password: '%mailer_password%'
     spool: { type: memory }
 
 # Assetic pour que les chemins CSS soient automatiquement remplacer par les bon chemin.
@@ -88,5 +88,11 @@ fos_user:
   firewall_name: main
   user_class: UpjvBundle\Entity\Utilisateur
   from_email:
-    address: florian.lephore@outlook.com
-    sender_name: toto
+    address: noreply-jayareborn@etud.u-picardie.fr
+    sender_name: jAYA Reborn
+  registration:
+    confirmation:
+      enabled: true
+      from_email:
+        address: noreply-jayareborn@etud.u-picardie.fr
+        sender_name: jAYA Reborn

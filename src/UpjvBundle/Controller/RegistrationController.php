@@ -2,6 +2,9 @@
 
 namespace UpjvBundle\Controller;
 
+use FOS\UserBundle\Event\FilterUserResponseEvent;
+use FOS\UserBundle\Event\FormEvent;
+use FOS\UserBundle\FOSUserEvents;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use UpjvBundle\Entity\Utilisateur;
@@ -23,9 +26,10 @@ class RegistrationController extends BaseController
         $form = $this->createForm(RegisterForm::class, $user);
         $form->handleRequest($request);
 
-
         $validator = $this->get("validator");
         $violations = $validator->validate($user);
+
+        $dispatcher = $this->get('event_dispatcher');
 
         $errors = [];
         foreach ($violations as $violation) {
@@ -61,17 +65,30 @@ class RegistrationController extends BaseController
             }
 
             if (count($errors) == 0) {
-                $tokenGenerator =$this->container->get('fos_user.util.token_generator');
-                $user->setConfirmationToken($tokenGenerator->generateToken());
+                $user->setNom(strtoupper($user->getNom()));
+                //$tokenGenerator =$this->container->get('fos_user.util.token_generator');
+                //$user->setConfirmationToken($tokenGenerator->generateToken());
+
+
+                $event = new FormEvent($form, $request);
+                $dispatcher->dispatch(FOSUserEvents::REGISTRATION_SUCCESS, $event);
 
                 $userManager->updateUser($user);
 
-                return $this->render('@Upjv/layout.html.twig', [
-                    'form' => $form->createView(),
-                    'error' => [],
-                    'inscription' => "test"
-                ]);
+                if (null === $response = $event->getResponse()) {
+                    $url = $this->generateUrl('fos_user_registration_confirmed');
+                    $response = new RedirectResponse($url);
+                }
+
+                $this->get('session')->getFlashBag()->clear();
+                $this->get('session')->getFlashBag()->add('inscription', 'Votre compte a été crée avec succès. Veuillez attendre sa validation par l\'administration.');
+                $this->get('session')->getFlashBag()->add('inscription', 'Consultez votre boîte de messagerie pour valider votre adresse email.');
+
+                $dispatcher->dispatch(FOSUserEvents::REGISTRATION_COMPLETED, new FilterUserResponseEvent($user, $request, $response));
+
+                return $response;
             }
+
         }
 
         return $this->render('@Upjv/Registration/register.html.twig', [
