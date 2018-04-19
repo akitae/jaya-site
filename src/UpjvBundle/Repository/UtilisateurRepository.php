@@ -2,6 +2,7 @@
 
 namespace UpjvBundle\Repository;
 use Doctrine\ORM\NoResultException;
+use UpjvBundle\Entity\Utilisateur;
 
 /**
  * UtilisateurRepository
@@ -45,6 +46,39 @@ class UtilisateurRepository extends \Doctrine\ORM\EntityRepository
         } catch (NoResultException $e) {
             return null;
         }
+    }
+
+
+    public function filterUserByArray($filtres){
+
+        $queryBuilder = $this
+            ->createQueryBuilder('q')
+            ->select('DISTINCT(q.id),q.nom,q.prenom,p.nom as parcours')
+            ->leftJoin('q.matieres','m')
+            ->leftJoin('q.parcours','p')
+            ->leftJoin('q.groupes', 'g')
+            ->orderBy('q.nom')
+        ;
+
+        $queryBuilder->where('q.type = :type')->setParameter('type',Utilisateur::TYPE_ETUDIANT);
+        if(isset($filtres['nom'])){
+            $queryBuilder->andWhere('q.nom IN (:nom)')->setParameter('nom',$filtres['nom']);
+        }
+
+        if(isset($filtres['prenom'])){
+            $queryBuilder->andWhere('q.prenom IN (:prenom)')->setParameter('prenom',$filtres['prenom']);
+        }
+        if(isset($filtres['parcours'])){
+            $queryBuilder->andWhere('p.nom IN (:parcours)')->setParameter('parcours',$filtres['parcours']);
+        }
+        if(isset($filtres['matiere'])){
+            $queryBuilder->andWhere('m.nom IN (:matiere)')->setParameter('matiere',$filtres['matiere']);
+        }
+        if(isset($filtres['groupe'])){
+            $queryBuilder->andWhere('g.nom IN (:groupe)')->setParameter('groupe',$filtres['groupe']);
+        }
+
+        return $queryBuilder->getQuery()->getResult();
     }
 
 }
