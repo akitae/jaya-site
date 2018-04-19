@@ -12,8 +12,12 @@
                 <div class="panel-heading">
                     Liste des étudiants
                 </div>
+                <form action="/admin/listUser/registrationSheet" method="post">
                 <div class="panel-body">
-                    <button type="button" onclick="location.href='{{ path('admin_user_edit',{'id': 'new ' })}}';" class="btn btn-primary pull-right"><i class="fa fa-plus"></i> Ajouter un étudiant</button>
+                    <input type="text" placeholder="Possibilité d'ajouter un commentaire" name="commentaireRegistrationSheet" class="col-lg-3">
+                    <button type="submit" name="registrationSheet" onclick="appliedFilter()">Feuille d'emargement </button>
+                    <br/>
+                    <br/>
 
                     {#Tableau#}
                     <div class="row" id="table-user">
@@ -31,24 +35,36 @@
                                 </thead>
                                 <tbody>
                                 <tr>
-                                    <td></td>
-                                    <td></td>
                                     <td>
-                                        <select class="js-example-basic-multiple filter-table" multiple="multiple">
+                                        <select class="js-example-basic-multiple filter-table" multiple="multiple" name="nom[]">
+                                            {% for user in listUser %}
+                                                <option>{{ user.nom }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <select class="js-example-basic-multiple filter-table" multiple="multiple" name="prenom[]">
+                                            {% for user in listUser %}
+                                                <option>{{ user.prenom }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <select class="js-example-basic-multiple filter-table" multiple="multiple" name="parcours[]">
                                             {% for parcours in listParcours %}
                                                 <option>{{ parcours }}</option>
                                             {% endfor %}
                                         </select>
                                     </td>
                                     <td id="filterMatiere">
-                                        <select  class="js-example-basic-multiple filter-table" multiple="multiple" >
+                                        <select  class="js-example-basic-multiple filter-table" multiple="multiple" name="matiere[]">
                                             {% for matiere in listMatieres %}
                                                 <option>{{ matiere }}</option>
                                             {% endfor %}
                                         </select>
                                     </td>
                                     <td id="filterGroup">
-                                        <select class="js-example-basic-multiple filter-table" multiple="multiple">
+                                        <select class="js-example-basic-multiple filter-table" multiple="multiple" name="groupe[]">
                                             {% for groupe in listGroup %}
                                                 <option>{{ groupe }}</option>
                                             {% endfor %}
@@ -56,17 +72,25 @@
                                         </select>
                                     </td>
                                     <td>
-                                        <input type="submit" value="Filtrer" onclick="appliedFilter()">
+                                        <input type="button" value="Filtrer" onclick="appliedFilter()">
                                         <input type="button" value="Supprimer les filtres" onclick="deletedFilter()">
                                     </td>
                                 </tr>
                                 {% for user in listUser %}
                                     <tr class="gradeA odd" role="row">
-                                        <td class="sorting_1">{{ user.nom }}</td>
-                                        <td>{{ user.prenom }}</td>
                                         <td>
                                             <ul>
-                                                <li>{{ user.parcours }}</li>
+                                                <li style="list-style: none;">{{ user.nom }}</li>
+                                            </ul>
+                                        </td>
+                                        <td>
+                                            <ul>
+                                                <li style="list-style: none;">{{ user.prenom }}</li>
+                                            </ul>
+                                        </td>
+                                        <td>
+                                            <ul>
+                                                <li style="list-style: none;">{{ user.parcours }}</li>
                                             </ul>
                                         </td>
                                         <td class="ue">
@@ -90,6 +114,7 @@
                         </div>
                     </div>
                 </div>
+                </form>
             </div>
         </div>
     </div>
@@ -165,6 +190,7 @@
                 }
             }
         }
+
     </script>
 
 {% endblock %}
