@@ -111,6 +111,16 @@ label {
     border-radius: 0;
 }
 
+/* Mot de passe oublié ? */
+.forgot-password {
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.forgot-password a {
+    color: white;
+}
+
 .btn-login {
     background-color: rgba(183, 21, 64, 0.5);
     font-weight: bold;
