@@ -78,7 +78,7 @@ class UserController extends Controller
     {
 
         $em = $this->getDoctrine()->getManager();
-        $user = $em->getRepository(Utilisateur::class)->findBy(['type' => Utilisateur::TYPE_ETUDIANT]);
+        $user = $em->getRepository(Utilisateur::class)->find($id);
 
         if (!$user instanceof Utilisateur) {
             $this->get('session')->getFlashBag()->add('erreur', 'L\'utilisateur selectionné n\'existe pas');

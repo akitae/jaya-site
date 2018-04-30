@@ -56,9 +56,6 @@ class Semestre
      */
     private $dateFinChoix;
 
-    /**
-     * @ORM\OneToMany(targetEntity="Matiere", mappedBy="semestre")
-     */
     private $matieres;
 
     /**

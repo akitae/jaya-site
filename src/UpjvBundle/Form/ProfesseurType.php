@@ -34,7 +34,7 @@ class ProfesseurType extends AbstractType
             ])
             ->add('valide', CheckboxType::class,[
                 'required' => false,
-                'label' => 'Enregistrement de l\'étudiant validé ?'
+                'label' => 'Enregistrement validé ?'
             ])
             ->add('groupes', EntityType::class,
                 [

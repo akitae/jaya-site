@@ -58,10 +58,13 @@ class Matiere
      */
     private $semestre;
 
-    /**
-     * @ORM\OneToMany(targetEntity="Groupe", mappedBy="groupe")
-     */
     private $groupes;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="Utilisateur", inversedBy="matieres")
+     * @ORM\JoinTable(name="utilisateur_matiere")
+     */
+    private $utilisateurs;
 
     /**
      * Get id.
@@ -297,5 +300,41 @@ class Matiere
     public function __toString()
     {
         return $this->getNom();
+    }
+
+    /**
+     * Add utilisateur.
+     *
+     * @param \UpjvBundle\Entity\Utilisateur $utilisateur
+     *
+     * @return Matiere
+     */
+    public function addUtilisateur(\UpjvBundle\Entity\Utilisateur $utilisateur)
+    {
+        $this->utilisateurs[] = $utilisateur;
+
+        return $this;
+    }
+
+    /**
+     * Remove utilisateur.
+     *
+     * @param \UpjvBundle\Entity\Utilisateur $utilisateur
+     *
+     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
+     */
+    public function removeUtilisateur(\UpjvBundle\Entity\Utilisateur $utilisateur)
+    {
+        return $this->utilisateurs->removeElement($utilisateur);
+    }
+
+    /**
+     * Get utilisateurs.
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getUtilisateurs()
+    {
+        return $this->utilisateurs;
     }
 }

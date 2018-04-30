@@ -4,14 +4,14 @@ namespace UpjvBundle\Form;
 
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use UpjvBundle\Entity\Semestre;
+use UpjvBundle\Entity\Matiere;
+use UpjvBundle\Entity\Utilisateur;
 
-class ParcoursType extends AbstractType
+class GroupeType extends AbstractType
 {
   /**
   * {@inheritdoc}
@@ -21,19 +21,18 @@ class ParcoursType extends AbstractType
     $builder
     ->add('nom',TextType::class,[
       'attr' => ['class' => 'form-control '],
-      'label' => 'Nom'
+      'label' => 'Nom du groupe'
     ])
-    ->add('code',TextType::class,[
-      'attr' => ['class' => 'form-control '],
-      'label' => 'Code'
-    ])
-    ->add('annee',IntegerType::class,[
-      'attr' => ['class' => 'form-control '],
-      'label' => 'Annee'
-    ])
-    ->add('semestres', EntityType::class,
+    ->add('matiere', EntityType::class,
     [
-      'class' => Semestre::class,
+      'class' => Matiere::class,
+      'attr' => [
+        'class' => 'form-control select2'
+      ]
+    ])
+    ->add('utilisateurs', EntityType::class,
+    [
+      'class' => Utilisateur::class,
       'multiple' => true,
       'attr' => [
         'class' => 'form-control select2'
@@ -52,7 +51,7 @@ class ParcoursType extends AbstractType
   public function configureOptions(OptionsResolver $resolver)
   {
     $resolver->setDefaults(array(
-      'data_class' => 'UpjvBundle\Entity\Parcours'
+      'data_class' => 'UpjvBundle\Entity\Groupe'
     ));
   }
 
@@ -61,7 +60,7 @@ class ParcoursType extends AbstractType
   */
   public function getBlockPrefix()
   {
-    return 'upjvbundle_ParcoursType';
+    return 'upjvbundle_groupe';
   }
 
 

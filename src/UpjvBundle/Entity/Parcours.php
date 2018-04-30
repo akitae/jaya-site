@@ -43,11 +43,6 @@ class Parcours
     private $annee;
 
     /**
-     * @ORM\ManyToMany(targetEntity="UpjvBundle\Entity\PoleDeCompetence", cascade={"persist"})
-     */
-    private $polesDeCompetences;
-
-    /**
      * @ORM\ManyToMany(targetEntity="UpjvBundle\Entity\Semestre", cascade={"persist"})
      */
     private $semestres;
@@ -135,55 +130,6 @@ class Parcours
     }
 
     /**
-     * @return mixed
-     */
-    public function getPolesDeCompetences()
-    {
-        return $this->polesDeCompetences;
-    }
-
-    /**
-     * @param mixed $polesDeCompetences
-     */
-    public function setPolesDeCompetences($polesDeCompetences)
-    {
-        $this->polesDeCompetences = $polesDeCompetences;
-    }
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->polesDeCompetences = new \Doctrine\Common\Collections\ArrayCollection();
-    }
-
-    /**
-     * Add polesDeCompetence.
-     *
-     * @param \UpjvBundle\Entity\PoleDeCompetence $polesDeCompetence
-     *
-     * @return Parcours
-     */
-    public function addPolesDeCompetence(\UpjvBundle\Entity\PoleDeCompetence $polesDeCompetence)
-    {
-        $this->polesDeCompetences[] = $polesDeCompetence;
-
-        return $this;
-    }
-
-    /**
-     * Remove polesDeCompetence.
-     *
-     * @param \UpjvBundle\Entity\PoleDeCompetence $polesDeCompetence
-     *
-     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
-     */
-    public function removePolesDeCompetence(\UpjvBundle\Entity\PoleDeCompetence $polesDeCompetence)
-    {
-        return $this->polesDeCompetences->removeElement($polesDeCompetence);
-    }
-
-    /**
      * Add semestre.
      *
      * @param \UpjvBundle\Entity\Semestre $semestre
@@ -206,7 +152,7 @@ class Parcours
      */
     public function removeSemestre(\UpjvBundle\Entity\Semestre $semestre)
     {
-        return $this->semestres->removeElement($semestre);
+        return $this->semestres->matiereremoveElement($semestre);
     }
 
     /**

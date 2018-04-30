@@ -29,11 +29,6 @@ class PoleDeCompetence
     private $nom;
 
     /**
-     * @ORM\ManyToMany(targetEntity="UpjvBundle\Entity\Parcours", cascade={"persist"})
-     */
-    private $parcours;
-
-    /**
      * @ORM\ManyToMany(targetEntity="UpjvBundle\Entity\Matiere", cascade={"persist"})
      */
     private $matieres;
@@ -70,22 +65,6 @@ class PoleDeCompetence
     public function getNom()
     {
         return $this->nom;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getParcours()
-    {
-        return $this->parcours;
-    }
-
-    /**
-     * @param mixed $parcours
-     */
-    public function setParcours($parcours)
-    {
-        $this->parcours = $parcours;
     }
 
     /**
