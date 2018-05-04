@@ -145,6 +145,15 @@ class ExportUserController extends Controller
             $objExcel->getActiveSheet()->setCellValueByColumnAndRow($col, $row,$listeMatiereOptionnel);
         }
 
+        // Dimension
+
+        foreach(range('A','G') as $columnID)
+        {
+            $objExcel->getActiveSheet()->getColumnDimension($columnID)->setAutoSize(true);
+        }
+
+        //Fin dimension
+
         $writer = \PHPExcel_IOFactory::createWriter($objExcel, 'Excel5');
         header('Content-Type: application/vnd.ms-excel');
         header('Content-Disposition: attachment;filename="excel.xls"');

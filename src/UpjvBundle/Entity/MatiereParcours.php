@@ -7,10 +7,10 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Optionnelle
  *
- * @ORM\Table(name="optionnelle")
+ * @ORM\Table(name="matiere_parcours")
  * @ORM\Entity(repositoryClass="UpjvBundle\Repository\OptionnelleRepository")
  */
-class Optionnelle
+class MatiereParcours
 {
     /**
      * @var int
@@ -27,9 +27,14 @@ class Optionnelle
     private $matieres;
 
     /**
-     * @ORM\ManyToOne(targetEntity="UpjvBundle\Entity\Semestre", cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity="UpjvBundle\Entity\Parcours", cascade={"persist"})
      */
-    private $semestre;
+    private $parcours;
+
+    /**
+     * @var bool
+     */
+    private $optionnel = false;
 
 
     /**
@@ -53,22 +58,6 @@ class Optionnelle
     /**
      * @return mixed
      */
-    public function getSemestre()
-    {
-        return $this->semestre;
-    }
-
-    /**
-     * @param mixed $semestre
-     */
-    public function setSemestre($semestre)
-    {
-        $this->semestre = $semestre;
-    }
-
-    /**
-     * @return mixed
-     */
     public function getMatieres()
     {
         return $this->matieres;
@@ -80,5 +69,37 @@ class Optionnelle
     public function setMatieres($matieres)
     {
         $this->matieres = $matieres;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getParcours()
+    {
+        return $this->parcours;
+    }
+
+    /**
+     * @param mixed $parcours
+     */
+    public function setParcours($parcours)
+    {
+        $this->parcours = $parcours;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isOptionnel()
+    {
+        return $this->optionnel;
+    }
+
+    /**
+     * @param bool $optionnel
+     */
+    public function setOptionnel($optionnel)
+    {
+        $this->optionnel = $optionnel;
     }
 }

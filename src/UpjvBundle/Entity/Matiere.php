@@ -160,7 +160,6 @@ class Matiere
     public function __construct()
     {
         $this->poleDeCompetence = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->optionnelles = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -187,32 +186,6 @@ class Matiere
     public function removePoleDeCompetence(\UpjvBundle\Entity\PoleDeCompetence $poleDeCompetence)
     {
         return $this->poleDeCompetence->removeElement($poleDeCompetence);
-    }
-
-    /**
-     * Add optionnelle.
-     *
-     * @param \UpjvBundle\Entity\Optionnelle $optionnelle
-     *
-     * @return Matiere
-     */
-    public function addOptionnelle(\UpjvBundle\Entity\Optionnelle $optionnelle)
-    {
-        $this->optionnelles[] = $optionnelle;
-
-        return $this;
-    }
-
-    /**
-     * Remove optionnelle.
-     *
-     * @param \UpjvBundle\Entity\Optionnelle $optionnelle
-     *
-     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
-     */
-    public function removeOptionnelle(\UpjvBundle\Entity\Optionnelle $optionnelle)
-    {
-        return $this->optionnelles->removeElement($optionnelle);
     }
 
     /**
