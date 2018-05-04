@@ -22,16 +22,14 @@ class Optionnelle
     private $id;
 
     /**
-     * @var int
-     *
-     * @ORM\Column(name="type", type="integer")
-     */
-    private $type;
-
-    /**
-     * @ORM\ManyToMany(targetEntity="UpjvBundle\Entity\Matiere", cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity="UpjvBundle\Entity\Matiere", cascade={"persist"})
      */
     private $matieres;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="UpjvBundle\Entity\Semestre", cascade={"persist"})
+     */
+    private $semestre;
 
 
     /**
@@ -45,29 +43,6 @@ class Optionnelle
     }
 
     /**
-     * Set type.
-     *
-     * @param int $type
-     *
-     * @return Optionnelle
-     */
-    public function setType($type)
-    {
-        $this->type = $type;
-
-        return $this;
-    }
-
-    /**
-     * Get type.
-     *
-     * @return int
-     */
-    public function getType()
-    {
-        return $this->type;
-    }
-    /**
      * Constructor
      */
     public function __construct()
@@ -76,38 +51,34 @@ class Optionnelle
     }
 
     /**
-     * Add matiere.
-     *
-     * @param \UpjvBundle\Entity\Matiere $matiere
-     *
-     * @return Optionnelle
+     * @return mixed
      */
-    public function addMatiere(\UpjvBundle\Entity\Matiere $matiere)
+    public function getSemestre()
     {
-        $this->matieres[] = $matiere;
-
-        return $this;
+        return $this->semestre;
     }
 
     /**
-     * Remove matiere.
-     *
-     * @param \UpjvBundle\Entity\Matiere $matiere
-     *
-     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
+     * @param mixed $semestre
      */
-    public function removeMatiere(\UpjvBundle\Entity\Matiere $matiere)
+    public function setSemestre($semestre)
     {
-        return $this->matieres->removeElement($matiere);
+        $this->semestre = $semestre;
     }
 
     /**
-     * Get matieres.
-     *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return mixed
      */
     public function getMatieres()
     {
         return $this->matieres;
+    }
+
+    /**
+     * @param mixed $matieres
+     */
+    public function setMatieres($matieres)
+    {
+        $this->matieres = $matieres;
     }
 }
