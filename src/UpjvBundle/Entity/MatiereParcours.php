@@ -32,6 +32,7 @@ class MatiereParcours
     private $parcours;
 
     /**
+     * @ORM\Column(name="optionnel", type="boolean")
      * @var bool
      */
     private $optionnel = false;

@@ -20,6 +20,7 @@ class Version20180504141853 extends AbstractMigration
         $this->addSql('CREATE TABLE matiere_parcours (id INT AUTO_INCREMENT NOT NULL, matieres_id INT DEFAULT NULL, parcours_id INT DEFAULT NULL, INDEX IDX_2DD9465B82350831 (matieres_id), INDEX IDX_2DD9465B6E38C0DB (parcours_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB');
         $this->addSql('ALTER TABLE matiere_parcours ADD CONSTRAINT FK_2DD9465B82350831 FOREIGN KEY (matieres_id) REFERENCES matiere (id)');
         $this->addSql('ALTER TABLE matiere_parcours ADD CONSTRAINT FK_2DD9465B6E38C0DB FOREIGN KEY (parcours_id) REFERENCES parcours (id)');
+        $this->addSql('ALTER TABLE matiere_parcours ADD optionnel TINYINT(1) NOT NULL');
         $this->addSql('DROP TABLE matiere_optionnelle');
         $this->addSql('DROP TABLE optionnelle');
         $this->addSql('DROP TABLE optionnelle_matiere');
