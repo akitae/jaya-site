@@ -50,7 +50,20 @@ class Utilisateur extends BaseUser
      *     message="Le numéro étudiant est invalide."
      * )
      */
+
     private $numeroEtudiant = "45545";
+
+    private $parcours;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="UpjvBundle\Entity\Groupe", cascade={"persist"})
+     */
+    private $groupes;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="Matiere", inversedBy="utilisateurs")
+     */
+    private $matieres;
 
     /**
      * @ORM\Column(name="confirmation_email", type="boolean")
@@ -142,4 +155,87 @@ class Utilisateur extends BaseUser
         $this->typeUtilisateur = $typeUtilisateur;
     }
 
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->getNom();
+    }
+
+    /**
+     * Add matiere.
+     *
+     * @param \UpjvBundle\Entity\Matiere $matiere
+     *
+     * @return Utilisateur
+     */
+    public function addMatiere(\UpjvBundle\Entity\Matiere $matiere)
+    {
+        $this->matieres[] = $matiere;
+
+        return $this;
+    }
+
+    /**
+     * Remove groupe.
+     *
+     * @param \UpjvBundle\Entity\Groupe $groupe
+     *
+     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
+     */
+    public function removeGroupe(\UpjvBundle\Entity\Groupe $groupe)
+    {
+        return $this->groupes->removeElement($groupe);
+    }
+
+    /**
+     * Remove matiere.
+     *
+     * @param \UpjvBundle\Entity\Matiere $matiere
+     *
+     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
+     */
+    public function removeMatiere(\UpjvBundle\Entity\Matiere $matiere)
+    {
+        return $this->matieres->removeElement($matiere);
+    }
+
+    /**
+     * Get matieres.
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getMatieres()
+    {
+        return $this->matieres;
+    }
+
+    /**
+     * Add groupe.
+     *
+     * @param \UpjvBundle\Entity\Groupe $groupe
+     *
+     * @return Utilisateur
+     */
+    public function addGroupe(\UpjvBundle\Entity\Groupe $groupe)
+    {
+        $this->groupes[] = $groupe;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getGroupes()
+    {
+        return $this->groupes;
+    }
+    /**
+     * @param mixed $groupes
+     */
+    public function setGroupes($groupes)
+    {
+        $this->groupes = $groupes;
+    }
 }

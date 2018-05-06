@@ -27,21 +27,21 @@ class SemestreType extends AbstractType
                 'label' => 'Nom'
             ])
             
-            ->add('dateDebut', TextType::class,[
+            ->add('dateDebut', DateTimeType::class,[
                 'attr' => ['class' => 'form-control '],
                 'label' => 'Début du semestre'
             ])
 
-            ->add('dateFin', TextType::class,[
+            ->add('dateFin', DateTimeType::class,[
                 'attr' => ['class' => 'form-control '],
                 'label' => 'Fin du semestre'
             ])
-            ->add('dateDebutChoix', TextType::class,[
+            ->add('dateDebutChoix', DateTimeType::class,[
                 'attr' => ['class' => 'form-control '],
                 'label' => 'Date et heure de l\'ouverture des choix d\'optionnelles'                    
                 
             ])
-            ->add('dateFinChoix', TextType::class,[
+            ->add('dateFinChoix', DateTimeType::class,[
                 'attr' => ['class' => 'form-control '],
                 'label' => 'Date et heure de fin des choix d\'optionnelles'
 

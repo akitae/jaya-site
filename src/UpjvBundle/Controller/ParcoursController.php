@@ -7,6 +7,7 @@ namespace UpjvBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use UpjvBundle\Entity\Matiere;
 use UpjvBundle\Entity\Parcours;
 use UpjvBundle\Form\ParcoursType;
 
@@ -60,9 +61,18 @@ class ParcoursController extends Controller
         return $this->redirectToRoute('admin_parcours');
     }
 
+      $matieres = $this->getDoctrine()->getManager()->getRepository('UpjvBundle:Matiere')->findAll();
+      $listMatiere = null;
+      /** @var Matiere $matiere */
+      foreach ($matieres as $matiere){
+          $listMatiere[$matiere->getSemestre()->getNom()][] = $matiere->getNom();
+      }
+      ksort($listMatiere); //on récupère toutes les matières par semestre que l'on classe par ordre alphabétique
+
     return $this->render('UpjvBundle:Admin/Parcours:update.html.twig',[
-      'parcours' => $parcours,
-      'form' => $form->createView()
+        'parcours' => $parcours,
+        'matieres' => $listMatiere,
+        'form' => $form->createView()
     ]);
 
   }
@@ -83,7 +93,7 @@ class ParcoursController extends Controller
     }
 
     return $this->render('UpjvBundle:Admin/Parcours:show.html.twig',[
-      'parcours' => $parcours
+        'parcours' => $parcours
     ]);
 
   }

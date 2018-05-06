@@ -31,7 +31,7 @@ framework:
     session:
         # https://symfony.com/doc/current/reference/configuration/framework.html#handler-id
         handler_id: session.handler.native_file
-        save_path: '/tmp'
+        save_path: '%kernel.project_dir%/var/sessions/%kernel.environment%'
     fragments: ~
     http_method_override: true
     assets: ~
@@ -83,6 +83,7 @@ assetic:
     filters:
         cssrewrite: ~
 
+
 fos_user:
   db_driver: orm
   firewall_name: main
@@ -97,3 +98,16 @@ fos_user:
         address: noreply-jayareborn@etud.u-picardie.fr
         sender_name: jAYA Reborn
 
+#migration
+doctrine_migrations:
+    dir_name: "%kernel.root_dir%/DoctrineMigrations"
+    namespace: Application\Migrations
+    table_name: migration_versions
+    name: Application Migrations
+    organize_migrations: false # Version >= 1.2, possible values are: "BY_YEAR", "BY_YEAR_AND_MONTH", false
+    custom_template: ~ # Version >= 1.2, path to your custom migrations template
+
+knp_snappy:
+    pdf:
+        enabled:    true
+        binary:     "%knp_snappy%"

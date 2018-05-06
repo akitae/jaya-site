@@ -48,20 +48,14 @@ class Matiere
     private $poleDeCompetence;
 
     /**
-     * @ORM\ManyToMany(targetEntity="UpjvBundle\Entity\Optionnelle", cascade={"persist"})
-     */
-    private $optionnelles;
-
-    /**
      * @ORM\ManyToOne(targetEntity="Semestre", inversedBy="matiere")
      * @ORM\JoinColumn(name="semestre_id", referencedColumnName="id")
      */
     private $semestre;
 
-    /**
-     * @ORM\OneToMany(targetEntity="Groupe", mappedBy="groupe")
-     */
     private $groupes;
+
+    private $utilisateurs;
 
     /**
      * Get id.
@@ -166,7 +160,6 @@ class Matiere
     public function __construct()
     {
         $this->poleDeCompetence = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->optionnelles = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -193,56 +186,6 @@ class Matiere
     public function removePoleDeCompetence(\UpjvBundle\Entity\PoleDeCompetence $poleDeCompetence)
     {
         return $this->poleDeCompetence->removeElement($poleDeCompetence);
-    }
-
-    /**
-     * Add optionnelle.
-     *
-     * @param \UpjvBundle\Entity\Optionnelle $optionnelle
-     *
-     * @return Matiere
-     */
-    public function addOptionnelle(\UpjvBundle\Entity\Optionnelle $optionnelle)
-    {
-        $this->optionnelles[] = $optionnelle;
-
-        return $this;
-    }
-
-    /**
-     * Remove optionnelle.
-     *
-     * @param \UpjvBundle\Entity\Optionnelle $optionnelle
-     *
-     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
-     */
-    public function removeOptionnelle(\UpjvBundle\Entity\Optionnelle $optionnelle)
-    {
-        return $this->optionnelles->removeElement($optionnelle);
-    }
-
-    /**
-     * Get optionnelles.
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getOptionnelles()
-    {
-        return $this->optionnelles;
-    }
-
-    /**
-     * Set semestre.
-     *
-     * @param \UpjvBundle\Entity\Semestre|null $semestre
-     *
-     * @return Matiere
-     */
-    public function setSemestre(\UpjvBundle\Entity\Semestre $semestre = null)
-    {
-        $this->semestre = $semestre;
-
-        return $this;
     }
 
     /**
@@ -297,5 +240,41 @@ class Matiere
     public function __toString()
     {
         return $this->getNom();
+    }
+
+    /**
+     * Add utilisateur.
+     *
+     * @param \UpjvBundle\Entity\Utilisateur $utilisateur
+     *
+     * @return Matiere
+     */
+    public function addUtilisateur(\UpjvBundle\Entity\Utilisateur $utilisateur)
+    {
+        $this->utilisateurs[] = $utilisateur;
+
+        return $this;
+    }
+
+    /**
+     * Remove utilisateur.
+     *
+     * @param \UpjvBundle\Entity\Utilisateur $utilisateur
+     *
+     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
+     */
+    public function removeUtilisateur(\UpjvBundle\Entity\Utilisateur $utilisateur)
+    {
+        return $this->utilisateurs->removeElement($utilisateur);
+    }
+
+    /**
+     * Get utilisateurs.
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getUtilisateurs()
+    {
+        return $this->utilisateurs;
     }
 }
