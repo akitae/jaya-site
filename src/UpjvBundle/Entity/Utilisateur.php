@@ -2,8 +2,9 @@
 
 namespace UpjvBundle\Entity;
 
+use FOS\UserBundle\Model\User as BaseUser;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Utilisateur
@@ -11,105 +12,58 @@ use Symfony\Component\Security\Core\User\UserInterface;
  * @ORM\Table(name="utilisateur")
  * @ORM\Entity(repositoryClass="UpjvBundle\Repository\UtilisateurRepository")
  */
-class Utilisateur implements UserInterface, \Serializable
+class Utilisateur extends BaseUser
 {
+
     /**
-     * @var int
-     *
+     * Utilisateur constructor.
+     */
+    public function __construct()
+    {
+        $this->setEnabled(false);
+        $this->setTypeUtilisateur('ETUDIANT');
+        $this->setConfirmationEmail(false);
+    }
+
+    /**
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    private $id;
+    protected $id;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="nom", type="string", length=255)
+     * @ORM\Column(name="nom", type="string", length=180)
      */
-    private $nom;
+    private $nom = "aaa";
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="prenom", type="string", length=255)
+     * @ORM\Column(name="prenom", type="string", length=180)
      */
-    private $prenom;
+    private $prenom = "aaa";
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="email", type="string", length=255)
+     * @ORM\Column(name="numeroEtudiant", type="integer", unique=true)
+     * @Assert\Regex(
+     *     pattern="/^([0-9]*)$/",
+     *     match=true,
+     *     message="Le numéro étudiant est invalide."
+     * )
      */
-    private $email;
+    private $numeroEtudiant = "45545";
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="motDePasse", type="string", length=255, nullable=true)
+     * @ORM\Column(name="confirmation_email", type="boolean")
      */
-    private $motDePasse;
+    private $confirmation_email = false;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="numeroEtudiant", type="string", length=255, unique=true)
+     * @ORM\Column(name="typeUtilisateur", type="string", columnDefinition="enum('ETUDIANT', 'PROFESSEUR', 'ADMIN')")
      */
-    private $numeroEtudiant;
+    private $typeUtilisateur;
 
     /**
-     * @var bool
-     *
-     * @ORM\Column(name="valide", type="boolean")
-     */
-    private $valide;
-
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="type", type="integer")
-     */
-    private $type;
-
-    /**
-     * @ORM\ManyToMany(targetEntity="UpjvBundle\Entity\Groupe", cascade={"persist"})
-     */
-    private $groupes;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="UpjvBundle\Entity\Parcours", inversedBy="parcours")
-     */
-    private $parcours;
-
-
-    /**
-     * Get id.
-     *
-     * @return int
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    /**
-     * Set nom.
-     *
-     * @param string $nom
-     *
-     * @return Utilisateur
-     */
-    public function setNom($nom)
-    {
-        $this->nom = $nom;
-
-        return $this;
-    }
-
-    /**
-     * Get nom.
-     *
-     * @return string
+     * @return mixed
      */
     public function getNom()
     {
@@ -117,23 +71,15 @@ class Utilisateur implements UserInterface, \Serializable
     }
 
     /**
-     * Set prenom.
-     *
-     * @param string $prenom
-     *
-     * @return Utilisateur
+     * @param mixed $nom
      */
-    public function setPrenom($prenom)
+    public function setNom($nom)
     {
-        $this->prenom = $prenom;
-
-        return $this;
+        $this->nom = $nom;
     }
 
     /**
-     * Get prenom.
-     *
-     * @return string
+     * @return mixed
      */
     public function getPrenom()
     {
@@ -141,63 +87,15 @@ class Utilisateur implements UserInterface, \Serializable
     }
 
     /**
-     * Set email.
-     *
-     * @param string $email
-     *
-     * @return Utilisateur
+     * @param mixed $prenom
      */
-    public function setEmail($email)
+    public function setPrenom($prenom)
     {
-        $this->email = $email;
-
-        return $this;
+        $this->prenom = $prenom;
     }
 
     /**
-     * Get email.
-     *
-     * @return string
-     */
-    public function getEmail()
-    {
-        return $this->email;
-    }
-
-    /**
-     * @return string
-     */
-    public function getMotDePasse()
-    {
-        return $this->motDePasse;
-    }
-
-    /**
-     * @param string $motDePasse
-     */
-    public function setMotDePasse($motDePasse)
-    {
-        $this->motDePasse = $motDePasse;
-    }
-
-    /**
-     * Set numeroEtudiant.
-     *
-     * @param string $numeroEtudiant
-     *
-     * @return Utilisateur
-     */
-    public function setNumeroEtudiant($numeroEtudiant)
-    {
-        $this->numeroEtudiant = $numeroEtudiant;
-
-        return $this;
-    }
-
-    /**
-     * Get numeroEtudiant.
-     *
-     * @return string
+     * @return mixed
      */
     public function getNumeroEtudiant()
     {
@@ -205,150 +103,43 @@ class Utilisateur implements UserInterface, \Serializable
     }
 
     /**
-     * Set valide.
-     *
-     * @param bool $valide
-     *
-     * @return Utilisateur
+     * @param mixed $numeroEtudiant
      */
-    public function setValide($valide)
+    public function setNumeroEtudiant($numeroEtudiant)
     {
-        $this->valide = $valide;
-
-        return $this;
-    }
-
-    /**
-     * Get valide.
-     *
-     * @return bool
-     */
-    public function getValide()
-    {
-        return $this->valide;
-    }
-
-    /**
-     * Set type.
-     *
-     * @param int $type
-     *
-     * @return Utilisateur
-     */
-    public function setType($type)
-    {
-        $this->type = $type;
-
-        return $this;
-    }
-
-    /**
-     * Get type.
-     *
-     * @return int
-     */
-    public function getType()
-    {
-        return $this->type;
+        $this->numeroEtudiant = $numeroEtudiant;
     }
 
     /**
      * @return mixed
      */
-    public function getGroupes()
+    public function getConfirmationEmail()
     {
-        return $this->groupes;
+        return $this->confirmation_email;
     }
 
     /**
-     * @param mixed $groupes
+     * @param mixed $confirmation_email
      */
-    public function setGroupes($groupes)
+    public function setConfirmationEmail($confirmation_email)
     {
-        $this->groupes = $groupes;
-    }
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->groupes = new \Doctrine\Common\Collections\ArrayCollection();
-    }
-
-    /**
-     * Add groupe.
-     *
-     * @param \UpjvBundle\Entity\Groupe $groupe
-     *
-     * @return Utilisateur
-     */
-    public function addGroupe(\UpjvBundle\Entity\Groupe $groupe)
-    {
-        $this->groupes[] = $groupe;
-
-        return $this;
-    }
-
-    /**
-     * Remove groupe.
-     *
-     * @param \UpjvBundle\Entity\Groupe $groupe
-     *
-     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
-     */
-    public function removeGroupe(\UpjvBundle\Entity\Groupe $groupe)
-    {
-        return $this->groupes->removeElement($groupe);
-    }
-
-    public function getRoles()
-    {
-        return array('ROLE_ADMIN');
-    }
-
-    public function getPassword()
-    {
-        return $this->motDePasse;
-    }
-
-    public function getSalt()
-    {
-        return '';
-    }
-
-    public function getUsername()
-    {
-        return $this->email;
-    }
-
-    public function eraseCredentials()
-    {
-        // TODO: Implement eraseCredentials() method.
-    }
-
-    public function serialize()
-    {
-        return serialize(array ($this->id, $this->getUsername(), $this->getPassword()));
-    }
-
-    public function unserialize($serialized)
-    {
-        list ($this->id, $this->username, $this->motDePasse) = unserialize($serialized);
+        $this->confirmation_email = $confirmation_email;
     }
 
     /**
      * @return mixed
      */
-    public function getParcours()
+    public function getTypeUtilisateur()
     {
-        return $this->parcours;
+        return $this->typeUtilisateur;
     }
 
     /**
-     * @param mixed $parcours
+     * @param mixed $typeUtilisateur
      */
-    public function setParcours($parcours)
+    public function setTypeUtilisateur($typeUtilisateur)
     {
-        $this->parcours = $parcours;
+        $this->typeUtilisateur = $typeUtilisateur;
     }
+
 }

@@ -31,7 +31,7 @@ class ParcoursType extends AbstractType
       'attr' => ['class' => 'form-control '],
       'label' => 'Code'
     ])
-    ->add('annee',TextType::class,[
+    ->add('annee',IntegerType::class,[
       'attr' => ['class' => 'form-control '],
       'label' => 'Annee'
     ])

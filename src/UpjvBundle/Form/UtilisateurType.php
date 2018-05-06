@@ -43,15 +43,6 @@ class UtilisateurType extends AbstractType
                 'required' => false,
                 'label' => 'Enregistrement de l\'étudiant validé ?'
             ])
-            ->add('type',ChoiceType::class,[
-                'attr' => ['class' => 'form-control '],
-                'choices' => [
-                    'Etudiant' => 2,
-                    'Professeur' => 1,
-                    'Administrateur' => 0
-                ],
-                'label' => 'Type d\'utilisateur'
-            ])
             ->add('groupes', EntityType::class,
                 [
                     'class' => Groupe::class,
