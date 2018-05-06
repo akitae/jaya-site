@@ -7,9 +7,11 @@
  */
 
 namespace UpjvBundle\Controller;
+use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use UpjvBundle\DTO\SemestreWrapper;
 use UpjvBundle\Entity\Semestre;
 use UpjvBundle\Form\SemestreType;
 
@@ -45,7 +47,15 @@ class SemestreController extends Controller
             $semestre = new Semestre();
         }
 
-        $form = $this->createForm(SemestreType::class,$semestre);
+        $semestreWrapper = new SemestreWrapper();
+        $semestreWrapper->setId($semestre->getId());
+        $semestreWrapper->setNom($semestre->getNom());
+        $semestreWrapper->setDateDebut($semestre->getDateDebut()->format('d/m/Y H:i'));
+        $semestreWrapper->setDateFin($semestre->getDateFin()->format('d/m/Y H:i'));
+        $semestreWrapper->setDateDebutChoix($semestre->getDateDebutChoix()->format('d/m/Y H:i'));
+        $semestreWrapper->setDateFinChoix($semestre->getDateFinChoix()->format('d/m/Y H:i'));
+
+        $form = $this->createForm(SemestreType::class,$semestreWrapper);
         $form->handleRequest($request);
 
 //        if(!empty($form->getData()['dateDebut'])){
@@ -54,7 +64,23 @@ class SemestreController extends Controller
 //        dump($form->getData());die;
         if ($form->isSubmitted() && $form->isValid()) {
 
-            $semestre = $form->getData();
+            $temp = $form->getData();
+            $semestre = new Semestre();
+            
+            $semestre->setId($id);
+
+            $semestre->setNom($temp->getNom());
+            $dateDebut = DateTime::createFromFormat('d/m/Y H:i', $temp->getDateDebut());
+            $semestre->setDateDebut($dateDebut);
+
+            $dateFin = DateTime::createFromFormat('d/m/Y H:i', $temp->getDateFin());
+            $semestre->setDateFin($dateFin);
+
+            $dateDebutChoix = DateTime::createFromFormat('d/m/Y H:i', $temp->getDateDebutChoix());
+            $semestre->setDateDebutChoix($dateDebutChoix);
+
+            $dateFinChoix = DateTime::createFromFormat('d/m/Y H:i', $temp->getDateDebutChoix());
+            $semestre->setDateFinChoix($dateFinChoix);
 
             $em->persist($semestre);
             $em->flush();
@@ -68,7 +94,7 @@ class SemestreController extends Controller
         }
 
         return $this->render('UpjvBundle:Admin/Semestre:update.html.twig',[
-            'semestre' => $semestre,
+            'semestre' => $semestreWrapper,
             'form' => $form->createView()
         ]);
     

@@ -1,0 +1,165 @@
+{% extends 'jaya/baseJaya.html.twig' %}
+{% block title %}
+    Inscription
+{% endblock %}
+{% block body %}
+
+    <div class="bg-image">
+
+        <div class="wrapper-center large">
+            <div class="container ">
+                <div class="row">
+                    <div class="col-md-offset-3 col-md-6 col-lg-offset-3 container-title">
+                        <div class="titre-inscription">Inscription</div>
+                    </div>
+                </div>
+
+                {{ form_start(form) }}
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            {{ form_label(form.nom) }}
+                            {{ form_widget(form.nom) }}
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            {{ form_label(form.prenom) }}
+                            {{ form_widget(form.prenom) }}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            {{ form_label(form.username) }}
+                            {{ form_widget(form.username) }}
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            {{ form_label(form.email) }}
+                            {{ form_widget(form.email) }}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row align-bottom">
+                    <div class="col-md-6 col-sm-6">
+                        <div class="form-group">
+                            {{ form_label(form.numeroEtudiant) }}
+                            {{ form_widget(form.numeroEtudiant) }}
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 col-sm-6">
+                        <div class="alert alert-info alert-light">Contactez l'administration si vous ne possédez pas de numéro étudiant.</div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            {{ form_label(form.password) }}
+                            {{ form_widget(form.password) }}
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            {{ form_label(form.plainPassword) }}
+                            {{ form_widget(form.plainPassword) }}
+                        </div>
+                    </div>
+                </div>
+                {{ form_end(form) }}
+
+                {% for error in errors %}
+                    <div class="alert alert-danger form-error">
+                        {{ error }}
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+   {# <div class="container-fluid">
+        <div class="wrapper-registration">
+            <div class="sign-in">
+                {{ form_start(form) }}
+                <div class="row">
+                    <div class="col-md-12">
+                        {{ form_label(form.nom) }}
+                    </div>
+                    <div class="col-md-12">
+                        {{ form_widget(form.nom) }}
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        {{ form_label(form.prenom) }}
+                    </div>
+                    <div class="col-md-12">
+                        {{ form_widget(form.prenom) }}
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        {{ form_label(form.email) }}
+                    </div>
+                    <div class="col-md-12">
+                        {{ form_widget(form.email) }}
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        {{ form_label(form.numeroEtudiant) }}
+                    </div>
+                    <div class="col-md-12">
+                        {{ form_widget(form.numeroEtudiant) }}
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        {{ form_label(form.motDePasse) }}
+                    </div>
+                    <div class="col-md-12">
+                        {{ form_widget(form.motDePasse) }}
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        {{ form_label(form.motDePasseCheck) }}
+                    </div>
+                    <div class="col-md-12">
+                        {{ form_widget(form.motDePasseCheck) }}
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        {{ form_row(form.save) }}
+                    </div>
+                </div>
+
+                {{ form_end(form) }}
+
+                {% if error %}
+                    {% for key,value in error %}
+                        {{ value }}
+                    {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+    </div>#}
+
+{% endblock %}

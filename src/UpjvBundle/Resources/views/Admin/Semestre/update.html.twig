@@ -25,7 +25,7 @@
                                 <tr>
                                     <td>{{ form_label(form.dateDebut) }}</td>
                                     <td>
-                                        <div class='input-group' id="datetimepicker1">
+                                        <div class='input-group' id="dateDebut">
                                             {{ form_widget(form.dateDebut) }}
                                             <span class="input-group-addon">
                                                 <span class="glyphicon glyphicon-calendar"></span>
@@ -36,7 +36,7 @@
                                 <tr>
                                     <td>{{ form_label(form.dateFin) }}</td>
                                     <td>
-                                        <div class='input-group' id="datetimepicker1">
+                                        <div class='input-group' id="dateFin">
                                             {{ form_widget(form.dateFin) }}
                                             <span class="input-group-addon">
                                                 <span class="glyphicon glyphicon-calendar"></span>
@@ -47,7 +47,7 @@
                                 <tr>
                                     <td>{{ form_label(form.dateDebutChoix) }}</td>
                                     <td>
-                                        <div class='input-group' id="datetimepicker1">
+                                        <div class='input-group' id="dateDebutChoix">
                                             {{ form_widget(form.dateDebutChoix) }}
                                             <span class="input-group-addon">
                                                 <span class="glyphicon glyphicon-calendar"></span>
@@ -58,7 +58,7 @@
                                 <tr>
                                     <td>{{ form_label(form.dateFinChoix) }}</td>
                                     <td>
-                                        <div class='input-group' id="datetimepicker1">
+                                        <div class='input-group' id="dateFinChoix">
                                             {{ form_widget(form.dateFinChoix) }}
                                             <span class="input-group-addon">
                                                 <span class="glyphicon glyphicon-calendar"></span>
@@ -85,7 +85,21 @@
     {% include 'admin/footerScriptDatePicker.html.twig' %}
     <script type="text/javascript">
         $(function () {
-            $('#datetimepicker1').datetimepicker();
+            $('#dateDebut').datetimepicker({
+                locale: 'fr'
+            });
+
+            $('#dateFin').datetimepicker({
+                locale: 'fr'
+            });
+
+            $('#dateDebutChoix').datetimepicker({
+                locale: 'fr'
+            });
+
+            $('#dateFinChoix').datetimepicker({
+                locale: 'fr'
+            });
         });
     </script>
 {% endblock %}

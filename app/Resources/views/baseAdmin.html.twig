@@ -32,9 +32,10 @@
 </head>
 <body>
     {% block navbar %}
-        {% include 'admin/nav.html' %}
+        {% include 'admin/nav.html.twig' %}
     {% endblock %}
     {% block header %}{% endblock %}
+
     <div id="page-wrapper" style="min-height: 518px;">
         <div class="row">
             {% block retour %}
@@ -42,8 +43,9 @@
             {% endblock %}
             {% block body %}{% endblock %}
         </div>
-    </div>
-    {% block javascripts %}{% endblock %}
+
+    <div>
+
 </body>
 
 {% javascripts
