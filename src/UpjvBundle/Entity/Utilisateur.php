@@ -35,12 +35,12 @@ class Utilisateur extends BaseUser
     /**
      * @ORM\Column(name="nom", type="string", length=180)
      */
-    private $nom = "";
+    private $nom = "aaa";
 
     /**
      * @ORM\Column(name="prenom", type="string", length=180)
      */
-    private $prenom = "";
+    private $prenom = "aaa";
 
     /**
      * @ORM\Column(name="numeroEtudiant", type="integer", unique=true)
@@ -50,7 +50,7 @@ class Utilisateur extends BaseUser
      *     message="Le numéro étudiant est invalide."
      * )
      */
-    private $numeroEtudiant = "12345";
+    private $numeroEtudiant = "45545";
 
     /**
      * @ORM\Column(name="confirmation_email", type="boolean")

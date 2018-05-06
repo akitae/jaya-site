@@ -1,0 +1,30 @@
+{% extends 'jaya/baseJaya.html.twig' %}
+
+{% trans_default_domain 'FOSUserBundle' %}
+
+{% block title %}
+    Confirmation de compte
+{% endblock %}
+{% block body %}
+
+    <div class="bg-image">
+
+        <div class="wrapper-center large">
+            <div class="container ">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="alert alert-info">
+                            Votre adresse email est validé. Veuillez attendre la validation de votre compte par l'administration.
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div><a href="{{ path('fos_user_security_login') }}" class="btn btn-lg btn-block btn-inscription">PAGE DE CONNEXION</a></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
