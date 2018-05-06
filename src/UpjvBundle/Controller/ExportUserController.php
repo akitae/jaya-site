@@ -60,11 +60,23 @@ class ExportUserController extends Controller
     }
 
     /**
-     * @Route("/admin/listUser/registrationSheet", name="admin_export_user_registration")
+     * @Route("/admin/listUser/sendData", name="admin_export_user_sendData")
      */
-    public function getRegistrationSheet(){
+    public function sendData(){
+        if(isset($_POST['registrationSheet']))
+            return $this->getRegistrationSheet($_POST);
+        else if(isset($_POST['exportCSV']))
+            return $this->exportCSV($_POST);
+        return $this->indexAction();
+    }
 
-        $listUser = $this->getDoctrine()->getRepository(Utilisateur::class)->filterUserByArray($_POST);
+    /**
+     * @param $array
+     * @return Response
+     */
+    public function getRegistrationSheet($array){
+
+        $listUser = $this->getDoctrine()->getRepository(Utilisateur::class)->filterUserByArray($array);
 
         $html = $this->renderView('UpjvBundle:Admin/ExportUser:registrationSheet.html.twig',[
             'listUser' => $listUser,
@@ -89,5 +101,63 @@ class ExportUserController extends Controller
                 'Content-Disposition' => sprintf('attachment; filename="%s"', $filename),
             ]
         );
+    }
+
+    /**
+     * @Route("/admin/listUser/exportCSV", name="admin_export_user_csv")
+     */
+    public function exportCSV($array){
+        $col = 0;
+        $row = 1;
+        $listUser = $this->getDoctrine()->getRepository(Utilisateur::class)->filterUserByArray($array);
+
+        $objExcel = new \PHPExcel();
+        $objExcel->getProperties()
+            ->setTitle("test")
+            ;
+
+
+//        Entête
+        $objExcel->getActiveSheet()->setCellValueByColumnAndRow($col++, $row,'Numéros Etudiant');
+        $objExcel->getActiveSheet()->setCellValueByColumnAndRow($col++, $row,'Nom');
+        $objExcel->getActiveSheet()->setCellValueByColumnAndRow($col++, $row,'Prénom');
+        $objExcel->getActiveSheet()->setCellValueByColumnAndRow($col++, $row,'Parcours');
+        $objExcel->getActiveSheet()->setCellValueByColumnAndRow($col, $row,'Options');
+//        Fin entête
+
+        foreach ($listUser as $user){
+            /** @var Utilisateur $objetUser */
+            $objetUser = $this->getDoctrine()->getRepository(Utilisateur::class)->find($user[1]);
+            $col = 0;
+            $row ++;
+            $objExcel->getActiveSheet()->setCellValueByColumnAndRow($col++, $row,$objetUser->getNumeroEtudiant());
+            $objExcel->getActiveSheet()->setCellValueByColumnAndRow($col++, $row,$objetUser->getNom());
+            $objExcel->getActiveSheet()->setCellValueByColumnAndRow($col++, $row,$objetUser->getPrenom());
+            $objExcel->getActiveSheet()->setCellValueByColumnAndRow($col++, $row,$objetUser->getParcours());
+
+            $listeMatiereOptionnel = "";
+            /** @var Matiere $matiere */
+            foreach ($objetUser->getMatieres() as $matiere){
+                if(true){ //TODO: if optionnel
+                    $listeMatiereOptionnel .= $matiere->getNom(). ", ";
+                }
+            }
+            $objExcel->getActiveSheet()->setCellValueByColumnAndRow($col, $row,$listeMatiereOptionnel);
+        }
+
+        // Dimension
+
+        foreach(range('A','G') as $columnID)
+        {
+            $objExcel->getActiveSheet()->getColumnDimension($columnID)->setAutoSize(true);
+        }
+
+        //Fin dimension
+
+        $writer = \PHPExcel_IOFactory::createWriter($objExcel, 'Excel5');
+        header('Content-Type: application/vnd.ms-excel');
+        header('Content-Disposition: attachment;filename="excel.xls"');
+        header('Cache-Control: max-age=0');
+        $writer->save('php://output');
     }
 }

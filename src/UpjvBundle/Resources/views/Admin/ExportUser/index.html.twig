@@ -12,10 +12,11 @@
                 <div class="panel-heading">
                     Liste des étudiants
                 </div>
-                <form action="/admin/listUser/registrationSheet" method="post">
+                <form action="/admin/listUser/sendData" method="post">
                 <div class="panel-body">
                     <input type="text" placeholder="Possibilité d'ajouter un commentaire" name="commentaireRegistrationSheet" class="col-lg-3">
                     <button type="submit" name="registrationSheet" onclick="appliedFilter()">Feuille d'emargement </button>
+                    <button type="submit" name="exportCSV" onclick="appliedFilter()">Exporter la liste sous Excel </button>
                     <br/>
                     <br/>
 

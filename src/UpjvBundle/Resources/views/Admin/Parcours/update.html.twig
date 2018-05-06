@@ -29,6 +29,28 @@
                         <td>{{ form_label(form.semestres) }}</td>
                         <td>{{ form_widget(form.semestres)}}</td>
                     </tr>
+                    <tr>
+                        <td>Matiere par semestre</td>
+                        <td>
+                            <table>
+                                {% for semestre,matiere in matieres %}
+                                    <th style="border-bottom: 1px solid">{{ semestre }}</th>
+                                    <tr style="border-bottom: 1px solid">
+                                        <td>Ajouter</td>
+                                        <td>Optionnel</td>
+                                        <td>Matiere</td>
+                                    </tr>
+                                    {% for m in matiere %}
+                                        <tr style="border-bottom: 1px solid">
+                                            <td><input type="checkbox"></td>
+                                            <td><input type="checkbox"></td>
+                                            <td>{{ m }}</td>
+                                        </tr>
+                                    {% endfor %}
+                                {% endfor %}
+                            </table>
+                        </td>
+                    </tr>
 
                 </table>
                 <button type="button" onclick="location.href='{{ path('admin_parcours')}}';" class="btn btn-default pull-left"> Retour </button>

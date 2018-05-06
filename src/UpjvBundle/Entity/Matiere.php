@@ -48,11 +48,6 @@ class Matiere
     private $poleDeCompetence;
 
     /**
-     * @ORM\ManyToMany(targetEntity="UpjvBundle\Entity\Optionnelle", cascade={"persist"})
-     */
-    private $optionnelles;
-
-    /**
      * @ORM\ManyToOne(targetEntity="Semestre", inversedBy="matiere")
      * @ORM\JoinColumn(name="semestre_id", referencedColumnName="id")
      */
@@ -60,10 +55,6 @@ class Matiere
 
     private $groupes;
 
-    /**
-     * @ORM\ManyToMany(targetEntity="Utilisateur", inversedBy="matieres")
-     * @ORM\JoinTable(name="utilisateur_matiere")
-     */
     private $utilisateurs;
 
     /**
@@ -169,7 +160,6 @@ class Matiere
     public function __construct()
     {
         $this->poleDeCompetence = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->optionnelles = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -196,56 +186,6 @@ class Matiere
     public function removePoleDeCompetence(\UpjvBundle\Entity\PoleDeCompetence $poleDeCompetence)
     {
         return $this->poleDeCompetence->removeElement($poleDeCompetence);
-    }
-
-    /**
-     * Add optionnelle.
-     *
-     * @param \UpjvBundle\Entity\Optionnelle $optionnelle
-     *
-     * @return Matiere
-     */
-    public function addOptionnelle(\UpjvBundle\Entity\Optionnelle $optionnelle)
-    {
-        $this->optionnelles[] = $optionnelle;
-
-        return $this;
-    }
-
-    /**
-     * Remove optionnelle.
-     *
-     * @param \UpjvBundle\Entity\Optionnelle $optionnelle
-     *
-     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
-     */
-    public function removeOptionnelle(\UpjvBundle\Entity\Optionnelle $optionnelle)
-    {
-        return $this->optionnelles->removeElement($optionnelle);
-    }
-
-    /**
-     * Get optionnelles.
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getOptionnelles()
-    {
-        return $this->optionnelles;
-    }
-
-    /**
-     * Set semestre.
-     *
-     * @param \UpjvBundle\Entity\Semestre|null $semestre
-     *
-     * @return Matiere
-     */
-    public function setSemestre(\UpjvBundle\Entity\Semestre $semestre = null)
-    {
-        $this->semestre = $semestre;
-
-        return $this;
     }
 
     /**
