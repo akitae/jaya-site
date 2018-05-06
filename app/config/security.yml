@@ -27,4 +27,4 @@ security:
           logout: true
 
     access_control:
-      - { path: ^/admin, roles: ROLE_ADMIN }
+      - { path: ^/admin, roles: ROLE_USER }

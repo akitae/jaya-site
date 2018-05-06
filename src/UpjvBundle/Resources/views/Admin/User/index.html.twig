@@ -25,7 +25,6 @@
                                 <th>Nom</th>
                                 <th>Prénom</th>
                                 <th>Email</th>
-                                <th>Parcours</th>
                                 <th>Type</th>
                                 <th>Valide</th>
                                 <th>Action</th>
@@ -38,17 +37,16 @@
                                     <td>{{ user.nom }}</td>
                                     <td>{{ user.prenom }}</td>
                                     <td>{{ user.email }}</td>
-                                    <td>{{ user.parcours }}</td>
                                     <td>
-                                        {% if user.type == constant('TYPE_ETUDIANT',user) %}
+                                        {% if user.typeUtilisateur == 'ETUDIANT'%}
                                             Etudiant
-                                        {% elseif user.type == constant('TYPE_PROFESSEUR',user) %}
+                                        {% elseif user.typeUtilisateur == 'PROFESSEUR' %}
                                             Professeur
-                                        {% elseif user.type == constant('TYPE_ADMIN',user)%}
+                                        {% elseif user.typeUtilisateur == 'ADMIN'%}
                                             Administrateur
                                         {% endif %}
                                     </td>
-                                    <td>{{ user.valide }}</td>
+                                    <td>{{ user.enabled }}</td>
                                     <td>
                                         <button type="button" onclick="location.href='{{ path('admin_user_show',{'id':user.id}) }}';" class="btn btn-default">Voir</button>
                                         <button type="button" onclick="location.href='{{ path('admin_user_edit',{'id':user.id}) }}';" class="btn btn-primary">Modifier</button>

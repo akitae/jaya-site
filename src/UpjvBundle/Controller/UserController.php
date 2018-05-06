@@ -22,7 +22,7 @@ class UserController extends Controller
      */
     public function indexAction()
     {
-        $listUser = $this->getDoctrine()->getRepository(Utilisateur::class)->findBy(['type' => Utilisateur::TYPE_ETUDIANT]);
+        $listUser = $this->getDoctrine()->getRepository(Utilisateur::class)->findBy(['typeUtilisateur' => 'ETUDIANT']);
 
         return $this->render('UpjvBundle:Admin/User:index.html.twig',[
             'listUser' => $listUser

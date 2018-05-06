@@ -29,7 +29,7 @@
 </head>
 <body>
     {% block navbar %}
-        {% include 'admin/nav.html' %}
+        {% include 'admin/nav.html.twig' %}
     {% endblock %}
     {% block header %}{% endblock %}
 
@@ -41,8 +41,6 @@
             {% block body %}{% endblock %}
         </div>
     <div>
-    {% block javascripts %}{% endblock %}
-
 </body>
 
 {% javascripts
