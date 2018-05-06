@@ -159,5 +159,6 @@ class ExportUserController extends Controller
         header('Content-Disposition: attachment;filename="excel.xls"');
         header('Cache-Control: max-age=0');
         $writer->save('php://output');
+        return $this->indexAction();
     }
 }
