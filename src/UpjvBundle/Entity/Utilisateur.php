@@ -50,9 +50,16 @@ class Utilisateur extends BaseUser
      *     message="Le numéro étudiant est invalide."
      * )
      */
-
     private $numeroEtudiant = "45545";
 
+    /**
+     * @ORM\Column(name="typeUtilisateur", type="string", length=50)
+     */
+    private $typeUtilisateur;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="UpjvBundle\Entity\Parcours", inversedBy="parcours")
+     */
     private $parcours;
 
     /**
@@ -64,16 +71,6 @@ class Utilisateur extends BaseUser
      * @ORM\ManyToMany(targetEntity="Matiere", inversedBy="utilisateurs")
      */
     private $matieres;
-
-    /**
-     * @ORM\Column(name="confirmation_email", type="boolean")
-     */
-    private $confirmation_email = false;
-
-    /**
-     * @ORM\Column(name="typeUtilisateur", type="string", columnDefinition="enum('ETUDIANT', 'PROFESSEUR', 'ADMIN')")
-     */
-    private $typeUtilisateur;
 
     /**
      * @return mixed
@@ -121,22 +118,6 @@ class Utilisateur extends BaseUser
     public function setNumeroEtudiant($numeroEtudiant)
     {
         $this->numeroEtudiant = $numeroEtudiant;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getConfirmationEmail()
-    {
-        return $this->confirmation_email;
-    }
-
-    /**
-     * @param mixed $confirmation_email
-     */
-    public function setConfirmationEmail($confirmation_email)
-    {
-        $this->confirmation_email = $confirmation_email;
     }
 
     /**
@@ -238,4 +219,21 @@ class Utilisateur extends BaseUser
     {
         $this->groupes = $groupes;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getParcours()
+    {
+        return $this->parcours;
+    }
+
+    /**
+     * @param mixed $parcours
+     */
+    public function setParcours($parcours)
+    {
+        $this->parcours = $parcours;
+    }
+
 }

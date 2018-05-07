@@ -31,13 +31,14 @@
                                 <td>{{ form_widget(form.email)}}</td>
                             </tr>
                             <tr>
+                                <td>{{ form_label(form.username) }}</td>
+                                <td>{{ form_widget(form.username) }}</td>
+                            </tr>
+                            <tr>
                                 <td>{{ form_label(form.parcours) }}</td>
                                 <td>{{ form_widget(form.parcours)}}</td>
                             </tr>
-                            <tr>
-                                <td>{{ form_label(form.valide) }}</td>
-                                <td>{{ form_widget(form.valide)}}</td>
-                            </tr>
+
                         </table>
                         <button type="button" onclick="location.href='{{ path('admin_user')}}';" class="btn btn-default pull-left"> Retour </button>
                         {{ form_row(form.save) }}

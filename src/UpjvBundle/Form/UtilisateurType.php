@@ -35,23 +35,14 @@ class UtilisateurType extends AbstractType
                 'attr' => ['class' => 'form-control '],
                 'label' => 'Email'
             ])
-            ->add('numeroEtudiant',IntegerType::class,[
+            ->add('numeroEtudiant',TextType::class,[
                 'attr' => ['class' => 'form-control '],
                 'label' => 'Numéro étudiant'
             ])
-            ->add('valide', CheckboxType::class,[
-                'required' => false,
-                'label' => 'Enregistrement de l\'étudiant validé ?'
+            ->add('username', TextType::class, [
+                'attr' => ['class' => 'form-control'],
+                'label' => 'Identifiant'
             ])
-            ->add('groupes', EntityType::class,
-                [
-                    'class' => Groupe::class,
-                    'multiple' => true,
-                    'required' => false,
-                    'attr' => [
-                        'class' => 'form-control select2'
-                    ]
-                ])
             ->add('parcours', EntityType::class,
                 [
                     'class' => Parcours::class,
@@ -67,7 +58,9 @@ class UtilisateurType extends AbstractType
                 ]
             ])
         ;
-    }/**
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function configureOptions(OptionsResolver $resolver)

@@ -51,7 +51,6 @@ class UserController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             try{
                 $user = $form->getData();
-                $user->setType(Utilisateur::TYPE_ETUDIANT);
                 $em->persist($user);
                 $em->flush();
                 $this->get('session')->getFlashBag()->add('success', 'L\'utilisateur a bien été enregistré.');

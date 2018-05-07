@@ -1,22 +1,20 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Florian
- * Date: 10/03/2018
- * Time: 20:03
- */
 
 namespace UpjvBundle\Form;
 
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
-use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use UpjvBundle\Entity\Parcours;
 
-
+/**
+ * Formulaire d'inscription.
+ * @package UpjvBundle\Form
+ */
 class RegisterForm extends AbstractType
 {
 
@@ -50,6 +48,11 @@ class RegisterForm extends AbstractType
             ->add('plainPassword', PasswordType::class, [
                 'attr' => ['class' => 'form-control'],
                 'label' => 'Confirmer le mot de passe'
+            ])
+            ->add('parcours', EntityType::class, [
+                'class' => Parcours::class,
+                'attr' => ['class' => 'form-control'],
+                'label' => 'Parcours'
             ])
             ->add('save', SubmitType::class,[
                 'label' => 'Valider',

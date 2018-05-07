@@ -76,9 +76,6 @@ class RegistrationController extends BaseControllers
 
             if (count($errors) == 0) {
                 $user->setNom(strtoupper($user->getNom()));
-                //$tokenGenerator =$this->container->get('fos_user.util.token_generator');
-                //$user->setConfirmationToken($tokenGenerator->generateToken());
-
 
                 $event = new FormEvent($form, $request);
                 $dispatcher->dispatch(FOSUserEvents::REGISTRATION_SUCCESS, $event);
@@ -89,10 +86,6 @@ class RegistrationController extends BaseControllers
                     $url = $this->generateUrl('fos_user_registration_confirmed');
                     $response = new RedirectResponse($url);
                 }
-
-                //$this->get('session')->getFlashBag()->clear();
-                //$this->get('session')->getFlashBag()->add('inscription', 'Votre compte a été crée avec succès. Veuillez attendre sa validation par l\'administration.');
-                //$this->get('session')->getFlashBag()->add('inscription', 'Consultez votre boîte de messagerie pour valider votre adresse email.');
 
                 $dispatcher->dispatch(FOSUserEvents::REGISTRATION_COMPLETED, new FilterUserResponseEvent($user, $request, $response));
 
@@ -122,7 +115,6 @@ class RegistrationController extends BaseControllers
         $dispatcher = $this->get('event_dispatcher');
 
         $user->setConfirmationToken(null);
-        $user->setEnabled(true);
 
         $event = new GetResponseUserEvent($user, $request);
         $dispatcher->dispatch(FOSUserEvents::REGISTRATION_CONFIRM, $event);
@@ -141,6 +133,5 @@ class RegistrationController extends BaseControllers
     {
         return $this->render('@FOSUser/Registration/confirmed.html.twig');
     }
-
 
 }
