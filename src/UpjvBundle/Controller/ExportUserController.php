@@ -50,7 +50,7 @@ class ExportUserController extends Controller
 
 
             foreach ($listGroup as $groupe){
-                if($groupe->getMatiere()->getNom() === $matiere){
+                if((string)$groupe->getMatiere() === $matiere){
                     $resultGroupe[] = $groupe->getNom();
                 }
                 $i++;
@@ -86,7 +86,8 @@ class ExportUserController extends Controller
         $html_header = $this->renderView('UpjvBundle:Admin/ExportUser:registrationSheet-header.html.twig',[
             'listUser' => $listUser,
             'commentaire' => isset($_POST['commentaireRegistrationSheet'])?$_POST['commentaireRegistrationSheet']:null,
-            'listUE' => isset($_POST['matiere'])?$_POST['matiere']:null
+            'listUE' => isset($_POST['matiere'])?$_POST['matiere']:null,
+            'listGroupe' => isset($_POST['groupe'])?$_POST['groupe']:null
         ]);
 
         $filename = sprintf('Emargement-%s.pdf', date('Y-m-d'));
