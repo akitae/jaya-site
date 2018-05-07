@@ -1,6 +1,7 @@
 <?php
 
 namespace UpjvBundle\Repository;
+use UpjvBundle\Entity\Matiere;
 
 /**
  * MatiereRepository
@@ -10,4 +11,18 @@ namespace UpjvBundle\Repository;
  */
 class MatiereRepository extends \Doctrine\ORM\EntityRepository
 {
+    /**
+     * @return mixed
+     * Order all Matiere by Code
+     */
+    public function findAll(){
+        $queryBuilder = $this->createQueryBuilder('m');
+
+        /** @var Matiere $result */
+        foreach ($queryBuilder->getQuery()->getResult() as $result){
+            $tabResult[$result->getCode()] = $result;
+        }
+        ksort($tabResult);
+        return $tabResult;
+    }
 }
