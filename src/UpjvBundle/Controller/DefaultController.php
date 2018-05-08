@@ -13,6 +13,6 @@ class DefaultController extends Controller
      */
     public function indexAction()
     {
-        return $this->render('UpjvBundle:Default:index.html.twig');
+
     }
 }

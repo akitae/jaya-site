@@ -1,0 +1,17 @@
+
+html, body {
+    height: 100%;
+}
+
+body {
+    background-image: url("../images/code_coffee.jpg");
+    background-position: top;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.container.choixUe {
+    background-color: rgba(65, 75, 86, 0.99);
+    height: 100%;
+    color: white;
+}
