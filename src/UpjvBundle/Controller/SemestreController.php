@@ -40,64 +40,34 @@ class SemestreController extends Controller
     {
 
         $em = $this->getDoctrine()->getManager();
- 
-        $semestre= $em->getRepository(Semestre::class)->find($id);
+
+        $semestre = $em->getRepository(Semestre::class)->find($id);
 
         if (!$semestre instanceof Semestre) {
             $semestre = new Semestre();
         }
 
-        $semestreWrapper = new SemestreWrapper();
-        $semestreWrapper->setId($semestre->getId());
-        $semestreWrapper->setNom($semestre->getNom());
-        $semestreWrapper->setDateDebut($semestre->getDateDebut()->format('d/m/Y H:i'));
-        $semestreWrapper->setDateFin($semestre->getDateFin()->format('d/m/Y H:i'));
-        $semestreWrapper->setDateDebutChoix($semestre->getDateDebutChoix()->format('d/m/Y H:i'));
-        $semestreWrapper->setDateFinChoix($semestre->getDateFinChoix()->format('d/m/Y H:i'));
-
-        $form = $this->createForm(SemestreType::class,$semestreWrapper);
+        $form = $this->createForm(SemestreType::class,$semestre);
         $form->handleRequest($request);
 
-//        if(!empty($form->getData()['dateDebut'])){
-//            $form->getData()['dateDebut'] = date_create_from_format('Y-m-d H:i:s',$form->getData()['dateDebut']);
-//        }
-//        dump($form->getData());die;
         if ($form->isSubmitted() && $form->isValid()) {
+            try{
+                $semestre = $form->getData();
+                $em->persist($semestre);
+                $em->flush();
+                $this->get('session')->getFlashBag()->add('success', 'La matière a bien été enregistrée.');
+            }catch (\Exception $e){
+                $this->get('session')->getFlashBag()->add('erreur', 'Une erreur s\'est produite lors de l\'enregistrement.');
+                return $this->redirectToRoute('admin_semestre_edit',['id' => $id]);
+            }
 
-            $temp = $form->getData();
-            $semestre = new Semestre();
-            
-            $semestre->setId($id);
-
-            $semestre->setNom($temp->getNom());
-            $dateDebut = DateTime::createFromFormat('d/m/Y H:i', $temp->getDateDebut());
-            $semestre->setDateDebut($dateDebut);
-
-            $dateFin = DateTime::createFromFormat('d/m/Y H:i', $temp->getDateFin());
-            $semestre->setDateFin($dateFin);
-
-            $dateDebutChoix = DateTime::createFromFormat('d/m/Y H:i', $temp->getDateDebutChoix());
-            $semestre->setDateDebutChoix($dateDebutChoix);
-
-            $dateFinChoix = DateTime::createFromFormat('d/m/Y H:i', $temp->getDateDebutChoix());
-            $semestre->setDateFinChoix($dateFinChoix);
-
-            $em->persist($semestre);
-            $em->flush();
-
-            $listSemestre = $this->getDoctrine()->getRepository(Semestre::class)->findAll();
-            return $this->render('UpjvBundle:Admin/Semestre:index.html.twig',[
-                'updateResponse' => true,
-                'listSemestre' => $listSemestre
-
-            ]);
+            return $this->redirectToRoute('admin_semestre');
         }
 
         return $this->render('UpjvBundle:Admin/Semestre:update.html.twig',[
-            'semestre' => $semestreWrapper,
+            'semestre' => $semestre,
             'form' => $form->createView()
         ]);
-    
     }
     
     /**

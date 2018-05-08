@@ -13,3 +13,7 @@
 .filter-table{
     width:100%!important;
 }
+
+.form-control.dateTime{
+    height: 80px;
+}
