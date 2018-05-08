@@ -12,6 +12,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use UpjvBundle\Entity\Groupe;
 use UpjvBundle\Entity\Matiere;
+use UpjvBundle\Entity\MatiereParcours;
 use UpjvBundle\Entity\Parcours;
 use UpjvBundle\Entity\Utilisateur;
 
@@ -145,13 +146,20 @@ class ExportUserController extends Controller
             $tabMatiere = null;
             /** @var Matiere $matiere */
             foreach ($objetUser->getMatieres()->getValues() as $matiere){
-                if(true) { //TODO: if optionnel
-                    $tabMatiere[$matiere->getCode()] = $matiere;
+                /** @var Parcours $userParcours */
+                $userParcours = $objetUser->getParcours();
+                /** @var MatiereParcours $matiereOptionnel */
+                $matiereOptionnel = $this->getDoctrine()->getRepository(MatiereParcours::class)->findBy(['parcours' => $userParcours, 'optionnel' => true ]);
+                $tabMatiereOptionnel = null;
+                foreach ($matiereOptionnel as $matiereOpt){
+                    $tabMatiereOptionnel[] = $matiereOpt->getMatieres();
+                }
+                if(in_array($matiere,$tabMatiereOptionnel)) {
+                    $tabMatiere[] = $matiere;
                 }
             }
 
             if($tabMatiere != null){
-                ksort($tabMatiere);
                 /** @var Matiere $matiere */
                 foreach ($tabMatiere as $matiere){
                     $nbrLineToCell++;

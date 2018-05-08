@@ -21,8 +21,7 @@ class MatiereController extends Controller
      */
     public function indexAction()
     {
-        $listMatiere = $this->getDoctrine()->getRepository(Matiere::class)->findAll();
-
+        $listMatiere = $this->getDoctrine()->getRepository(Matiere::class)->findAllToArray();
         return $this->render('UpjvBundle:Admin/Matiere:index.html.twig',[
             'listMatiere' => $listMatiere
         ]);
