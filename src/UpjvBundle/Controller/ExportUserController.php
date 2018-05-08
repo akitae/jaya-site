@@ -23,7 +23,7 @@ class ExportUserController extends Controller
      */
     public function indexAction()
     {
-        $listUser = $this->getDoctrine()->getRepository(Utilisateur::class)->findBy(['type' => Utilisateur::TYPE_ETUDIANT],['nom'=>'ASC']);
+        $listUser = $this->getDoctrine()->getRepository(Utilisateur::class)->findByRole(Utilisateur::ROLE_ETUDIANT);
 
         $listGroup = $this->getDoctrine()->getRepository(Groupe::class)->findAll();
         $listParcours = $this->getDoctrine()->getRepository(Parcours::class)->findAll();
