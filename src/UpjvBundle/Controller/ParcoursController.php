@@ -7,7 +7,7 @@ namespace UpjvBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-use UpjvBundle\Entity\Matiere;
+use UpjvBundle\Entity\MatiereParcours;
 use UpjvBundle\Entity\Parcours;
 use UpjvBundle\Form\ParcoursType;
 
@@ -38,6 +38,13 @@ class ParcoursController extends Controller
     $em = $this->getDoctrine()->getManager();
     /** @var Parcours $user */
     $parcours = $em->getRepository(Parcours::class)->find($id);
+    $matieresForParcours = $em->getRepository(MatiereParcours::class)->findBy(['parcours'=>$parcours]);
+    $matiereForParcours = null;
+    /** @var MatiereParcours $mp */
+      foreach ($matieresForParcours as $matiereP){
+        $matiereForParcours[$matiereP->getMatieres()->getId()] = $matiereP->isOptionnel();
+
+    }
 
 
     if (!$parcours instanceof Parcours) {
@@ -47,33 +54,50 @@ class ParcoursController extends Controller
     $form = $this->createForm(ParcoursType::class,$parcours);
     $form->handleRequest($request);
 
-    if ($form->isSubmitted() && $form->isValid()) {
-        try{
-            $parcours = $form->getData();
-                $em->persist($parcours);
-                $em->flush();
-                $this->get('session')->getFlashBag()->add('success', 'Le parcours a bien été enregistré.');
-            }catch (\Exception $e){
-                $this->get('session')->getFlashBag()->add('erreur', 'Une erreur s\'est produite lors de l\'enregistrement.');
-                return $this->redirectToRoute('admin_parcours_edit',['id' => $id]);
-            }
+        if ($form->isSubmitted() && $form->isValid()) {
+            try{
+                /** @var Parcours $parcours */
+                $parcours = $form->getData();
+                $parcoursMatieres = $this->getDoctrine()->getRepository('UpjvBundle:MatiereParcours')->findBy([ 'parcours' => $parcours]);
+                //on supprime les anciennes valeurs
+                foreach ($parcoursMatieres as $mp){
+                    $em->remove($mp);
+                }
+                    foreach ($parcours->getMatieres() as $matiere){
+                        $isOptionnel = false;
+                        $parcoursMatieres = new MatiereParcours();
 
-        return $this->redirectToRoute('admin_parcours');
-    }
+                        foreach ($parcours->getMatiereOptionnelle() as $optionnel){
+                            if($optionnel === $matiere){
+                                $isOptionnel = true;
+                                break;
+                            }
+                        }
 
-      $matieres = $this->getDoctrine()->getManager()->getRepository('UpjvBundle:Matiere')->findAll();
-      $listMatiere = null;
-      /** @var Matiere $matiere */
-      foreach ($matieres as $matiere){
-          $listMatiere[$matiere->getSemestre()->getNom()][] = $matiere->getNom();
-      }
-      ksort($listMatiere); //on récupère toutes les matières par semestre que l'on classe par ordre alphabétique
+                        //on ajoute les matières au parcours et si elles sont optionnelles ou non
+                        $parcoursMatieres->setMatieres($matiere);
+                        $parcoursMatieres->setParcours($parcours);
+                        $parcoursMatieres->setOptionnel($isOptionnel);
+                        $em->persist($parcoursMatieres);
+                    }
+                    $em->persist($parcours);
+                    $em->flush();
+                    $this->get('session')->getFlashBag()->add('success', 'Le parcours a bien été enregistré.');
+                }catch (\Exception $e){
+                    $this->get('session')->getFlashBag()->add('erreur', 'Une erreur s\'est produite lors de l\'enregistrement.');
+                    return $this->redirectToRoute('admin_parcours_edit',['id' => $id]);
+                }
 
-    return $this->render('UpjvBundle:Admin/Parcours:update.html.twig',[
-        'parcours' => $parcours,
-        'matieres' => $listMatiere,
-        'form' => $form->createView()
-    ]);
+            return $this->redirectToRoute('admin_parcours');
+        }
+
+          $matieres = $this->getDoctrine()->getManager()->getRepository('UpjvBundle:Matiere')->findAll();
+        return $this->render('UpjvBundle:Admin/Parcours:update.html.twig',[
+            'parcours' => $parcours,
+            'matieres' => $matieres,
+            'matiereForParcours' => $matiereForParcours,
+            'form' => $form->createView()
+        ]);
 
   }
 

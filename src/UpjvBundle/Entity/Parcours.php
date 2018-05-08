@@ -47,6 +47,10 @@ class Parcours
      */
     private $semestres;
 
+    private $matieres;
+
+    private $matiereOptionnelle;
+
     /**
      * Get id.
      *
@@ -169,5 +173,37 @@ class Parcours
 
       return $this->nom;
 
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getMatieres()
+    {
+        return $this->matieres;
+    }
+
+    /**
+     * @param mixed $matieres
+     */
+    public function setMatieres($matieres)
+    {
+        $this->matieres = $matieres;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getMatiereOptionnelle()
+    {
+        return $this->matiereOptionnelle;
+    }
+
+    /**
+     * @param mixed $matiereOptionnelle
+     */
+    public function setMatiereOptionnelle($matiereOptionnelle)
+    {
+        $this->matiereOptionnelle = $matiereOptionnelle;
     }
 }
