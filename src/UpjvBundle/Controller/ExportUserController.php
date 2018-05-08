@@ -150,11 +150,12 @@ class ExportUserController extends Controller
                 $userParcours = $objetUser->getParcours();
                 /** @var MatiereParcours $matiereOptionnel */
                 $matiereOptionnel = $this->getDoctrine()->getRepository(MatiereParcours::class)->findBy(['parcours' => $userParcours, 'optionnel' => true ]);
-                $tabMatiereOptionnel = null;
+                $tabMatiereOptionnel = [];
+                /** @var MatiereParcours $matiereOpt */
                 foreach ($matiereOptionnel as $matiereOpt){
                     $tabMatiereOptionnel[] = $matiereOpt->getMatieres();
                 }
-                if(in_array($matiere,$tabMatiereOptionnel)) {
+                if($matiere != null && in_array($matiere,$tabMatiereOptionnel)) {
                     $tabMatiere[] = $matiere;
                 }
             }
