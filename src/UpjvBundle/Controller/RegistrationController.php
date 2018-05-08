@@ -25,14 +25,12 @@ class RegistrationController extends BaseControllers
      */
     public function registerAction(Request $request)
     {
+        // On crée un utilisateur avec le manager.
         $userManager = $this->get('fos_user.user_manager');
+        /** @var Utilisateur $user */
         $user = $userManager->createUser();
 
-        $user->setEmail("florian.lephore@outlook.com");
-        $user->setUsername("yolo");
-        $user->setPassword("test");
-        $user->setPlainPassword("test");
-
+        // On crée le formulaire d'inscription.
         $form = $this->createForm(RegisterForm::class, $user);
         $form->handleRequest($request);
 
@@ -75,7 +73,9 @@ class RegistrationController extends BaseControllers
             }
 
             if (count($errors) == 0) {
+                // On met le nom en majuscule.
                 $user->setNom(strtoupper($user->getNom()));
+                $user->addRole(Utilisateur::ROLE_ETUDIANT);
 
                 $event = new FormEvent($form, $request);
                 $dispatcher->dispatch(FOSUserEvents::REGISTRATION_SUCCESS, $event);
@@ -100,6 +100,11 @@ class RegistrationController extends BaseControllers
         ]);
     }
 
+    /**
+     * @param Request $request
+     * @param string $token
+     * @return null|RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     */
     public function confirmAction(Request $request, $token)
     {
         /** @var $userManager \FOS\UserBundle\Model\UserManagerInterface */
@@ -129,6 +134,9 @@ class RegistrationController extends BaseControllers
         return $response;
     }
 
+    /**
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
     public function confirmedAction()
     {
         return $this->render('@FOSUser/Registration/confirmed.html.twig');

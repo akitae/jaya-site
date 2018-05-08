@@ -22,7 +22,7 @@ class UserController extends Controller
      */
     public function indexAction()
     {
-        $listUser = $this->getDoctrine()->getRepository(Utilisateur::class)->findBy(['typeUtilisateur' => 'ETUDIANT']);
+        $listUser = $this->getDoctrine()->getRepository(Utilisateur::class)->findByRole(Utilisateur::ROLE_ETUDIANT);
 
         return $this->render('UpjvBundle:Admin/User:index.html.twig',[
             'listUser' => $listUser
@@ -37,12 +37,15 @@ class UserController extends Controller
      */
     public function updateAction($id,Request $request)
     {
+        $isNew = false;
+        $userManager = $this->get('fos_user.user_manager');
         $em = $this->getDoctrine()->getManager();
         /** @var Utilisateur $user */
         $user = $em->getRepository(Utilisateur::class)->find($id);
 
         if (!$user instanceof Utilisateur) {
-            $user = new Utilisateur();
+            $user = $userManager->createUser();
+            $isNew = true;
         }
 
         $form = $this->createForm(UtilisateurType::class,$user);
@@ -51,10 +54,16 @@ class UserController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             try{
                 $user = $form->getData();
-                $em->persist($user);
-                $em->flush();
+
+                if ($isNew == true) {
+                    $user->setPassword('jayaReborn');
+                    $user->setPlainPassword('jayaReborn');
+                }
+
+                $userManager->updateUser($user);
                 $this->get('session')->getFlashBag()->add('success', 'L\'utilisateur a bien été enregistré.');
             }catch (\Exception $e){
+                var_dump($e->getMessage());
                 $this->get('session')->getFlashBag()->add('erreur', 'Une erreur s\'est produite lors de l\'enregistrement. Le numéro étudiant doit être unique.');
                 return $this->redirectToRoute('admin_user_edit',['id' => $id]);
             }
@@ -64,7 +73,8 @@ class UserController extends Controller
 
         return $this->render('UpjvBundle:Admin/User:update.html.twig',[
             'user' => $user,
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'isNew' => $isNew,
         ]);
     }
 

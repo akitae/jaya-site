@@ -15,14 +15,19 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Utilisateur extends BaseUser
 {
 
+    const ROLE_ETUDIANT = 'ROLE_ETUDIANT';
+
+    const ROLE_PROFESSEUR = 'ROLE_PROFESSEUR';
+
+    const ROLE_ADMIN  = 'ROLE_ADMIN';
+
     /**
      * Utilisateur constructor.
      */
     public function __construct()
     {
         $this->setEnabled(false);
-        $this->setTypeUtilisateur('ETUDIANT');
-        $this->setConfirmationEmail(false);
+        $this->setRoles(array());
     }
 
     /**
@@ -35,27 +40,22 @@ class Utilisateur extends BaseUser
     /**
      * @ORM\Column(name="nom", type="string", length=180)
      */
-    private $nom = "aaa";
+    private $nom;
 
     /**
      * @ORM\Column(name="prenom", type="string", length=180)
      */
-    private $prenom = "aaa";
+    private $prenom;
 
     /**
-     * @ORM\Column(name="numeroEtudiant", type="integer", unique=true)
+     * @ORM\Column(name="numeroEtudiant", type="integer", unique=true, nullable=true)
      * @Assert\Regex(
      *     pattern="/^([0-9]*)$/",
      *     match=true,
      *     message="Le numéro étudiant est invalide."
      * )
      */
-    private $numeroEtudiant = "45545";
-
-    /**
-     * @ORM\Column(name="typeUtilisateur", type="string", length=50)
-     */
-    private $typeUtilisateur;
+    private $numeroEtudiant;
 
     /**
      * @ORM\ManyToOne(targetEntity="UpjvBundle\Entity\Parcours", inversedBy="parcours")
@@ -63,14 +63,14 @@ class Utilisateur extends BaseUser
     private $parcours;
 
     /**
-     * @ORM\ManyToMany(targetEntity="UpjvBundle\Entity\Groupe", cascade={"persist"})
-     */
-    private $groupes;
-
-    /**
      * @ORM\ManyToMany(targetEntity="Matiere", inversedBy="utilisateurs")
      */
     private $matieres;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="UpjvBundle\Entity\Groupe", cascade={"persist"})
+     */
+    private $groupes;
 
     /**
      * @return mixed
@@ -123,25 +123,33 @@ class Utilisateur extends BaseUser
     /**
      * @return mixed
      */
-    public function getTypeUtilisateur()
+    public function getParcours()
     {
-        return $this->typeUtilisateur;
+        return $this->parcours;
     }
 
     /**
-     * @param mixed $typeUtilisateur
+     * @param mixed $parcours
      */
-    public function setTypeUtilisateur($typeUtilisateur)
+    public function setParcours($parcours)
     {
-        $this->typeUtilisateur = $typeUtilisateur;
+        $this->parcours = $parcours;
     }
 
     /**
-     * @return string
+     * @return mixed
      */
-    public function __toString()
+    public function getMatieres()
     {
-        return $this->getNom();
+        return $this->matieres;
+    }
+
+    /**
+     * @param mixed $matieres
+     */
+    public function setMatieres($matieres)
+    {
+        $this->matieres = $matieres;
     }
 
     /**
@@ -159,18 +167,6 @@ class Utilisateur extends BaseUser
     }
 
     /**
-     * Remove groupe.
-     *
-     * @param \UpjvBundle\Entity\Groupe $groupe
-     *
-     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
-     */
-    public function removeGroupe(\UpjvBundle\Entity\Groupe $groupe)
-    {
-        return $this->groupes->removeElement($groupe);
-    }
-
-    /**
      * Remove matiere.
      *
      * @param \UpjvBundle\Entity\Matiere $matiere
@@ -180,29 +176,6 @@ class Utilisateur extends BaseUser
     public function removeMatiere(\UpjvBundle\Entity\Matiere $matiere)
     {
         return $this->matieres->removeElement($matiere);
-    }
-
-    /**
-     * Get matieres.
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getMatieres()
-    {
-        return $this->matieres;
-    }
-
-    /**
-     * Add groupe.
-     *
-     * @param \UpjvBundle\Entity\Groupe $groupe
-     *
-     * @return Utilisateur
-     */
-    public function addGroupe(\UpjvBundle\Entity\Groupe $groupe)
-    {
-        $this->groupes[] = $groupe;
-        return $this;
     }
 
     /**
@@ -221,19 +194,36 @@ class Utilisateur extends BaseUser
     }
 
     /**
-     * @return mixed
+     * Add groupe.
+     *
+     * @param \UpjvBundle\Entity\Groupe $groupe
+     *
+     * @return Utilisateur
      */
-    public function getParcours()
+    public function addGroupe(\UpjvBundle\Entity\Groupe $groupe)
     {
-        return $this->parcours;
+        $this->groupes[] = $groupe;
+        return $this;
     }
 
     /**
-     * @param mixed $parcours
+     * Remove groupe.
+     *
+     * @param \UpjvBundle\Entity\Groupe $groupe
+     *
+     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
      */
-    public function setParcours($parcours)
+    public function removeGroupe(\UpjvBundle\Entity\Groupe $groupe)
     {
-        $this->parcours = $parcours;
+        return $this->groupes->removeElement($groupe);
+    }
+
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->getNom();
     }
 
 }

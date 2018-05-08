@@ -9,7 +9,7 @@
     <div class="col-lg-12">
         <div class="panel panel-default">
             <div class="panel-heading">
-                Vous consulter actuellement les informations de l'étudiant {{ user.prenom }} {{ user.nom }}
+                Vous consultez actuellement les informations de l'étudiant <b>{{ user.prenom }} {{ user.nom }}</b>
             </div>
             <div class="panel-body">
                 <table width="50%" class="table table-striped table-bordered table-hover">
@@ -34,8 +34,33 @@
                         <td>{{ user.username }}</td>
                     </tr>
                     <tr>
-                        <td>Type d'utilisateur</td>
-                        <td>{{ user.typeUtilisateur }}</td>
+                        <td>Parcours</td>
+                        <td>{{ user.parcours.nom }}</td>
+                    </tr>
+                    <tr>
+                        <td>Droit de l'utilisateur</td>
+                        <td>
+                            <ul>
+                                {% for role in user.roles %}
+                                    {% if role != 'ROLE_USER' %}
+                                    <li>
+                                        {% if role == 'ROLE_ETUDIANT' %}
+                                            Etudiant
+                                        {% endif %}
+                                        {% if role == 'ROLE_PROFESSEUR' %}
+                                            Professeur
+                                        {% endif %}
+                                        {% if role == 'ROLE_ADMIN' %}
+                                            Administrateur
+                                        {% endif %}
+                                        {% if role == 'ROLE_SUPER_ADMIN' %}
+                                            Super Administrateur
+                                        {% endif %}
+                                    </li>
+                                    {% endif %}
+                                {% endfor %}
+                            </ul>
+                        </td>
                     </tr>
                     <tr>
                         <td>Adresse mail validée</td>
