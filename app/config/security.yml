@@ -11,6 +11,7 @@ security:
 
     role_hierarchy:
       ROLE_ADMIN: ROLE_USER
+      ROLE_SUPER_ADMIN: ROLE_ADMIN
 
     firewalls:
         dev:
@@ -27,4 +28,4 @@ security:
           logout: true
 
     access_control:
-      - { path: ^/admin, roles: ROLE_USER }
+      - { path: ^/admin, roles: ROLE_SUPER_ADMIN }

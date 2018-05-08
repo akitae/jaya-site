@@ -28,6 +28,18 @@ class UtilisateurRepository extends \Doctrine\ORM\EntityRepository
     }
 
     /**
+     * Recherche les utilisateurs suivant un role précis.
+     * @param $role
+     * @return mixed
+     */
+    public function findByRole ($role) {
+        $queryBuilder = $this->createQueryBuilder('e');
+        $queryBuilder->where('e.roles LIKE :roles')->setParameter('roles', '%'.$role.'%');
+
+        return $queryBuilder->getQuery()->getResult();
+    }
+
+    /**
      * Recherche l'utilisateur par l'identifiant.
      * @param $username
      * @return mixed

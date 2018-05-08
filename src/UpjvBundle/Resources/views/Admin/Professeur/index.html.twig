@@ -23,6 +23,7 @@
                                 <tr role="row">
                                     <th>Nom</th>
                                     <th>Prénom</th>
+                                    <th>Identifiant</th>
                                     <th>Email</th>
                                     <th>Valide</th>
                                     <th>Action</th>
@@ -33,8 +34,15 @@
                                     <tr class="gradeA odd" role="row">
                                         <td>{{ professeur.nom }}</td>
                                         <td>{{ professeur.prenom }}</td>
+                                        <td>{{ professeur.username }}</td>
                                         <td>{{ professeur.email }}</td>
-                                        <td>{{ professeur.valide }}</td>
+                                        <td>
+                                            {% if professeur.enabled %}
+                                                Oui
+                                            {% else %}
+                                                Non
+                                            {% endif %}
+                                        </td>
                                         <td>
                                             <button type="button" onclick="location.href='{{ path('admin_professeur_show',{'id':professeur.id}) }}';" class="btn btn-default">Voir</button>
                                             <button type="button" onclick="location.href='{{ path('admin_professeur_edit',{'id':professeur.id}) }}';" class="btn btn-primary">Modifier</button>

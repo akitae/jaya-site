@@ -7,7 +7,7 @@
         <h1 class="page-header">Gestion des étudiants</h1>
     </div>
     <div class="col-lg-12">
-    <!-- /.panel-heading -->
+
         <div class="panel panel-default">
             <div class="panel-heading">
                 Liste des étudiants
@@ -15,7 +15,6 @@
             <div class="panel-body">
                 <button type="button" onclick="location.href='{{ path('admin_user_edit',{'id': 'new ' })}}';" class="btn btn-primary pull-right"><i class="fa fa-plus"></i> Ajouter un étudiant</button>
 
-                {#Tableau#}
                 <div class="row">
                     <div class="col-sm-12">
                         <table class="tableAdmin">
@@ -25,8 +24,8 @@
                                 <th>Nom</th>
                                 <th>Prénom</th>
                                 <th>Email</th>
-                                <th>Type</th>
-                                <th>Valide</th>
+                                <th>Droit</th>
+                                <th>Compte validé</th>
                                 <th>Action</th>
                             </tr>
                             </thead>
@@ -38,15 +37,34 @@
                                     <td>{{ user.prenom }}</td>
                                     <td>{{ user.email }}</td>
                                     <td>
-                                        {% if user.typeUtilisateur == 'ETUDIANT'%}
-                                            Etudiant
-                                        {% elseif user.typeUtilisateur == 'PROFESSEUR' %}
-                                            Professeur
-                                        {% elseif user.typeUtilisateur == 'ADMIN'%}
-                                            Administrateur
+                                        <ul>
+                                            {% for role in user.roles %}
+                                                {% if role != 'ROLE_USER' %}
+                                                    <li>
+                                                        {% if role == 'ROLE_ETUDIANT' %}
+                                                            Etudiant
+                                                        {% endif %}
+                                                        {% if role == 'ROLE_PROFESSEUR' %}
+                                                            Professeur
+                                                        {% endif %}
+                                                        {% if role == 'ROLE_ADMIN' %}
+                                                            Administrateur
+                                                        {% endif %}
+                                                        {% if role == 'ROLE_SUPER_ADMIN' %}
+                                                            Super Administrateur
+                                                        {% endif %}
+                                                    </li>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </ul>
+                                    </td>
+                                    <td>
+                                        {% if user.enabled %}
+                                            Oui
+                                        {% else %}
+                                            Non
                                         {% endif %}
                                     </td>
-                                    <td>{{ user.enabled }}</td>
                                     <td>
                                         <button type="button" onclick="location.href='{{ path('admin_user_show',{'id':user.id}) }}';" class="btn btn-default">Voir</button>
                                         <button type="button" onclick="location.href='{{ path('admin_user_edit',{'id':user.id}) }}';" class="btn btn-primary">Modifier</button>

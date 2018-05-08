@@ -8,12 +8,14 @@ use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use UpjvBundle\Entity\Groupe;
 use UpjvBundle\Entity\Parcours;
+use UpjvBundle\Entity\Utilisateur;
 
 class UtilisateurType extends AbstractType
 {
@@ -35,30 +37,40 @@ class UtilisateurType extends AbstractType
                 'attr' => ['class' => 'form-control '],
                 'label' => 'Email'
             ])
-            ->add('numeroEtudiant',IntegerType::class,[
+            ->add('numeroEtudiant',TextType::class,[
                 'attr' => ['class' => 'form-control '],
                 'label' => 'Numéro étudiant'
             ])
-            ->add('valide', CheckboxType::class,[
-                'required' => false,
-                'label' => 'Enregistrement de l\'étudiant validé ?'
+            ->add('username', TextType::class, [
+                'attr' => ['class' => 'form-control'],
+                'label' => 'Identifiant'
             ])
-            ->add('groupes', EntityType::class,
-                [
-                    'class' => Groupe::class,
-                    'multiple' => true,
-                    'required' => false,
-                    'attr' => [
-                        'class' => 'form-control select2'
-                    ]
-                ])
             ->add('parcours', EntityType::class,
                 [
                     'class' => Parcours::class,
-                    'required' => false,
+                    'required' => true,
                     'attr' => [
                         'class' => 'form-control'
                     ]
+                ])
+            ->add('roles', ChoiceType::class,
+                [
+                    'choices' => array(
+                        'Super Administrateur' => 'ROLE_SUPER_ADMIN',
+                        'Administrateur' => 'ROLE_ADMIN',
+                        'Professeur' => 'ROLE_PROFESSEUR',
+                        'Etudiant' => 'ROLE_ETUDIANT'),
+                    'required' => true,
+                    'multiple' => true,
+                ])
+            ->add('enabled', ChoiceType::class,
+                [
+                    'label' => 'Compte validé',
+                    'choices' => array(
+                        'Oui' => true,
+                        'Non' => false
+                    ),
+                    'required' => true
                 ])
             ->add('save', SubmitType::class,[
                 'label' => 'Enregistrer',
@@ -67,7 +79,9 @@ class UtilisateurType extends AbstractType
                 ]
             ])
         ;
-    }/**
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function configureOptions(OptionsResolver $resolver)
