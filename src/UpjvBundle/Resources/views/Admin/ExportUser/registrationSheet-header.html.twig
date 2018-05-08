@@ -11,15 +11,16 @@
         <h3>
             <label for="nom_enseignant">
                 Nom enseignant :
-                <input id="nom_enseignant" type="text"  size="10"/>
+                <input id="nom_enseignant" type="text"  size="20" style="height: 50px"/>
             </label>
             <label for="signature_enseignant">
                 Signature :
-                <input id="signature_enseignant" type="text" size="10" />
+                <input id="signature_enseignant" type="text" size="20" style="height: 50px"/>
             </label>
+            <br><br>
             <label for="date_enseignant">
                 Date :
-                <input id="date_enseignant" type="text" size="8"/>
+                <input id="date_enseignant" type="text" size="20" style="height: 50px"/>
             </label>
         </h3>
         <h2>
@@ -27,8 +28,13 @@
             {% for ue in listUE %}
                 {{ ue }}
             {% endfor %}
+            <br>
+            {% if listGroupe %}Groupe : {% endif %}
+            {% for groupe in listGroupe %}
+                {{ groupe }}
+            {% endfor %}
         </h2>
-        <h3>{% if commentaire %} {{ commentaire }} {% endif %}</h3>
+        <h2>{% if commentaire %} {{ commentaire }} {% endif %}</h2>
         <hr width="100%">
     </body>
 </html>

@@ -114,7 +114,11 @@ class UtilisateurRepository extends \Doctrine\ORM\EntityRepository
             $queryBuilder->andWhere('p.nom IN (:parcours)')->setParameter('parcours',$filtres['parcours']);
         }
         if(isset($filtres['matiere'])){
-            $queryBuilder->andWhere('m.nom IN (:matiere)')->setParameter('matiere',$filtres['matiere']);
+            foreach ($filtres['matiere'] as $matiere){
+                $subString = explode(' - ', $matiere);
+                $matieres[] = $subString[0];
+            }
+            $queryBuilder->andWhere('m.code IN (:matiere)')->setParameter('matiere',$matieres);
         }
         if(isset($filtres['groupe'])){
             $queryBuilder->andWhere('g.nom IN (:groupe)')->setParameter('groupe',$filtres['groupe']);

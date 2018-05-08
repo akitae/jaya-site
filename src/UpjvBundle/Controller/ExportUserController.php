@@ -27,7 +27,7 @@ class ExportUserController extends Controller
 
         $listGroup = $this->getDoctrine()->getRepository(Groupe::class)->findAll();
         $listParcours = $this->getDoctrine()->getRepository(Parcours::class)->findAll();
-        $listMatieres = $this->getDoctrine()->getRepository(Matiere::class)->findAll();
+        $listMatieres = $this->getDoctrine()->getRepository(Matiere::class)->findAllToArray();
 
         return $this->render('UpjvBundle:Admin/ExportUser:index.html.twig',[
             'listUser' => $listUser,
@@ -50,7 +50,7 @@ class ExportUserController extends Controller
 
 
             foreach ($listGroup as $groupe){
-                if($groupe->getMatiere()->getNom() === $matiere){
+                if((string)$groupe->getMatiere() === $matiere){
                     $resultGroupe[] = $groupe->getNom();
                 }
                 $i++;
@@ -86,7 +86,8 @@ class ExportUserController extends Controller
         $html_header = $this->renderView('UpjvBundle:Admin/ExportUser:registrationSheet-header.html.twig',[
             'listUser' => $listUser,
             'commentaire' => isset($_POST['commentaireRegistrationSheet'])?$_POST['commentaireRegistrationSheet']:null,
-            'listUE' => isset($_POST['matiere'])?$_POST['matiere']:null
+            'listUE' => isset($_POST['matiere'])?$_POST['matiere']:null,
+            'listGroupe' => isset($_POST['groupe'])?$_POST['groupe']:null
         ]);
 
         $filename = sprintf('Emargement-%s.pdf', date('Y-m-d'));
@@ -123,9 +124,12 @@ class ExportUserController extends Controller
         $objExcel->getActiveSheet()->setCellValueByColumnAndRow($col++, $row,'Prénom');
         $objExcel->getActiveSheet()->setCellValueByColumnAndRow($col++, $row,'Parcours');
         $objExcel->getActiveSheet()->setCellValueByColumnAndRow($col, $row,'Options');
+        $objExcel->getActiveSheet()->getRowDimension($row)->setRowHeight(15);
 //        Fin entête
 
         foreach ($listUser as $user){
+            $nbrLineToCell = 1;
+
             /** @var Utilisateur $objetUser */
             $objetUser = $this->getDoctrine()->getRepository(Utilisateur::class)->find($user[1]);
             $col = 0;
@@ -136,23 +140,39 @@ class ExportUserController extends Controller
             $objExcel->getActiveSheet()->setCellValueByColumnAndRow($col++, $row,$objetUser->getParcours());
 
             $listeMatiereOptionnel = "";
+
+//            Trie par code des UE
+            $tabMatiere = null;
             /** @var Matiere $matiere */
-            foreach ($objetUser->getMatieres() as $matiere){
-                if(true){ //TODO: if optionnel
-                    $listeMatiereOptionnel .= $matiere->getNom(). ", ";
+            foreach ($objetUser->getMatieres()->getValues() as $matiere){
+                if(true) { //TODO: if optionnel
+                    $tabMatiere[$matiere->getCode()] = $matiere;
                 }
             }
+
+            if($tabMatiere != null){
+                ksort($tabMatiere);
+                /** @var Matiere $matiere */
+                foreach ($tabMatiere as $matiere){
+                    $nbrLineToCell++;
+                    $listeMatiereOptionnel .= $matiere. "\n";
+                }
+            }
+//            Fin du trie par code UE
+
+
             $objExcel->getActiveSheet()->setCellValueByColumnAndRow($col, $row,$listeMatiereOptionnel);
+
+            // Style
+            $objExcel->getActiveSheet()->getRowDimension($row)->setRowHeight(15*$nbrLineToCell);
+
+            foreach(range('A','E') as $columnID)
+            {
+                $objExcel->getActiveSheet()->getColumnDimension($columnID)->setAutoSize(true);
+                $objExcel->getActiveSheet()->getStyle($columnID.$row)->getAlignment()->setVertical(\PHPExcel_Style_Alignment::VERTICAL_TOP);
+            }
+            //End style
         }
-
-        // Dimension
-
-        foreach(range('A','G') as $columnID)
-        {
-            $objExcel->getActiveSheet()->getColumnDimension($columnID)->setAutoSize(true);
-        }
-
-        //Fin dimension
 
         $writer = \PHPExcel_IOFactory::createWriter($objExcel, 'Excel5');
         header('Content-Type: application/vnd.ms-excel');
