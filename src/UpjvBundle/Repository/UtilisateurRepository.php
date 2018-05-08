@@ -102,7 +102,7 @@ class UtilisateurRepository extends \Doctrine\ORM\EntityRepository
             ->orderBy('q.nom')
         ;
 
-        $queryBuilder->where('q.type = :type')->setParameter('type',Utilisateur::TYPE_ETUDIANT);
+        $queryBuilder->where('q.roles like :roles')->setParameter('roles','%'.Utilisateur::ROLE_ETUDIANT.'%');
         if(isset($filtres['nom'])){
             $queryBuilder->andWhere('q.nom IN (:nom)')->setParameter('nom',$filtres['nom']);
         }
