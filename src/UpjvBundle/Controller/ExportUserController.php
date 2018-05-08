@@ -27,7 +27,7 @@ class ExportUserController extends Controller
 
         $listGroup = $this->getDoctrine()->getRepository(Groupe::class)->findAll();
         $listParcours = $this->getDoctrine()->getRepository(Parcours::class)->findAll();
-        $listMatieres = $this->getDoctrine()->getRepository(Matiere::class)->findAll();
+        $listMatieres = $this->getDoctrine()->getRepository(Matiere::class)->findAllToArray();
 
         return $this->render('UpjvBundle:Admin/ExportUser:index.html.twig',[
             'listUser' => $listUser,

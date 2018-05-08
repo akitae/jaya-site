@@ -3,20 +3,34 @@
 {% form_theme form _self %}
 
 {% block  _upjvbundle_ParcoursType_matieres_row %}
-    <div class="matieres_row">
         <tr>
             <td>{{ form_label(form) }}</td>
             <td>
-                {% for choice in form.vars.choices %}
-                    {% set id = choice.value|number_format %}
-                    <input type="checkbox" value="{{ choice.value }}" id="{{ 'upjvbundle_ParcoursType_matieres_'~ choice.value }}" name="upjvbundle_ParcoursType[matieres][]" {% if matiereForParcours[id] is defined %} checked="checked" {% endif %}>
-                    <input type="checkbox" value="{{ choice.value }}" id="{{ 'upjvbundle_ParcoursType_matiereOptionnelle_'~ choice.value }}" name="upjvbundle_ParcoursType[matiereOptionnelle][]" {% if matiereForParcours[id] is defined and matiereForParcours[id] == true %} checked="checked" {% endif %}>
-                    {{ choice.label }}
-                    <br/>
-                {% endfor %}
+                <table>
+                    <tr>
+                        <td style="padding-right: 13px;">Ajouter </td>
+                        <td style="padding-right: 13px;">Optionnelle </td>
+                        <td style="padding-right: 13px;">Nom </td>
+                        <td> Remarque : Veuillez cocher "Ajouter" et "Optionnel" si vous souhaitez ajouter une matiere optionnelle</td>
+                    </tr>
+                    {% for choice in form.vars.choices %}
+                    <tr style="border-bottom-style: solid;border-bottom-width: 2px;">
+                        {% set id = choice.value|number_format %}
+                            <td><input type="checkbox" value="{{ choice.value }}" id="{{ 'upjvbundle_ParcoursType_matieres_'~ choice.value }}" name="upjvbundle_ParcoursType[matieres][]" {% if matiereForParcours[id] is defined %} checked="checked" {% endif %}></td>
+                            <td><input type="checkbox" value="{{ choice.value }}"
+                                       id="{{ 'upjvbundle_ParcoursType_matiereOptionnelle_'~ choice.value }}"
+                                       name="upjvbundle_ParcoursType[matiereOptionnelle][]"
+                                        {% if matiereForParcours[id] is defined and matiereForParcours[id] == true %} checked="checked" {% endif %}
+                                        onclick="selectMatiere(this)"
+                                >
+                            </td>
+                            <td></td>
+                        <td>{{ choice.label }}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
         </tr>
 
-    </div>
 {% endblock %}
 
 {% block body %}
@@ -62,5 +76,15 @@
     </div>
 </div>
 
+    <script>
+        function selectMatiere(element){
+            var id = "#upjvbundle_ParcoursType_matieres_".concat($(element)[0].value);
+            if(!$(element)[0].checked){
+                $(id).remove('checked');
+            }else{
+                $(id).attr('checked',true);
+            }
+        }
+    </script>
 
 {% endblock %}

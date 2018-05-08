@@ -11,6 +11,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use UpjvBundle\Entity\Matiere;
 use UpjvBundle\Entity\Semestre;
+use UpjvBundle\Repository\MatiereRepository;
 
 class ParcoursType extends AbstractType
 {
@@ -43,6 +44,10 @@ class ParcoursType extends AbstractType
     ->add('matieres', EntityType::class,
         [
             'class' => Matiere::class,
+            'query_builder' => function(MatiereRepository $er)
+            {
+                return $er->findAll();
+            },
             'multiple' => true,
             'expanded' => true,
             'attr' => [

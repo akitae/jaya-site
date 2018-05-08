@@ -91,10 +91,8 @@ class ParcoursController extends Controller
             return $this->redirectToRoute('admin_parcours');
         }
 
-          $matieres = $this->getDoctrine()->getManager()->getRepository('UpjvBundle:Matiere')->findAll();
         return $this->render('UpjvBundle:Admin/Parcours:update.html.twig',[
             'parcours' => $parcours,
-            'matieres' => $matieres,
             'matiereForParcours' => $matiereForParcours,
             'form' => $form->createView()
         ]);
