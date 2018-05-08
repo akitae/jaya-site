@@ -1,4 +1,38 @@
 {% extends 'baseAdmin.html.twig' %}
+
+{% form_theme form _self %}
+
+{% block  _upjvbundle_ParcoursType_matieres_row %}
+        <tr>
+            <td>{{ form_label(form) }}</td>
+            <td>
+                <table>
+                    <tr>
+                        <td style="padding-right: 13px;">Ajouter </td>
+                        <td style="padding-right: 13px;">Optionnelle </td>
+                        <td style="padding-right: 13px;">Nom </td>
+                        <td> Remarque : Veuillez cocher "Ajouter" et "Optionnel" si vous souhaitez ajouter une matiere optionnelle</td>
+                    </tr>
+                    {% for choice in form.vars.choices %}
+                    <tr style="border-bottom-style: solid;border-bottom-width: 2px;">
+                        {% set id = choice.value|number_format %}
+                            <td><input type="checkbox" value="{{ choice.value }}" id="{{ 'upjvbundle_ParcoursType_matieres_'~ choice.value }}" name="upjvbundle_ParcoursType[matieres][]" {% if matiereForParcours[id] is defined %} checked="checked" {% endif %}></td>
+                            <td><input type="checkbox" value="{{ choice.value }}"
+                                       id="{{ 'upjvbundle_ParcoursType_matiereOptionnelle_'~ choice.value }}"
+                                       name="upjvbundle_ParcoursType[matiereOptionnelle][]"
+                                        {% if matiereForParcours[id] is defined and matiereForParcours[id] == true %} checked="checked" {% endif %}
+                                        onclick="selectMatiere(this)"
+                                >
+                            </td>
+                            <td></td>
+                        <td>{{ choice.label }}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+        </tr>
+
+{% endblock %}
+
 {% block body %}
 <div class="panel panel-default">
     <div class="col-lg-12">
@@ -29,29 +63,10 @@
                         <td>{{ form_label(form.semestres) }}</td>
                         <td>{{ form_widget(form.semestres)}}</td>
                     </tr>
-                    <tr>
-                        <td>Matiere par semestre</td>
-                        <td>
-                            <table>
-                                {% for semestre,matiere in matieres %}
-                                    <th style="border-bottom: 1px solid">{{ semestre }}</th>
-                                    <tr style="border-bottom: 1px solid">
-                                        <td>Ajouter</td>
-                                        <td>Optionnel</td>
-                                        <td>Matiere</td>
-                                    </tr>
-                                    {% for m in matiere %}
-                                        <tr style="border-bottom: 1px solid">
-                                            <td><input type="checkbox"></td>
-                                            <td><input type="checkbox"></td>
-                                            <td>{{ m }}</td>
-                                        </tr>
-                                    {% endfor %}
-                                {% endfor %}
-                            </table>
-                        </td>
-                    </tr>
-
+                    {{ form_row(form.matieres, {'matiereForParcours': matiereForParcours})}}
+                    <div hidden>
+                    {{ form_row(form.matiereOptionnelle)}}
+                    </div>
                 </table>
                 <button type="button" onclick="location.href='{{ path('admin_parcours')}}';" class="btn btn-default pull-left"> Retour </button>
                 {{ form_row(form.save) }}
@@ -61,5 +76,15 @@
     </div>
 </div>
 
+    <script>
+        function selectMatiere(element){
+            var id = "#upjvbundle_ParcoursType_matieres_".concat($(element)[0].value);
+            if(!$(element)[0].checked){
+                $(id).remove('checked');
+            }else{
+                $(id).attr('checked',true);
+            }
+        }
+    </script>
 
 {% endblock %}

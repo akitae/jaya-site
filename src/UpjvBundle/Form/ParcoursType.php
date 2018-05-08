@@ -9,7 +9,9 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use UpjvBundle\Entity\Matiere;
 use UpjvBundle\Entity\Semestre;
+use UpjvBundle\Repository\MatiereRepository;
 
 class ParcoursType extends AbstractType
 {
@@ -39,6 +41,25 @@ class ParcoursType extends AbstractType
         'class' => 'form-control select2'
       ]
     ])
+    ->add('matieres', EntityType::class,
+        [
+            'class' => Matiere::class,
+            'query_builder' => function(MatiereRepository $er)
+            {
+                return $er->findAll();
+            },
+            'multiple' => true,
+            'expanded' => true,
+            'attr' => [
+                'hidden' => 'hidden'
+            ]
+        ])
+    ->add('matiereOptionnelle', EntityType::class,
+        [
+            'class' => Matiere::class,
+            'multiple' => true,
+            'expanded' => true
+        ])
     ->add('save', SubmitType::class,[
       'label' => 'Enregistrer',
       'attr'  => [
