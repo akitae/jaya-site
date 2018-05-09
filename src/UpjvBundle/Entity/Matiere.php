@@ -43,7 +43,7 @@ class Matiere
     private $place;
 
     /**
-     * @ORM\ManyToMany(targetEntity="UpjvBundle\Entity\PoleDeCompetence", cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity="UpjvBundle\Entity\PoleDeCompetence", cascade={"persist"})
      */
     private $poleDeCompetence;
 
