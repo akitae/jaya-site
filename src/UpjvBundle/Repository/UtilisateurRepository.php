@@ -41,6 +41,7 @@ class UtilisateurRepository extends \Doctrine\ORM\EntityRepository
 
         return $queryBuilder->getQuery()->getResult();
     }
+    
 
     /**
      * Recherche l'utilisateur par l'identifiant.
@@ -123,6 +124,21 @@ class UtilisateurRepository extends \Doctrine\ORM\EntityRepository
         if(isset($filtres['groupe'])){
             $queryBuilder->andWhere('g.nom IN (:groupe)')->setParameter('groupe',$filtres['groupe']);
         }
+
+        return $queryBuilder->getQuery()->getResult();
+    }
+    /**
+     * Affiche les etudiants pas encore validés
+     * @return mixed
+     */
+    public function findByValidate()
+    {
+        $queryBuilder = $this->createQueryBuilder('e');
+        $queryBuilder
+            ->where('e.roles LIKE :roles')
+            ->andWhere('e.enabled = false')
+            ->setParameter('roles', '%'.Utilisateur::ROLE_ETUDIANT.'%')
+            ->orderBy('e.nom');
 
         return $queryBuilder->getQuery()->getResult();
     }

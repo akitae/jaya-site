@@ -1,0 +1,72 @@
+{% extends 'baseAdmin.html.twig' %}
+
+{% block body %}
+
+<div class="panel panel-default">
+    <div class="col-lg-12">
+        <h1 class="page-header">Validation des étudiants</h1>
+    </div>
+    <div class="col-lg-12">
+
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                Liste des étudiants non-validés
+            </div>
+            <div class="panel-body">
+                   <button type="button" onclick="location.href='{{ path('admin_validate_all_user')}}';" class="btn btn-primary pull-right"><i class="fa fa-check"></i> Valider tous les étudiants</button>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <table class="tableAdmin">
+                            <thead>
+                            <tr role="row">
+                                <th>Numéro étudiant</th>
+                                <th>Nom</th>
+                                <th>Prénom</th>
+                                <th>Email</th>
+                                <th>Droit</th>
+                                
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for user in listUser %}
+                                <tr class="gradeA odd" role="row">
+                                    <td>{{ user.numeroEtudiant }}</td>
+                                    <td class="sorting_1">{{ user.nom }}</td>
+                                    <td>{{ user.prenom }}</td>
+                                    <td>{{ user.email }}</td>
+                                    <td>
+                                        <ul>
+                                            {% for role in user.roles %}
+                                                {% if role != 'ROLE_USER' %}
+                                                    <li>
+                                                        {% if role == 'ROLE_ETUDIANT' %}
+                                                            Etudiant
+                                                        {% endif %}
+                                                        {% if role == 'ROLE_PROFESSEUR' %}
+                                                            Professeur
+                                                        {% endif %}
+                                                        {% if role == 'ROLE_ADMIN' %}
+                                                            Administrateur
+                                                        {% endif %}
+                                                        {% if role == 'ROLE_SUPER_ADMIN' %}
+                                                            Super Administrateur
+                                                        {% endif %}
+                                                    </li>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </ul>
+                                    </td>
+                                    
+                                    
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
