@@ -32,6 +32,12 @@
                             {{ matiere.semestre.nom }}
                         </td>
                     </tr>
+                    <tr>
+                        <td>Pole de compétence</td>
+                        <td>
+                            {{ matiere.poleDeCompetence.nom }}
+                        </td>
+                    </tr>
                 </table>
 
                 <button type="button" onclick="location.href='{{ path('admin_matiere')}}';" class="btn btn-default pull-left"> Retour </button>

@@ -29,6 +29,10 @@
                         <td>{{ form_label(form.semestre) }}</td>
                         <td>{{ form_widget(form.semestre)}}</td>
                     </tr>
+                    <tr>
+                        <td>{{ form_label(form.poleDeCompetence) }}</td>
+                        <td>{{ form_widget(form.poleDeCompetence)}}</td>
+                    </tr>
 
                 </table>
                 <button type="button" onclick="location.href='{{ path('admin_matiere')}}';" class="btn btn-default pull-left"> Retour </button>
