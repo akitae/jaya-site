@@ -46,6 +46,7 @@ class PolesDeCompetenceParcoursController extends Controller
                 foreach ($_POST as $name => $nbr){
                     $idPole = explode('_',$name);
                     $pole = $em->getRepository(PoleDeCompetence::class)->find($idPole[1]);
+                    /** @var PoleDeCompetenceParcours $poleDeCompetenceParcours */
                     $poleDeCompetenceParcours = $em->getRepository(PoleDeCompetenceParcours::class)->findOneBy([
                         'parcours' => $parcours,
                         'poleDeCompetence' => $pole
@@ -71,6 +72,11 @@ class PolesDeCompetenceParcoursController extends Controller
             return $this->redirectToRoute('admin_parcours');
         }
 
+      /** @var PoleDeCompetenceParcours $lp */
+      foreach ($listPoles as $lp){
+//          dump($lp);die;
+//        dump($lp->getPoleDeCompetence()->getId());die;
+      }
         return $this->render('UpjvBundle:Admin/PolesDeCompetenceParcours:update.html.twig',[
             'parcours' => $parcours,
             'poleDeCompetence' => $listPoleDeCompetence,

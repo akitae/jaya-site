@@ -27,7 +27,8 @@ class MatiereParcours
     private $matieres;
 
     /**
-     * @ORM\ManyToOne(targetEntity="UpjvBundle\Entity\Parcours", cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity="UpjvBundle\Entity\MatiereParcours", inversedBy="matieres")
+     * @ORM\JoinColumn(name="parcour_id", referencedColumnName="id")
      */
     private $parcours;
 

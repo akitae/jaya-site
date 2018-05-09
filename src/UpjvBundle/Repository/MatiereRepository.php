@@ -33,4 +33,11 @@ class MatiereRepository extends \Doctrine\ORM\EntityRepository
         ksort($tabResult);
         return $tabResult;
     }
+
+    public function resetMatiereUtilisateur(){
+        $rawSql = "DELETE FROM utilisateur_matiere";
+
+        $stmt = $this->getEntityManager()->getConnection()->prepare($rawSql);
+        $stmt->execute();
+    }
 }
