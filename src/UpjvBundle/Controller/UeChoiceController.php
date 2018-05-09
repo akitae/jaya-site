@@ -11,6 +11,8 @@ namespace UpjvBundle\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use UpjvBundle\Entity\Matiere;
+use UpjvBundle\Entity\MatiereParcours;
 use UpjvBundle\Entity\Parcours;
 use UpjvBundle\Entity\Semestre;
 use UpjvBundle\Entity\Utilisateur;
@@ -59,6 +61,11 @@ class UeChoiceController extends Controller
                 }
             }
         }
+
+        /**
+         * On remonte toutes les UEs optionnelles de l'étudiant.
+         */
+        //$matieres = $this->getDoctrine()->getRepository(MatiereParcours::)
 
         return $this->render("UpjvBundle:UeChoice:index.html.twig", [
             "semestre" => $semestreToUse,
