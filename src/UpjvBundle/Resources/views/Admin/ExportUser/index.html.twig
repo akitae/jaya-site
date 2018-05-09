@@ -28,6 +28,7 @@
                                 <tr role="row">
                                     <th>Nom</th>
                                     <th>Prénom</th>
+                                    <th>Année</th>
                                     <th>Parcours</th>
                                     <th>Matière/UE</th>
                                     <th>Groupe</th>
@@ -47,6 +48,13 @@
                                         <select class="js-example-basic-multiple filter-table" multiple="multiple" name="prenom[]">
                                             {% for user in listUser %}
                                                 <option>{{ user.prenom }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <select class="js-example-basic-multiple filter-table" multiple="multiple" name="annee[]">
+                                            {% for annee in listAnnee %}
+                                                <option>{{ annee }}</option>
                                             {% endfor %}
                                         </select>
                                     </td>
@@ -87,6 +95,11 @@
                                         <td>
                                             <ul>
                                                 <li style="list-style: none;">{{ user.prenom }}</li>
+                                            </ul>
+                                        </td>
+                                        <td>
+                                            <ul>
+                                                <li style="list-style: none;">{{ user.parcours.annee }}</li>
                                             </ul>
                                         </td>
                                         <td>
