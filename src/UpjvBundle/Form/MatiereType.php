@@ -35,7 +35,12 @@ class MatiereType extends AbstractType
             
             ->add('place', IntegerType::class,[
                 'attr' => ['class' => 'form-control '],
-                'label' => 'Nombre de places'
+                'label' => 'Nombre de places total pour les non-stagiares'
+            ])
+            ->add('placeStagiare', IntegerType::class,[
+                'attr' => ['class' => 'form-control '],
+                'label' => 'Nombre de places total pour les stagiares',
+                'empty_data' => 0
             ])
 
             ->add('semestre', EntityType::class,

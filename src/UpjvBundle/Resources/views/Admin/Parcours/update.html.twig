@@ -67,6 +67,10 @@
                     <div hidden>
                     {{ form_row(form.matiereOptionnelle)}}
                     </div>
+                    <tr>
+                        <td>{{ form_label(form.stagiare) }}</td>
+                        <td>{{ form_row(form.stagiare) }}</td>
+                    </tr>
                 </table>
                 <button type="button" onclick="location.href='{{ path('admin_parcours')}}';" class="btn btn-default pull-left"> Retour </button>
                 {{ form_row(form.save) }}

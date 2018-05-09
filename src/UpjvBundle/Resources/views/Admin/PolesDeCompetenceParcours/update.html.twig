@@ -18,7 +18,7 @@
                     {% for pole in poleDeCompetence %}
                         {% set nbr = null %}
                         {% for polePresent in listPoles %}
-                            {% if polePresent.id == pole.id %}
+                            {% if polePresent.poleDeCompetence.id == pole.id %}
                                 {% set nbr = polePresent.getNbrMatiereOptionnelle() %}
                             {% endif %}
                         {% endfor %}

@@ -4,6 +4,7 @@ namespace UpjvBundle\Form;
 
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -60,6 +61,11 @@ class ParcoursType extends AbstractType
             'class' => Matiere::class,
             'multiple' => true,
             'expanded' => true
+        ])
+    ->add('stagiare', CheckboxType::class,
+        [
+            'required' => false,
+            'label'     => 'Parcours concernant les stagiares'
         ])
     ->add('save', SubmitType::class,[
       'label' => 'Enregistrer',

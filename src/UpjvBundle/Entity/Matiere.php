@@ -43,6 +43,13 @@ class Matiere
     private $place;
 
     /**
+     * @var int
+     *
+     * @ORM\Column(name="place_stagiare", type="integer")
+     */
+    private $placeStagiare = 0;
+
+    /**
      * @ORM\ManyToOne(targetEntity="UpjvBundle\Entity\PoleDeCompetence", cascade={"persist"})
      */
     private $poleDeCompetence;
@@ -276,5 +283,21 @@ class Matiere
     public function getUtilisateurs()
     {
         return $this->utilisateurs;
+    }
+
+    /**
+     * @return int
+     */
+    public function getPlaceStagiare()
+    {
+        return $this->placeStagiare;
+    }
+
+    /**
+     * @param int $placeStagiare
+     */
+    public function setPlaceStagiare($placeStagiare)
+    {
+        $this->placeStagiare = $placeStagiare;
     }
 }
