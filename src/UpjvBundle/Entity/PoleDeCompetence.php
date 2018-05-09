@@ -28,6 +28,9 @@ class PoleDeCompetence
      */
     private $nom;
 
+    /**
+     * @ORM\OneToMany(targetEntity="UpjvBundle\Entity\Matiere", mappedBy="poleDeCompetence")
+     */
     private $matieres;
 
     /**
@@ -65,21 +68,6 @@ class PoleDeCompetence
     }
 
     /**
-     * @return mixed
-     */
-    public function getMatieres()
-    {
-        return $this->matieres;
-    }
-
-    /**
-     * @param mixed $matieres
-     */
-    public function setMatieres($matieres)
-    {
-        $this->matieres = $matieres;
-    }
-    /**
      * Constructor
      */
     public function __construct()
@@ -114,6 +102,12 @@ class PoleDeCompetence
         return $this->parcours->removeElement($parcour);
     }
 
+    public function __toString() {
+
+      return $this->nom;
+
+    }
+
     /**
      * Add matiere.
      *
@@ -140,9 +134,13 @@ class PoleDeCompetence
         return $this->matieres->removeElement($matiere);
     }
 
-    public function __toString() {
-
-      return $this->nom;
-
+    /**
+     * Get matieres.
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getMatieres()
+    {
+        return $this->matieres;
     }
 }

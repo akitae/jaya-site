@@ -20,6 +20,9 @@ class Version20180509071006 extends AbstractMigration
         $this->addSql('ALTER TABLE matiere ADD pole_de_competence_id INT');
         $this->addSql('ALTER TABLE matiere ADD CONSTRAINT FK_9014574AC9E7CDE8 FOREIGN KEY (pole_de_competence_id) REFERENCES pole_de_competence (id)');
         $this->addSql('CREATE INDEX IDX_9014574AC9E7CDE8 ON matiere (pole_de_competence_id)');
+        $this->addSql('ALTER TABLE pole_de_competence_parcours ADD pole_de_competence_id INT DEFAULT NULL');
+        $this->addSql('ALTER TABLE pole_de_competence_parcours ADD CONSTRAINT FK_C3481284C9E7CDE8 FOREIGN KEY (pole_de_competence_id) REFERENCES pole_de_competence (id)');
+        $this->addSql('CREATE INDEX IDX_C3481284C9E7CDE8 ON pole_de_competence_parcours (pole_de_competence_id)');
     }
 
     public function down(Schema $schema)
@@ -33,6 +36,9 @@ class Version20180509071006 extends AbstractMigration
         $this->addSql('ALTER TABLE matiere_pole_de_competence ADD CONSTRAINT FK_5CAA9CFFF46CD258 FOREIGN KEY (matiere_id) REFERENCES matiere (id) ON DELETE CASCADE');
         $this->addSql('ALTER TABLE pole_de_competence_matiere ADD CONSTRAINT FK_6C072BB4C9E7CDE8 FOREIGN KEY (pole_de_competence_id) REFERENCES pole_de_competence (id) ON DELETE CASCADE');
         $this->addSql('ALTER TABLE pole_de_competence_matiere ADD CONSTRAINT FK_6C072BB4F46CD258 FOREIGN KEY (matiere_id) REFERENCES matiere (id) ON DELETE CASCADE');
+        $this->addSql('ALTER TABLE pole_de_competence_parcours DROP FOREIGN KEY FK_C3481284C9E7CDE8');
+        $this->addSql('DROP INDEX IDX_C3481284C9E7CDE8 ON pole_de_competence_parcours');
+        $this->addSql('ALTER TABLE pole_de_competence_parcours DROP pole_de_competence_id');
         $this->addSql('ALTER TABLE matiere DROP FOREIGN KEY FK_9014574AC9E7CDE8');
         $this->addSql('DROP INDEX IDX_9014574AC9E7CDE8 ON matiere');
         $this->addSql('ALTER TABLE matiere DROP pole_de_competence_id');
