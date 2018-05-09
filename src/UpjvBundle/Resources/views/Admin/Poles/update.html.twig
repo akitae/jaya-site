@@ -18,10 +18,6 @@
                                 <td>{{ form_label(form.nom) }}</td>
                                 <td>{{ form_widget(form.nom)}}</td>
                             </tr>
-                            <tr>
-                                <td>{{ form_label(form.matieres) }}</td>
-                                <td>{{ form_widget(form.matieres)}}</td>
-                            </tr>
                         </table>
                         <button type="button" onclick="location.href='{{ path('admin_pole')}}';" class="btn btn-default pull-left"> Retour </button>
                         {{ form_row(form.save) }}
