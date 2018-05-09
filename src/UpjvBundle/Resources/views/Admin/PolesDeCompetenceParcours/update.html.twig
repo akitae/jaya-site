@@ -1,0 +1,36 @@
+{% extends 'baseAdmin.html.twig' %}
+
+{% block body %}
+<div class="panel panel-default">
+    <div class="col-lg-12">
+         <h1 class="page-header">Selectionner le nombre d'optionnel</h1>
+    </div>
+    <div class="col-lg-12">
+         <!-- /.panel-heading -->
+         <div class="panel panel-default">
+            <div class="panel-heading">
+               Modifier le nombre d'optionnelle
+            </div>
+            <div class="panel-body">
+                <form action="/admin/poledecompetenceParcours/poledecompetenceParcours/{{ parcours.id }}" method="post">
+                    Remarque : Vous pourrez indiquer le nombre de matière optionnelles que pour chaque pôle appartenant au parcour actuel.
+                    <br>
+                    {% for pole in poleDeCompetence %}
+                        {% set nbr = null %}
+                        {% for polePresent in listPoles %}
+                            {% if polePresent.id == pole.id %}
+                                {% set nbr = polePresent.getNbrMatiereOptionnelle() %}
+                            {% endif %}
+                        {% endfor %}
+                        <input type="number" name="poleDeCompetence_{{ pole.id }}" {% if nbr is defined %}value="{{ nbr }}" {% endif %}>
+                        <label>{{ pole.nom }}</label>
+                        <br>
+                    {% endfor %}
+                    <button type="submit">Enregistrer</button>
+                </form>
+            </div>
+         </div>
+    </div>
+</div>
+
+{% endblock %}

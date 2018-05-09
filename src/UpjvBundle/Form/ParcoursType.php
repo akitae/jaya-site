@@ -61,12 +61,6 @@ class ParcoursType extends AbstractType
             'multiple' => true,
             'expanded' => true
         ])
-    ->add('polesDeCompetence', EntityType::class,
-        [
-            'class' => PoleDeCompetence::class,
-            'multiple' => true,
-            'expanded' => true
-        ])
     ->add('save', SubmitType::class,[
       'label' => 'Enregistrer',
       'attr'  => [

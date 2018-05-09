@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use UpjvBundle\Entity\MatiereParcours;
 use UpjvBundle\Entity\Parcours;
+use UpjvBundle\Entity\PoleDeCompetence;
 use UpjvBundle\Form\ParcoursType;
 
 class ParcoursController extends Controller
@@ -39,6 +40,7 @@ class ParcoursController extends Controller
     /** @var Parcours $user */
     $parcours = $em->getRepository(Parcours::class)->find($id);
     $matieresForParcours = $em->getRepository(MatiereParcours::class)->findBy(['parcours'=>$parcours]);
+    $polesDeCompetences = $em->getRepository(PoleDeCompetence::class)->findAll();
     $matiereForParcours = null;
     /** @var MatiereParcours $mp */
       foreach ($matieresForParcours as $matiereP){
@@ -94,6 +96,7 @@ class ParcoursController extends Controller
         return $this->render('UpjvBundle:Admin/Parcours:update.html.twig',[
             'parcours' => $parcours,
             'matiereForParcours' => $matiereForParcours,
+            'polesDeCompetences' => $polesDeCompetences,
             'form' => $form->createView()
         ]);
 
