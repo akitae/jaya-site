@@ -28,9 +28,6 @@ class PoleDeCompetence
      */
     private $nom;
 
-    /**
-     * @ORM\ManyToMany(targetEntity="UpjvBundle\Entity\Matiere", cascade={"persist"})
-     */
     private $matieres;
 
     /**

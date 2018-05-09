@@ -10,6 +10,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use UpjvBundle\Entity\Matiere;
+use UpjvBundle\Entity\PoleDeCompetence;
 use UpjvBundle\Entity\Semestre;
 use UpjvBundle\Repository\MatiereRepository;
 
@@ -57,6 +58,12 @@ class ParcoursType extends AbstractType
     ->add('matiereOptionnelle', EntityType::class,
         [
             'class' => Matiere::class,
+            'multiple' => true,
+            'expanded' => true
+        ])
+    ->add('polesDeCompetence', EntityType::class,
+        [
+            'class' => PoleDeCompetence::class,
             'multiple' => true,
             'expanded' => true
         ])
