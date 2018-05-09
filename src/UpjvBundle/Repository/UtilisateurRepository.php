@@ -34,7 +34,10 @@ class UtilisateurRepository extends \Doctrine\ORM\EntityRepository
      */
     public function findByRole ($role) {
         $queryBuilder = $this->createQueryBuilder('e');
-        $queryBuilder->where('e.roles LIKE :roles')->setParameter('roles', '%'.$role.'%');
+        $queryBuilder
+            ->where('e.roles LIKE :roles')
+            ->setParameter('roles', '%'.$role.'%')
+            ->orderBy('e.nom');
 
         return $queryBuilder->getQuery()->getResult();
     }
@@ -99,7 +102,7 @@ class UtilisateurRepository extends \Doctrine\ORM\EntityRepository
             ->orderBy('q.nom')
         ;
 
-        $queryBuilder->where('q.type = :type')->setParameter('type',Utilisateur::TYPE_ETUDIANT);
+        $queryBuilder->where('q.roles like :roles')->setParameter('roles','%'.Utilisateur::ROLE_ETUDIANT.'%');
         if(isset($filtres['nom'])){
             $queryBuilder->andWhere('q.nom IN (:nom)')->setParameter('nom',$filtres['nom']);
         }
@@ -111,7 +114,11 @@ class UtilisateurRepository extends \Doctrine\ORM\EntityRepository
             $queryBuilder->andWhere('p.nom IN (:parcours)')->setParameter('parcours',$filtres['parcours']);
         }
         if(isset($filtres['matiere'])){
-            $queryBuilder->andWhere('m.nom IN (:matiere)')->setParameter('matiere',$filtres['matiere']);
+            foreach ($filtres['matiere'] as $matiere){
+                $subString = explode(' - ', $matiere);
+                $matieres[] = $subString[0];
+            }
+            $queryBuilder->andWhere('m.code IN (:matiere)')->setParameter('matiere',$matieres);
         }
         if(isset($filtres['groupe'])){
             $queryBuilder->andWhere('g.nom IN (:groupe)')->setParameter('groupe',$filtres['groupe']);

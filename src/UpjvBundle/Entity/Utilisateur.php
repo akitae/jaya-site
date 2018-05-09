@@ -64,6 +64,7 @@ class Utilisateur extends BaseUser
 
     /**
      * @ORM\ManyToMany(targetEntity="Matiere", inversedBy="utilisateurs")
+     *  @ORM\OrderBy({"code" = "ASC"})
      */
     private $matieres;
 

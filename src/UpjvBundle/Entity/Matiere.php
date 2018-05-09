@@ -239,7 +239,7 @@ class Matiere
      */
     public function __toString()
     {
-        return $this->getNom();
+        return $this->getCode()." - ".$this->getNom();
     }
 
     /**

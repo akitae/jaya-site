@@ -12,6 +12,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use UpjvBundle\Entity\Groupe;
 use UpjvBundle\Entity\Matiere;
+use UpjvBundle\Entity\MatiereParcours;
 use UpjvBundle\Entity\Parcours;
 use UpjvBundle\Entity\Utilisateur;
 
@@ -23,11 +24,11 @@ class ExportUserController extends Controller
      */
     public function indexAction()
     {
-        $listUser = $this->getDoctrine()->getRepository(Utilisateur::class)->findBy(['type' => Utilisateur::TYPE_ETUDIANT],['nom'=>'ASC']);
+        $listUser = $this->getDoctrine()->getRepository(Utilisateur::class)->findByRole(Utilisateur::ROLE_ETUDIANT);
 
         $listGroup = $this->getDoctrine()->getRepository(Groupe::class)->findAll();
         $listParcours = $this->getDoctrine()->getRepository(Parcours::class)->findAll();
-        $listMatieres = $this->getDoctrine()->getRepository(Matiere::class)->findAll();
+        $listMatieres = $this->getDoctrine()->getRepository(Matiere::class)->findAllToArray();
 
         return $this->render('UpjvBundle:Admin/ExportUser:index.html.twig',[
             'listUser' => $listUser,
@@ -50,7 +51,7 @@ class ExportUserController extends Controller
 
 
             foreach ($listGroup as $groupe){
-                if($groupe->getMatiere()->getNom() === $matiere){
+                if((string)$groupe->getMatiere() === $matiere){
                     $resultGroupe[] = $groupe->getNom();
                 }
                 $i++;
@@ -86,7 +87,8 @@ class ExportUserController extends Controller
         $html_header = $this->renderView('UpjvBundle:Admin/ExportUser:registrationSheet-header.html.twig',[
             'listUser' => $listUser,
             'commentaire' => isset($_POST['commentaireRegistrationSheet'])?$_POST['commentaireRegistrationSheet']:null,
-            'listUE' => isset($_POST['matiere'])?$_POST['matiere']:null
+            'listUE' => isset($_POST['matiere'])?$_POST['matiere']:null,
+            'listGroupe' => isset($_POST['groupe'])?$_POST['groupe']:null
         ]);
 
         $filename = sprintf('Emargement-%s.pdf', date('Y-m-d'));
@@ -123,9 +125,12 @@ class ExportUserController extends Controller
         $objExcel->getActiveSheet()->setCellValueByColumnAndRow($col++, $row,'Prénom');
         $objExcel->getActiveSheet()->setCellValueByColumnAndRow($col++, $row,'Parcours');
         $objExcel->getActiveSheet()->setCellValueByColumnAndRow($col, $row,'Options');
+        $objExcel->getActiveSheet()->getRowDimension($row)->setRowHeight(15);
 //        Fin entête
 
         foreach ($listUser as $user){
+            $nbrLineToCell = 1;
+
             /** @var Utilisateur $objetUser */
             $objetUser = $this->getDoctrine()->getRepository(Utilisateur::class)->find($user[1]);
             $col = 0;
@@ -136,23 +141,47 @@ class ExportUserController extends Controller
             $objExcel->getActiveSheet()->setCellValueByColumnAndRow($col++, $row,$objetUser->getParcours());
 
             $listeMatiereOptionnel = "";
+
+//            Trie par code des UE
+            $tabMatiere = null;
             /** @var Matiere $matiere */
-            foreach ($objetUser->getMatieres() as $matiere){
-                if(true){ //TODO: if optionnel
-                    $listeMatiereOptionnel .= $matiere->getNom(). ", ";
+            foreach ($objetUser->getMatieres()->getValues() as $matiere){
+                /** @var Parcours $userParcours */
+                $userParcours = $objetUser->getParcours();
+                /** @var MatiereParcours $matiereOptionnel */
+                $matiereOptionnel = $this->getDoctrine()->getRepository(MatiereParcours::class)->findBy(['parcours' => $userParcours, 'optionnel' => true ]);
+                $tabMatiereOptionnel = [];
+                /** @var MatiereParcours $matiereOpt */
+                foreach ($matiereOptionnel as $matiereOpt){
+                    $tabMatiereOptionnel[] = $matiereOpt->getMatieres();
+                }
+                if($matiere != null && in_array($matiere,$tabMatiereOptionnel)) {
+                    $tabMatiere[] = $matiere;
                 }
             }
+
+            if($tabMatiere != null){
+                /** @var Matiere $matiere */
+                foreach ($tabMatiere as $matiere){
+                    $nbrLineToCell++;
+                    $listeMatiereOptionnel .= $matiere. "\n";
+                }
+            }
+//            Fin du trie par code UE
+
+
             $objExcel->getActiveSheet()->setCellValueByColumnAndRow($col, $row,$listeMatiereOptionnel);
+
+            // Style
+            $objExcel->getActiveSheet()->getRowDimension($row)->setRowHeight(15*$nbrLineToCell);
+
+            foreach(range('A','E') as $columnID)
+            {
+                $objExcel->getActiveSheet()->getColumnDimension($columnID)->setAutoSize(true);
+                $objExcel->getActiveSheet()->getStyle($columnID.$row)->getAlignment()->setVertical(\PHPExcel_Style_Alignment::VERTICAL_TOP);
+            }
+            //End style
         }
-
-        // Dimension
-
-        foreach(range('A','G') as $columnID)
-        {
-            $objExcel->getActiveSheet()->getColumnDimension($columnID)->setAutoSize(true);
-        }
-
-        //Fin dimension
 
         $writer = \PHPExcel_IOFactory::createWriter($objExcel, 'Excel5');
         header('Content-Type: application/vnd.ms-excel');
