@@ -28,7 +28,7 @@ class UserController extends Controller
             'listUser' => $listUser
         ]);
     }
-
+    
     /**
      * @param $id
      * @param $request
@@ -54,6 +54,8 @@ class UserController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             try{
                 $user = $form->getData();
+                
+                $user->setNom(strtoupper($user->getNom()));
 
                 if ($isNew == true) {
                     $user->setPassword('jayaReborn');
@@ -117,4 +119,34 @@ class UserController extends Controller
 
         return $this->redirectToRoute('admin_user');
     }
+    /**
+     * @Route("/admin/user/validate", name="admin_validate_user")
+     * @return mixed
+     */
+   public function showValidateAction()
+    {
+        $listUser = $this->getDoctrine()->getRepository(Utilisateur::class)->findByValidate();
+
+        return $this->render('UpjvBundle:Admin/User:validate.html.twig',[
+            'listUser' => $listUser
+        ]);
+    }
+    /**
+     * @Route("/admin/user/validateAll", name="admin_validate_all_user")
+     * @return mixed
+     */
+    public function validateAllAction()
+    {
+        $em = $this->getDoctrine()->getManager();
+ 
+        $listUser = $this->getDoctrine()->getRepository(Utilisateur::class)->findByValidate();
+        foreach ($listUser as $user) {
+            $user->setEnabled(true);
+            $em->persist($user);
+                $em->flush();
+        }
+         return $this->redirectToRoute('admin_user');
+    }
+    
+
 }
