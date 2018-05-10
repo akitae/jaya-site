@@ -40,7 +40,40 @@
                 </div>
             </div>
 
+            {% if poles != null %}
+                {% for pole in poles %}
+                <div class="row">
+                    <div class="col-md-12">
+                        {{ pole.nom }}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <table class="table sortable">
+                            <thead>
+                                <tr>
+                                    <th class="col-md-1">Id</th>
+                                    <th class="col-md-8">Nom</th>
+                                    <th class="col-md-3">Préférence</th>
+                                </tr>
+                            </thead>
 
+                            <tbody>
+                            {% for matiere in matieres %}
+                                {% if matiere.matiere.poleDeCompetence == pole %}
+                                    <tr draggable="true" rel="{{ matiere.id }}">
+                                        <td>{{ matiere.id }}</td>
+                                        <td>{{ matiere.matiere.nom }}</td>
+                                        <td>{{ matiere.ordre }}</td>
+                                    </tr>
+                                {% endif %}
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                {% endfor %}
+            {% endif %}
 
         {% endif %}
 
