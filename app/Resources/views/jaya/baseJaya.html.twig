@@ -18,6 +18,7 @@
         'css/bootstrap.min.css'
         'css/fontawesome.min.css'
         'css/bootstrap-social.css'
+        'css/front/global.css'
         'css/jaya.css'
         output='css/compiled/base.css'
     %}
@@ -28,7 +29,9 @@
 
 </head>
 <body>
-{% block header %}{% endblock %}
+{% block navbar %}
+    {% include 'navbar.html.twig' %}
+{% endblock %}
 {% block body %}{% endblock %}
 {% block javascripts %}{% endblock %}
 </body>
@@ -36,11 +39,6 @@
 {% javascripts
     'js/jquery.min.js'
     'js/bootstrap.min.js'
-    'js/dataTable.js'
-    'js/dataTables.bootstrap.min.js'
-    'js/jquery.min.js'
-    'js/main.js'
-    'js/jquery1.11.3.js'
     'js/choixUe.js'
     output='js/compiled/app.js' %}
     <script src="{{ asset_url }}"></script>

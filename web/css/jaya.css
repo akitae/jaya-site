@@ -1,4 +1,5 @@
 
+
 html, body {
     height: 100%;
 }
@@ -12,10 +13,37 @@ body {
 
 .container.choixUe {
     background-color: rgba(65, 75, 86, 0.99);
-    height: 100%;
+    min-height: 100%;
     color: white;
+}
+
+.pole-title {
+    padding-left: 5px;
+    margin-bottom: 5px;
+    border-left: 2px solid rgb(9, 132, 227);
+    border-right: 2px solid rgb(9, 132, 227);
+}
+
+.pole-title > .pole-icon {
+    color: rgb(9, 132, 227);
+    padding-right: 10px;
+}
+
+.pole-title > .pole-nom {
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
+table.sortable tr.over {
+    border: 1px solid rgb(9, 132, 227);
 }
 
 td {
     color: white!important;
+}
+
+[draggable] {
+    user-select: none;
+    -webkit-user-drag: element;
+    cursor: move;
 }

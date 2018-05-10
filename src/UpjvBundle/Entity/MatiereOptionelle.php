@@ -34,7 +34,6 @@ class MatiereOptionelle
     private $matiere;
 
     /**
-     * @Gedmo\SortablePosition()
      * @ORM\Column(name="ordre", type="integer")
      */
     private $ordre;

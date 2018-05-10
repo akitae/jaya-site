@@ -5,11 +5,13 @@ namespace UpjvBundle\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use UpjvBundle\Entity\Matiere;
 use UpjvBundle\Entity\MatiereOptionelle;
 use UpjvBundle\Entity\MatiereParcours;
 use UpjvBundle\Entity\Parcours;
+use UpjvBundle\Entity\PoleDeCompetence;
 use UpjvBundle\Entity\Semestre;
 use UpjvBundle\Entity\Utilisateur;
 
@@ -24,6 +26,12 @@ class UeChoiceController extends Controller
 
     /** @var Parcours */
     private $parcours;
+
+    /** @var PoleDeCompetence */
+    private $poles;
+
+    /** @var MatiereOptionelle */
+    private $matieresOptionelles;
 
     /**
      * @Route("/choixUE", name="choix_ue")
@@ -67,41 +75,32 @@ class UeChoiceController extends Controller
 
         if ($this->semestreToUse != null && $nowDate > $this->semestreToUse->getDateDebutChoix() && $nowDate < $this->semestreToUse->getDateFinChoix()) {
 
-            $matieresOptionelles = $this->getMatieresOptionelles();
+            $this->matieresOptionelles = $this->getMatieresOptionelles();
 
-            if ($matieresOptionelles == null) {
-                $matieresOptionelles = $this->insertMatiereOptionelle();
+            if ($this->matieresOptionelles == null) {
+                $this->matieresOptionelles = $this->insertMatiereOptionelle();
             }
 
             /**
              * On récupère les pôles.
              */
-            $poles = array();
+            $this->poles = array();
             /** @var MatiereOptionelle $matieresOptionelle */
-            foreach ($matieresOptionelles as $matieresOptionelle) {
-                //var_dump($matieresOptionelle->getMatiere()->getNom());
-                array_push($poles, $matieresOptionelle->getMatiere()->getPoleDeCompetence());
+            foreach ($this->matieresOptionelles as $matieresOptionelle) {
+                array_push($this->poles, $matieresOptionelle->getMatiere()->getPoleDeCompetence());
             }
             /**
              * On rends unique la présence d'un pole.
              */
-            $poles = array_unique($poles);
-
-
+            $this->poles = array_unique($this->poles);
 
         }
-
-
-
-
-
-
 
         return $this->render("UpjvBundle:UeChoice:index.html.twig", [
             "semestre" => $this->semestreToUse,
             "nowDate" => $nowDate,
-            "poles" => $poles,
-            "matieres" => $matieresOptionelles
+            "poles" => $this->poles,
+            "matieres" => $this->matieresOptionelles
         ]);
     }
 
@@ -116,37 +115,55 @@ class UeChoiceController extends Controller
          */
         $listMatiereParcours = $this->getDoctrine()->getRepository(MatiereParcours::class)->findOptionelleByParcours($this->parcours);
 
+
         /**
-         * On récupère ensuite uniquement celle du semestre.
+         * Pour toutes les matières optionnelles du parcours on vérifie qu'elle appartiennent au semestre en cours.
          */
-        $matieresOptionelles = array();
+        $matieres = array();
+        $poles = array();
         /** @var MatiereParcours $parcoursMatiere */
         foreach ($listMatiereParcours as $parcoursMatiere) {
             /** @var Matiere $matiere */
             $matiere = $parcoursMatiere->getMatieres();
             if ($matiere->getSemestre() == $this->semestreToUse) {
-                array_push($matieresOptionelles, $matiere);
+                array_push($matieres, $matiere);
+                /**
+                 * On ajoute le pole de compétence dans un tableau.
+                 */
+                array_push($poles, $matiere->getPoleDeCompetence());
             }
         }
 
         /**
-         * Pour finir on crée les entités matières optionelles que l'on persist.
+         * On récupère les pôles de compétence de manière unique.
          */
-        $index = 1;
+        $poles = array_unique($poles);
+
+        /**
+         * On crée l'ordonnancement temporaire des choix et on persist.
+         */
         $em = $this->getDoctrine()->getManager();
-        /** @var Matiere $matiere */
-        foreach ($matieresOptionelles as $matiere) {
+        $matieresOptionelles = array();
+        /** @var PoleDeCompetence $pole */
+        foreach ($poles as $pole) {
+            /** @var int $index */
+            $index = 1;
+            /** @var Matiere $matiere */
+            foreach ($matieres as $matiere) {
+                if ($matiere->getPoleDeCompetence() == $pole) {
+                    /** @var MatiereOptionelle $matieresOptionelle */
+                    $matieresOptionelle = new MatiereOptionelle();
+                    $matieresOptionelle->setMatiere($matiere);
+                    $matieresOptionelle->setUser($this->user);
+                    $matieresOptionelle->setOrdre($index);
 
-            /** @var MatiereOptionelle $matieresOptionelle */
-            $matieresOptionelle = new MatiereOptionelle();
-            $matieresOptionelle->setMatiere($matiere);
-            $matieresOptionelle->setUser($this->user);
-            $matieresOptionelle->setOrdre($index);
+                    $index++;
 
-            $em->persist($matieresOptionelle);
-
-            $index++;
+                    $em->persist($matieresOptionelle);
+                }
+            }
         }
+
         $em->flush();
 
         return $this->getMatieresOptionelles();
@@ -161,23 +178,28 @@ class UeChoiceController extends Controller
     }
 
     /**
-     * @Route("/choixUe/position/{id}/{position}", name="choix_ue_position")
-     * @Method({"GET"})
-     * @param $id integer
-     * @param $position integer
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @Route("/choixUe/enregistrer/", name="save_choice_ue")
+     * @Method({"GET", "POST"})
      */
-    public function sortPosition ($id, $position) {
+    public function saveChoiceUe (Request $request) {
+        $arrayMatiere = $request->request->get('array_Matiere');
 
-        $em = $this->getDoctrine()->getManager();
-        $matiereOptionelle = $em->getRepository(MatiereOptionelle::class)->find($id);
-        $matiereOptionelle->setOrdre($position);
-        $em->persist($matiereOptionelle);
-        $em->flush();
+        if ($arrayMatiere != null) {
+            $em = $this->getDoctrine()->getManager();
+            foreach ($arrayMatiere as $object) {
+                $matiere = $em->getRepository(MatiereOptionelle::class)->find($object["id"]);
+                $matiere->setOrdre($object['ordre']);
 
-        $request = new Request();
+                $em->persist($matiere);
+            }
 
-        return $this->indexAction($request);
+            $em->flush();
+
+            return new JsonResponse("Vos choix d'UE optionelles sont enregistrés.");
+        } else {
+            return $this->redirectToRoute("choix_ue");
+        }
+
     }
 
 }
