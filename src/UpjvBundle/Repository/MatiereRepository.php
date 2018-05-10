@@ -24,14 +24,8 @@ class MatiereRepository extends \Doctrine\ORM\EntityRepository
      * Order all Matiere by Code
      */
     public function findAllToArray(){
-        $queryBuilder = $this->createQueryBuilder('m');
-
-        /** @var Matiere $result */
-        foreach ($queryBuilder->getQuery()->getResult() as $result){
-            $tabResult[$result->getCode()] = $result;
-        }
-        ksort($tabResult);
-        return $tabResult;
+        $queryBuilder = $this->createQueryBuilder('m')->orderBy('m.code','ASC');
+        return $queryBuilder->getQuery()->getResult();
     }
 
     public function resetMatiereUtilisateur(){

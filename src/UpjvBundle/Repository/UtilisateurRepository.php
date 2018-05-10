@@ -3,6 +3,7 @@
 namespace UpjvBundle\Repository;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
+use UpjvBundle\Entity\Matiere;
 use UpjvBundle\Entity\Utilisateur;
 
 /**
@@ -125,6 +126,44 @@ class UtilisateurRepository extends \Doctrine\ORM\EntityRepository
         }
 
         return $queryBuilder->getQuery()->getResult();
+    }
+
+    /**
+     * @param Matiere $matiere
+     * @param bool $optionnel
+     * @param bool $stagiare
+     * @return array|mixed
+     * @throws \Doctrine\DBAL\DBALException
+     * Return la liste des utilisateurs pour une matiere
+     */
+    public function findListUserByMatiere(Matiere $matiere, $optionnel = false, $stagiare = false){
+        $sql = "
+        SELECT u.id FROM utilisateur u  JOIN parcours p on u.parcours_id = p.id WHERE p.stagiare= :stagiare AND u.parcours_id IN
+        (SELECT mp.parcour_id FROM matiere JOIN matiere_parcours mp on matiere.id = mp.matieres_id WHERE matiere.id= :matiereId AND mp.optionnel = :optionnel);
+        ";
+
+        $stmt = $this->getEntityManager()->getConnection()->prepare($sql);
+        $stmt->bindValue('stagiare',$stagiare);
+        $stmt->bindValue('matiereId',$matiere->getId());
+        $stmt->bindValue('optionnel',$optionnel);
+
+        $stmt
+            ->execute();
+        $result = $stmt->fetchAll();
+        if($result == null){
+            return $result;
+        }
+        foreach ($result as $r){
+            $resultat[] = $r['id'];
+        }
+
+        return $this->createQueryBuilder('u')
+            ->where('u.id IN (:result)')
+            ->andWhere('u.roles like :roles')
+            ->setParameter('roles','%'.Utilisateur::ROLE_ETUDIANT.'%')
+            ->setParameter('result',$resultat)
+            ->getQuery()
+            ->getResult();
     }
 
 }

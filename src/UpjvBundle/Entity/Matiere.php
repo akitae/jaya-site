@@ -300,4 +300,24 @@ class Matiere
     {
         $this->placeStagiare = $placeStagiare;
     }
+
+    /**
+     * @param bool $stagiare
+     * @return int
+     */
+    public function getNbrPlaces($stagiare = false){
+        if($stagiare){
+            return $this->getPlaceStagiare();
+        }else{
+            return $this->getPlace();
+        }
+    }
+
+    public function setNbrPlaces($nbr, $stagiare = false){
+        if($stagiare){
+            $this->setPlaceStagiare($nbr);
+        }else{
+            $this->setPlace($nbr);
+        }
+    }
 }
