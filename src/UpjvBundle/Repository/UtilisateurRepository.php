@@ -4,6 +4,7 @@ namespace UpjvBundle\Repository;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
 use UpjvBundle\Entity\Matiere;
+use UpjvBundle\Entity\Semestre;
 use UpjvBundle\Entity\Utilisateur;
 
 /**
@@ -164,6 +165,23 @@ class UtilisateurRepository extends \Doctrine\ORM\EntityRepository
             ->setParameter('result',$resultat)
             ->getQuery()
             ->getResult();
+    }
+
+    public function findListUserForMatiereOptionnel(Matiere $matiere,Semestre $semestre, $ordre){
+        return $this
+            ->createQueryBuilder('u')
+            ->join('u.optionnel','o')
+            ->join('o.matiere','matiere')
+            ->join('matiere.semestre', 'semestre')
+            ->where('matiere.semestre = :semestre')
+            ->setParameter('semestre',$semestre)
+            ->andWhere('matiere = :matiere')
+            ->setParameter('matiere', $matiere)
+            ->andWhere('o.ordre = :ordre')
+            ->setParameter('ordre', $ordre)
+            ->getQuery()
+            ->getResult()
+            ;
     }
 
 }

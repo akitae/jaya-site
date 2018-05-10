@@ -62,12 +62,16 @@ class Parcours
 
     private $matiereOptionnelle;
 
+    /**
+     * @ORM\OneToMany(targetEntity="UpjvBundle\Entity\PoleDeCompetenceParcours", mappedBy="poleDeCompetence")
+     */
     private $polesDeCompetence;
 
     public function __construct()
     {
         $this->semestres =  new \Doctrine\Common\Collections\ArrayCollection();
         $this->matieres =  new \Doctrine\Common\Collections\ArrayCollection();
+        $this->polesDeCompetence =  new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -287,5 +291,31 @@ class Parcours
     public function getMatieres()
     {
         return $this->matieres;
+    }
+
+    /**
+     * Add polesDeCompetence.
+     *
+     * @param \UpjvBundle\Entity\PoleDeCompetenceParcours $polesDeCompetence
+     *
+     * @return Parcours
+     */
+    public function addPolesDeCompetence(\UpjvBundle\Entity\PoleDeCompetenceParcours $polesDeCompetence)
+    {
+        $this->polesDeCompetence[] = $polesDeCompetence;
+
+        return $this;
+    }
+
+    /**
+     * Remove polesDeCompetence.
+     *
+     * @param \UpjvBundle\Entity\PoleDeCompetenceParcours $polesDeCompetence
+     *
+     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
+     */
+    public function removePolesDeCompetence(\UpjvBundle\Entity\PoleDeCompetenceParcours $polesDeCompetence)
+    {
+        return $this->polesDeCompetence->removeElement($polesDeCompetence);
     }
 }

@@ -2,6 +2,7 @@
 
 namespace UpjvBundle\Repository;
 use UpjvBundle\Entity\Matiere;
+use UpjvBundle\Entity\PoleDeCompetence;
 
 /**
  * MatiereRepository
@@ -33,5 +34,19 @@ class MatiereRepository extends \Doctrine\ORM\EntityRepository
 
         $stmt = $this->getEntityManager()->getConnection()->prepare($rawSql);
         $stmt->execute();
+    }
+
+    public function findDistinctMatiereByPoleAndOrdre($ordre, PoleDeCompetence $poleDeCompetence, $optionnel = false){
+        return $this
+            ->createQueryBuilder('m')
+            ->join('m.optionnel','optionnel')
+            ->where('m.poleDeCompetence = :poleDeCompetence')
+            ->setParameter('poleDeCompetence', $poleDeCompetence)
+            ->andWhere('optionnel.ordre = :ordre')
+            ->setParameter('ordre',$ordre)
+            ->distinct()
+            ->getQuery()
+            ->getResult()
+            ;
     }
 }

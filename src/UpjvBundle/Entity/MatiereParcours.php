@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Optionnelle
  *
  * @ORM\Table(name="matiere_parcours")
- * @ORM\Entity(repositoryClass="UpjvBundle\Repository\OptionnelleRepository")
+ * @ORM\Entity(repositoryClass="MatiereOptionnelleRepository")
  */
 class MatiereParcours
 {

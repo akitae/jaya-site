@@ -65,6 +65,11 @@ class Matiere
     private $utilisateurs;
 
     /**
+     * @ORM\OneToMany(targetEntity="UpjvBundle\Entity\MatiereOptionelle", mappedBy="matiere")
+     */
+    private $optionnel;
+
+    /**
      * Get id.
      *
      * @return int
@@ -167,6 +172,7 @@ class Matiere
     public function __construct()
     {
         $this->poleDeCompetence = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->optionnel = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -319,5 +325,55 @@ class Matiere
         }else{
             $this->setPlace($nbr);
         }
+    }
+
+    /**
+     * Set semestre.
+     *
+     * @param \UpjvBundle\Entity\Semestre|null $semestre
+     *
+     * @return Matiere
+     */
+    public function setSemestre(\UpjvBundle\Entity\Semestre $semestre = null)
+    {
+        $this->semestre = $semestre;
+
+        return $this;
+    }
+
+    /**
+     * Add optionnel.
+     *
+     * @param \UpjvBundle\Entity\MatiereOptionelle $optionnel
+     *
+     * @return Matiere
+     */
+    public function addOptionnel(\UpjvBundle\Entity\MatiereOptionelle $optionnel)
+    {
+        $this->optionnel[] = $optionnel;
+
+        return $this;
+    }
+
+    /**
+     * Remove optionnel.
+     *
+     * @param \UpjvBundle\Entity\MatiereOptionelle $optionnel
+     *
+     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
+     */
+    public function removeOptionnel(\UpjvBundle\Entity\MatiereOptionelle $optionnel)
+    {
+        return $this->optionnel->removeElement($optionnel);
+    }
+
+    /**
+     * Get optionnel.
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getOptionnel()
+    {
+        return $this->optionnel;
     }
 }

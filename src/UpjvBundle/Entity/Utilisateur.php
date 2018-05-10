@@ -2,8 +2,9 @@
 
 namespace UpjvBundle\Entity;
 
-use FOS\UserBundle\Model\User as BaseUser;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use FOS\UserBundle\Model\User as BaseUser;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -26,8 +27,10 @@ class Utilisateur extends BaseUser
      */
     public function __construct()
     {
+        parent::__construct();
         $this->setEnabled(false);
         $this->setRoles(array());
+        $this->optionnel = new ArrayCollection();
     }
 
     /**
@@ -72,6 +75,11 @@ class Utilisateur extends BaseUser
      * @ORM\ManyToMany(targetEntity="UpjvBundle\Entity\Groupe", cascade={"persist"})
      */
     private $groupes;
+
+    /**
+     * @ORM\OneToMany(targetEntity="UpjvBundle\Entity\MatiereOptionelle", mappedBy="user")
+     */
+    private $optionnel;
 
     /**
      * @return mixed
@@ -227,4 +235,40 @@ class Utilisateur extends BaseUser
         return $this->getNom();
     }
 
+
+    /**
+     * Add optionnel.
+     *
+     * @param \UpjvBundle\Entity\MatiereOptionelle $optionnel
+     *
+     * @return Utilisateur
+     */
+    public function addOptionnel(\UpjvBundle\Entity\MatiereOptionelle $optionnel)
+    {
+        $this->optionnel[] = $optionnel;
+
+        return $this;
+    }
+
+    /**
+     * Remove optionnel.
+     *
+     * @param \UpjvBundle\Entity\MatiereOptionelle $optionnel
+     *
+     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
+     */
+    public function removeOptionnel(\UpjvBundle\Entity\MatiereOptionelle $optionnel)
+    {
+        return $this->optionnel->removeElement($optionnel);
+    }
+
+    /**
+     * Get optionnel.
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getOptionnel()
+    {
+        return $this->optionnel;
+    }
 }
