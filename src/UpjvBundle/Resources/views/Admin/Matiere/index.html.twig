@@ -24,7 +24,9 @@
                                     <th>Code</th>
                                     <th>Nom</th>
                                     <th>Semestre</th>
+                                    <th>Pole de compétence</th>
                                     <th>Nombre de place</th>
+                                    <th>Nombre de place stagiaire</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -37,7 +39,9 @@
                                                 {{ matiere.semestre.nom }}
                                             {% endif %}
                                         </td>
+                                        <td>{{ matiere.poleDeCompetence }}</td>
                                         <td>{{ matiere.place }}</td>
+                                        <td>{{ matiere.placeStagiare }}</td>
                                         <td>
                                             <button type="button" onclick="location.href='{{ path('admin_matiere_show',{'id':matiere.id}) }}';" class="btn btn-default">Voir</button>
                                             <button type="button" onclick="location.href='{{ path('admin_matiere_edit',{'id':matiere.id}) }}';" class="btn btn-primary">Modifier</button>

@@ -23,13 +23,23 @@
                         <td>{{ matiere.nom }}</td>
                     </tr>
                     <tr>
-                        <td>Nombre de places</td>
+                        <td>Nombre de places pour les non-stagiares</td>
                         <td>{{ matiere.place }}</td>
+                    </tr>
+                    <tr>
+                        <td>Nombre de places pour les stagiares</td>
+                        <td>{{ matiere.placeStagiare }}</td>
                     </tr>
                     <tr>
                         <td>Semestre</td>
                         <td>
                             {{ matiere.semestre.nom }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Pole de compétence</td>
+                        <td>
+                            {{ matiere.poleDeCompetence.nom }}
                         </td>
                     </tr>
                 </table>

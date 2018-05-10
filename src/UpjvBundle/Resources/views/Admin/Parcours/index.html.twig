@@ -42,6 +42,7 @@
                   <td>
                     <button type="button" onclick="location.href='{{ path('admin_parcours_show',{'id':parcours.id}) }}';" class="btn btn-default">Voir</button>
                     <button type="button" onclick="location.href='{{ path('admin_parcours_edit',{'id':parcours.id}) }}';" class="btn btn-primary">Modifier</button>
+                    <button type="button" onclick="location.href='{{ path('admin_poledecompetenceParcours_edit',{'id':parcours.id}) }}';" class="btn btn-primary">Modifier le nombre d'optionnel</button>
                     <button type="button" onclick="location.href='{{ path('admin_parcours_delete',{'id':parcours.id}) }}';" class="btn btn-danger">Supprimer</button>
                   </td>
                 </tr>

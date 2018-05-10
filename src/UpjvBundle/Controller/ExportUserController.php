@@ -30,11 +30,18 @@ class ExportUserController extends Controller
         $listParcours = $this->getDoctrine()->getRepository(Parcours::class)->findAll();
         $listMatieres = $this->getDoctrine()->getRepository(Matiere::class)->findAllToArray();
 
+        $listAnnee = [];
+        foreach ($listParcours as $parcour){
+            $listAnnee[] = $parcour->getAnnee();
+        }
+        $listAnnee = array_unique($listAnnee);
+
         return $this->render('UpjvBundle:Admin/ExportUser:index.html.twig',[
             'listUser' => $listUser,
             'listGroup' => $listGroup,
             'listParcours' => $listParcours,
-            'listMatieres' => $listMatieres
+            'listMatieres' => $listMatieres,
+            'listAnnee' => $listAnnee
         ]);
     }
 

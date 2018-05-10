@@ -15,6 +15,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use UpjvBundle\Entity\PoleDeCompetence;
 use UpjvBundle\Entity\Semestre;
 
 
@@ -34,12 +35,24 @@ class MatiereType extends AbstractType
             
             ->add('place', IntegerType::class,[
                 'attr' => ['class' => 'form-control '],
-                'label' => 'Nombre de places'
+                'label' => 'Nombre de places total pour les non-stagiares'
+            ])
+            ->add('placeStagiare', IntegerType::class,[
+                'attr' => ['class' => 'form-control '],
+                'label' => 'Nombre de places total pour les stagiares',
+                'empty_data' => 0
             ])
 
             ->add('semestre', EntityType::class,
                 [
                     'class' => Semestre::class,
+                    'attr' => [
+                        'class' => 'form-control'
+                    ]
+                ])
+            ->add('poleDeCompetence', EntityType::class,
+                [
+                    'class' => PoleDeCompetence::class,
                     'attr' => [
                         'class' => 'form-control'
                     ]

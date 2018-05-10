@@ -24,14 +24,6 @@ class PoleDeCompetenceType extends AbstractType
                 'attr' => ['class' => 'form-control '],
                 'label' => 'Nom'
             ])
-            ->add('matieres', EntityType::class,
-                [
-                    'class' => Matiere::class,
-                    'multiple' => true,
-                    'attr' => [
-                        'class' => 'form-control select2'
-                    ]
-                ])
             ->add('save', SubmitType::class,[
                 'label' => 'Enregistrer',
                 'attr'  => [

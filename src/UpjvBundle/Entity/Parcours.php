@@ -47,9 +47,18 @@ class Parcours
      */
     private $semestres;
 
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="stagiare", type="boolean")
+     */
+    private $stagiare;
+
     private $matieres;
 
     private $matiereOptionnelle;
+
+    private $polesDeCompetence;
 
     /**
      * Get id.
@@ -205,5 +214,37 @@ class Parcours
     public function setMatiereOptionnelle($matiereOptionnelle)
     {
         $this->matiereOptionnelle = $matiereOptionnelle;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPolesDeCompetence()
+    {
+        return $this->polesDeCompetence;
+    }
+
+    /**
+     * @param mixed $polesDeCompetence
+     */
+    public function setPolesDeCompetence($polesDeCompetence)
+    {
+        $this->polesDeCompetence = $polesDeCompetence;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isStagiare()
+    {
+        return $this->stagiare;
+    }
+
+    /**
+     * @param bool $stagiare
+     */
+    public function setStagiare($stagiare)
+    {
+        $this->stagiare = $stagiare;
     }
 }
