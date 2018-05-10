@@ -32,6 +32,11 @@ class RepartitionEtudiantController extends Controller
 
             /** Répartition des stagiares */
             $this->repartitionObligatoire(true);
+
+            if($PasDerror = true){ //todo: ne pas flush en cas d'erreur
+                $em->flush();
+            }
+
         }
 
         return $this->render('UpjvBundle:Admin/RepartitionEtudiant:index.html.twig',[
@@ -50,20 +55,21 @@ class RepartitionEtudiantController extends Controller
         /** @var Matiere $matiere */
         foreach ($allMatieres as $matiere){
             $listUserByMatiere = $em->getRepository(Utilisateur::class)
-                ->findListUserByMatiere($matiere);
+                ->findListUserByMatiere($matiere,false, $stagiare);
 
             /** @var Utilisateur $user */
             foreach ($listUserByMatiere as $user){
-                if($matiere->getNbrPlaces() > 0){
+                if($matiere->getNbrPlaces($stagiare) > 0){
                     $user->addMatiere($matiere);
                     $em->persist($user);
-                $matiere->setNbrPlaces($matiere->getNbrPlaces()-1);
+                $matiere->setNbrPlaces($matiere->getNbrPlaces($stagiare)-1,$stagiare);
                 }else{
-                    die("Le nombre d'étudiant ayant la maitère obligatoire est supérieure aux nombres de places disponible, matière :".$matiere->getNom());
+                    $Isstagiare = $stagiare==true ?'oui':'non';
+                    dump("Le nombre d'étudiant ayant la maitère obligatoire est supérieure aux nombres de places disponible, matière :".$matiere->getNom()
+                    .' Concerne les stagaires : '.$Isstagiare);die;
                 }
             }
         }
-        $em->flush();
     }
 
 
