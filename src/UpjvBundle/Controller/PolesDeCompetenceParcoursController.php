@@ -72,11 +72,6 @@ class PolesDeCompetenceParcoursController extends Controller
             return $this->redirectToRoute('admin_parcours');
         }
 
-      /** @var PoleDeCompetenceParcours $lp */
-      foreach ($listPoles as $lp){
-//          dump($lp);die;
-//        dump($lp->getPoleDeCompetence()->getId());die;
-      }
         return $this->render('UpjvBundle:Admin/PolesDeCompetenceParcours:update.html.twig',[
             'parcours' => $parcours,
             'poleDeCompetence' => $listPoleDeCompetence,

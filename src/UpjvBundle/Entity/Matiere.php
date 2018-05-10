@@ -62,6 +62,9 @@ class Matiere
 
     private $groupes;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="UpjvBundle\Entity\Utilisateur",mappedBy="matieres")
+     */
     private $utilisateurs;
 
     /**
@@ -173,6 +176,7 @@ class Matiere
     {
         $this->poleDeCompetence = new \Doctrine\Common\Collections\ArrayCollection();
         $this->optionnel = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->utilisateurs = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**

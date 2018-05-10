@@ -61,13 +61,14 @@ class Utilisateur extends BaseUser
     private $numeroEtudiant;
 
     /**
+     * Parcours
      * @ORM\ManyToOne(targetEntity="UpjvBundle\Entity\Parcours", inversedBy="parcours")
      */
     private $parcours;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Matiere", inversedBy="utilisateurs")
-     *  @ORM\OrderBy({"code" = "ASC"})
+     * @ORM\ManyToMany(targetEntity="UpjvBundle\Entity\Matiere", inversedBy="utilisateurs")
+     * @ORM\OrderBy({"code" = "ASC"})
      */
     private $matieres;
 
@@ -130,7 +131,7 @@ class Utilisateur extends BaseUser
     }
 
     /**
-     * @return mixed
+     * @return Parcours
      */
     public function getParcours()
     {
@@ -194,6 +195,7 @@ class Utilisateur extends BaseUser
     {
         return $this->groupes;
     }
+
     /**
      * @param mixed $groupes
      */
@@ -270,5 +272,22 @@ class Utilisateur extends BaseUser
     public function getOptionnel()
     {
         return $this->optionnel;
+    }
+
+    /**
+     * @param PoleDeCompetence $poleDeCompetence
+     * @return int
+     */
+    public function getNbrMatiereOptionnelByPole(PoleDeCompetence $poleDeCompetence)
+    {
+        $nbr = 0;
+        $matieres = $this->getMatieres();
+        /** @var Matiere $matiere */
+        foreach ($matieres as $matiere) {
+            if ($matiere->getPoleDeCompetence() == $poleDeCompetence && $matiere->getOptionnel()) {
+                $nbr++;
+            }
+        }
+        return $nbr;
     }
 }

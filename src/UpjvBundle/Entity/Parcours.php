@@ -63,6 +63,12 @@ class Parcours
     private $matiereOptionnelle;
 
     /**
+     * @ORM\OneToMany(targetEntity="UpjvBundle\Entity\Utilisateur",mappedBy="parcours")
+     */
+    private $utilisateur;
+
+    /**
+     *
      * @ORM\OneToMany(targetEntity="UpjvBundle\Entity\PoleDeCompetenceParcours", mappedBy="poleDeCompetence")
      */
     private $polesDeCompetence;
@@ -72,6 +78,7 @@ class Parcours
         $this->semestres =  new \Doctrine\Common\Collections\ArrayCollection();
         $this->matieres =  new \Doctrine\Common\Collections\ArrayCollection();
         $this->polesDeCompetence =  new \Doctrine\Common\Collections\ArrayCollection();
+        $this->utilisateur =  new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -179,7 +186,7 @@ class Parcours
     }
 
     /**
-     * @return mixed
+     * @return \Doctrine\Common\Collections\Collection
      */
     public function getPolesDeCompetence()
     {
@@ -317,5 +324,41 @@ class Parcours
     public function removePolesDeCompetence(\UpjvBundle\Entity\PoleDeCompetenceParcours $polesDeCompetence)
     {
         return $this->polesDeCompetence->removeElement($polesDeCompetence);
+    }
+
+    /**
+     * Add utilisateur.
+     *
+     * @param \UpjvBundle\Entity\Utilisateur $utilisateur
+     *
+     * @return Parcours
+     */
+    public function addUtilisateur(\UpjvBundle\Entity\Utilisateur $utilisateur)
+    {
+        $this->utilisateur[] = $utilisateur;
+
+        return $this;
+    }
+
+    /**
+     * Remove utilisateur.
+     *
+     * @param \UpjvBundle\Entity\Utilisateur $utilisateur
+     *
+     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
+     */
+    public function removeUtilisateur(\UpjvBundle\Entity\Utilisateur $utilisateur)
+    {
+        return $this->utilisateur->removeElement($utilisateur);
+    }
+
+    /**
+     * Get utilisateur.
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getUtilisateur()
+    {
+        return $this->utilisateur;
     }
 }

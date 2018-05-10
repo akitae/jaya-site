@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Pole De competence Parcours
  *
  * @ORM\Table(name="pole_de_competence_parcours")
- * @ORM\Entity()
+ * @ORM\Entity(repositoryClass="UpjvBundle\Repository\PoleDeCompetenceParcoursRepository")
  */
 class PoleDeCompetenceParcours
 {
