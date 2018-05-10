@@ -7,6 +7,7 @@
  */
 
 namespace UpjvBundle\Controller;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Routing\Annotation\Route;
 use UpjvBundle\Entity\Matiere;
@@ -32,12 +33,12 @@ class RepartitionEtudiantController extends Controller
             $semestre = $em->getRepository(Semestre::class)->find($_POST['repartition']);
 
             //TODO: faire pour le semestre choisi aussi pour obligatoire!
-            $this->repartitionObligatoire();
+//            $this->repartitionObligatoire();
             $this->repartitionOptionnel($semestre);
 
 
             /** Répartition des stagiares */
-            $this->repartitionObligatoire(true);
+//            $this->repartitionObligatoire(true);
 
             if($PasDerror = true){ //todo: ne pas flush en cas d'erreur
                 $em->flush();
@@ -104,8 +105,7 @@ class RepartitionEtudiantController extends Controller
                     }
 
                     if($em->getRepository(MatiereOptionelle::class)->countNbrOptionEtudiantWant($matiere) <= $matiere->getNbrPlaces($stagiaire)){
-
-                        $this->assignAllStudentForMatiere($matiere);
+                        $this->assignAllStudentForMatiere($arrayListUser,$matiere);
                     }
                     else{
                         while($matiere->getNbrPlaces($stagiaire)>0 && $arrayListUser != null){
@@ -118,6 +118,7 @@ class RepartitionEtudiantController extends Controller
 
             }
         }
+        $em->flush();
     }
 
     public function assignChoiceToUser($arrayChoiceUser,Matiere $matiere, PoleDeCompetence $poleDeCompetence, $order){
@@ -144,5 +145,14 @@ class RepartitionEtudiantController extends Controller
         }
 
         return $arrayChoiceUser;
+    }
+
+    public function assignAllStudentForMatiere(ArrayCollection $arrayListUser,Matiere $matiere){
+        /** @var Utilisateur $user */
+        foreach ($arrayListUser as $user){
+            $user->addMatiere($matiere);
+            $this->getDoctrine()->getManager()->persist($user);
+        }
+
     }
 }
