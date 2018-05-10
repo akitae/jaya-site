@@ -1,48 +1,42 @@
 
-
-html, body {
-    height: 100%;
-}
-
-body {
-    background-image: url("../images/code_coffee.jpg");
-    background-position: top;
-    background-repeat: no-repeat;
-    background-size: cover;
-}
-
-.container.choixUe {
-    background-color: rgba(65, 75, 86, 0.99);
-    min-height: 100%;
+.choixUe {
+    background-color: rgba(65, 75, 86, 0.95);
     color: white;
+    border-radius: 2px;
+    padding: 0 10px 20px 10px;
+    flex: 1 1 auto;
 }
 
-.pole-title {
+.choixUe .semestre-title {
+    border-bottom: 2px solid white;
+}
+
+.choixUe .pole-title {
     padding-left: 5px;
     margin-bottom: 5px;
     border-left: 2px solid rgb(9, 132, 227);
     border-right: 2px solid rgb(9, 132, 227);
 }
 
-.pole-title > .pole-icon {
+.choixUe .pole-title > .pole-icon {
     color: rgb(9, 132, 227);
     padding-right: 10px;
 }
 
-.pole-title > .pole-nom {
+.choixUe .pole-title > .pole-nom {
     font-size: 1.2em;
     font-weight: bold;
 }
 
-table.sortable tr.over {
+.choixUe table.sortable tr.over {
     border: 1px solid rgb(9, 132, 227);
 }
 
-td {
+.choixUe table.sortable tr td {
     color: white!important;
 }
 
-[draggable] {
+.choixUe [draggable] {
     user-select: none;
     -webkit-user-drag: element;
     cursor: move;

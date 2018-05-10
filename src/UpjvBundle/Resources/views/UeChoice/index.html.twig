@@ -4,12 +4,12 @@
 {% endblock %}
 {% block body %}
 
-    <div class="container choixUe">
+    <div class="choixUe">
         {%  if semestre == null %}
-            <div class="row">
-                <div class="col-md-offset-3 col-md-5">
-                    <div class="alert alert-info">
-                        <b>Nous sommes actuellement hors semestre, aucun choix d'UE n'est prévu !</b>
+            <div class="row margin-top">
+                <div class="col-md-12">
+                    <div class="alert alert-warning">
+                        <b>Nous sommes actuellement hors semestre, aucun choix d'UEs n'est prévu !</b>
                     </div>
                 </div>
             </div>
@@ -18,25 +18,25 @@
         {% if semestre != null %}
             <div class="row">
                 <div class="col-md-12">
-                    <div class="page-header">
-                        <h1>{{ semestre.nom }}</h1>
+                    <div class="semestre-title">
+                        <h3>{{ semestre.nom }}</h3>
                     </div>
                 </div>
             </div>
 
             <div class="row">
                 <div class="col-md-12">
-                    <h4>
+                    <h5>
                         <div class="alert alert-info">
                             {% if nowDate < semestre.dateDebutChoix %}
                                 Vous pouvez choisir vos unités d'enseignements optionelles à partir de la date du <b>{{ semestre.dateDebutChoix|date("d/m/Y") }}</b> à <b>{{ semestre.dateDebutChoix|date('H\\hi') }}</b>.
                             {% elseif nowDate > semestre.dateFinChoix %}
                                 Le choix des unités d'enseignements optionelles est cloturés.
                             {% else %}
-                                Le choix des unités d'enseignement se cloture le <b>{{ semestre.dateFinChoix|date("d/m/Y") }}</b> à <b>{{ semestre.dateFinChoix|date("H\\hi") }}</b>.
+                                Le choix des unités d'enseignements se cloture le <b>{{ semestre.dateFinChoix|date("d/m/Y") }}</b> à <b>{{ semestre.dateFinChoix|date("H\\hi") }}</b>.
                             {% endif %}
                         </div>
-                    </h4>
+                    </h5>
                 </div>
             </div>
 
