@@ -59,7 +59,7 @@ class Semestre
     private $matieres;
 
     /**
-     * @ORM\ManyToMany(targetEntity="UpjvBundle\Entity\Parcours", cascade={"persist"})
+     *  @ORM\ManyToMany(targetEntity="UpjvBundle\Entity\Parcours", mappedBy="semestres")
      */
     private $parcours;
 

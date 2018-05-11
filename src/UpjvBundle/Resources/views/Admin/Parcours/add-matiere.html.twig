@@ -1,0 +1,62 @@
+{% extends 'baseAdmin.html.twig' %}
+
+{% block body %}
+<div class="panel panel-default">
+    <div class="col-lg-12">
+         <h1 class="page-header">Gestion des parcours</h1>
+    </div>
+    <div class="col-lg-12">
+         <!-- /.panel-heading -->
+         <div class="panel panel-default">
+            <div class="panel-heading">
+                Ajouter ou supprimer des matières
+            </div>
+            <div class="panel-body">
+                <form action="{{ path('admin_parcours_matiere_edit', {'id': parcours }) }}" method="post">
+                    <table>
+                        <tr>
+                            <td style="padding-right: 13px;">Ajouter </td>
+                            <td style="padding-right: 13px;">Optionnelle </td>
+                            <td style="padding-right: 13px;">Nom </td>
+                            <td> Remarque : Veuillez cocher "Ajouter" et "Optionnel" si vous souhaitez ajouter une matiere optionnelle</td>
+                        </tr>
+                        {% for matiere in allMatieres %}
+                            <tr style="border-bottom-style: solid;border-bottom-width: 2px;">
+                                {% set id = matiere.id %}
+                                <td>
+                                    <input type="checkbox"
+                                           value="{{ matiere.id }}" id="{{ 'upjvbundle_ParcoursType_matieres_'~ matiere.id }}"
+                                           name="matieres[]" {% if listMatiere and matiere.id in listMatiere %} checked="checked" {% endif %}></td>
+                                <td>
+                                    <input type="checkbox" value="{{ matiere.id }}"
+                                           id="{{ 'upjvbundle_ParcoursType_matiereOptionnelle_'~ matiere.id }}"
+                                           name="matiereOptionnelle[]"
+                                            {% if matiere.id in listOptionnel %} checked="checked" {% endif %}
+                                           onclick="selectMatiere(this)">
+                                </td>
+                                <td></td>
+                                <td>{{ matiere }}</td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+                    <br>
+                    <input type="submit" class="btn btn-primary pull-right" value="Enregistrer">
+                    <button type="button" onclick="location.href='/admin/parcours';" class="btn btn-default pull-left"> Retour </button>
+                </form>
+            </div>
+         </div>
+    </div>
+</div>
+
+    <script>
+        function selectMatiere(element){
+            var id = "#upjvbundle_ParcoursType_matieres_".concat($(element)[0].value);
+            if(!$(element)[0].checked){
+                $(id).remove('checked');
+            }else{
+                $(id).attr('checked',true);
+            }
+        }
+    </script>
+
+{% endblock %}

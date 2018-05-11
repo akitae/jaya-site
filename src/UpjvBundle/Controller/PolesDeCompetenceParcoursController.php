@@ -46,6 +46,7 @@ class PolesDeCompetenceParcoursController extends Controller
                 foreach ($_POST as $name => $nbr){
                     $idPole = explode('_',$name);
                     $pole = $em->getRepository(PoleDeCompetence::class)->find($idPole[1]);
+                    /** @var PoleDeCompetenceParcours $poleDeCompetenceParcours */
                     $poleDeCompetenceParcours = $em->getRepository(PoleDeCompetenceParcours::class)->findOneBy([
                         'parcours' => $parcours,
                         'poleDeCompetence' => $pole

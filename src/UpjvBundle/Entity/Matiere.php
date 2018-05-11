@@ -43,6 +43,11 @@ class Matiere
     private $place;
 
     /**
+     * @ORM\OneToMany(targetEntity="UpjvBundle\Entity\MatiereParcours",mappedBy="matieres")
+     */
+    private $parcours;
+
+    /**
      * @var int
      *
      * @ORM\Column(name="place_stagiare", type="integer")
@@ -62,7 +67,15 @@ class Matiere
 
     private $groupes;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="UpjvBundle\Entity\Utilisateur",mappedBy="matieres")
+     */
     private $utilisateurs;
+
+    /**
+     * @ORM\OneToMany(targetEntity="UpjvBundle\Entity\MatiereOptionelle", mappedBy="matiere")
+     */
+    private $optionnel;
 
     /**
      * Get id.
@@ -167,6 +180,9 @@ class Matiere
     public function __construct()
     {
         $this->poleDeCompetence = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->optionnel = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->utilisateurs = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->parcours = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -299,5 +315,111 @@ class Matiere
     public function setPlaceStagiare($placeStagiare)
     {
         $this->placeStagiare = $placeStagiare;
+    }
+
+    /**
+     * @param bool $stagiare
+     * @return int
+     */
+    public function getNbrPlaces($stagiare = false){
+        if($stagiare){
+            return $this->getPlaceStagiare();
+        }else{
+            return $this->getPlace();
+        }
+    }
+
+    public function setNbrPlaces($nbr, $stagiare = false){
+        if($stagiare){
+            $this->setPlaceStagiare($nbr);
+        }else{
+            $this->setPlace($nbr);
+        }
+    }
+
+    /**
+     * Set semestre.
+     *
+     * @param \UpjvBundle\Entity\Semestre|null $semestre
+     *
+     * @return Matiere
+     */
+    public function setSemestre(\UpjvBundle\Entity\Semestre $semestre = null)
+    {
+        $this->semestre = $semestre;
+
+        return $this;
+    }
+
+    /**
+     * Add optionnel.
+     *
+     * @param \UpjvBundle\Entity\MatiereOptionelle $optionnel
+     *
+     * @return Matiere
+     */
+    public function addOptionnel(\UpjvBundle\Entity\MatiereOptionelle $optionnel)
+    {
+        $this->optionnel[] = $optionnel;
+
+        return $this;
+    }
+
+    /**
+     * Remove optionnel.
+     *
+     * @param \UpjvBundle\Entity\MatiereOptionelle $optionnel
+     *
+     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
+     */
+    public function removeOptionnel(\UpjvBundle\Entity\MatiereOptionelle $optionnel)
+    {
+        return $this->optionnel->removeElement($optionnel);
+    }
+
+    /**
+     * Get optionnel.
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getOptionnel()
+    {
+        return $this->optionnel;
+    }
+
+    /**
+     * Add parcour.
+     *
+     * @param \UpjvBundle\Entity\MatiereParcours $parcour
+     *
+     * @return Matiere
+     */
+    public function addParcour(\UpjvBundle\Entity\MatiereParcours $parcour)
+    {
+        $this->parcours[] = $parcour;
+
+        return $this;
+    }
+
+    /**
+     * Remove parcour.
+     *
+     * @param \UpjvBundle\Entity\MatiereParcours $parcour
+     *
+     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
+     */
+    public function removeParcour(\UpjvBundle\Entity\MatiereParcours $parcour)
+    {
+        return $this->parcours->removeElement($parcour);
+    }
+
+    /**
+     * Get parcours.
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getParcours()
+    {
+        return $this->parcours;
     }
 }

@@ -37,6 +37,13 @@ class MatiereParcours
      */
     private $optionnel = false;
 
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->matieres = new \Doctrine\Common\Collections\ArrayCollection();
+    }
 
     /**
      * Get id.
@@ -49,46 +56,32 @@ class MatiereParcours
     }
 
     /**
-     * Constructor
+     * Set optionnel.
+     *
+     * @param bool $optionnel
+     *
+     * @return MatiereParcours
      */
-    public function __construct()
+    public function setOptionnel($optionnel)
     {
-        $this->matieres = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->optionnel = $optionnel;
+
+        return $this;
     }
 
     /**
-     * @return mixed
+     * Get optionnel.
+     *
+     * @return bool
      */
-    public function getMatieres()
+    public function getOptionnel()
     {
-        return $this->matieres;
+        return $this->optionnel;
     }
 
     /**
-     * @param mixed $matieres
-     */
-    public function setMatieres($matieres)
-    {
-        $this->matieres = $matieres;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getParcours()
-    {
-        return $this->parcours;
-    }
-
-    /**
-     * @param mixed $parcours
-     */
-    public function setParcours($parcours)
-    {
-        $this->parcours = $parcours;
-    }
-
-    /**
+     * Get optionnel.
+     *
      * @return bool
      */
     public function isOptionnel()
@@ -97,10 +90,50 @@ class MatiereParcours
     }
 
     /**
-     * @param bool $optionnel
+     * Set matieres.
+     *
+     * @param \UpjvBundle\Entity\Matiere|null $matieres
+     *
+     * @return MatiereParcours
      */
-    public function setOptionnel($optionnel)
+    public function setMatieres(\UpjvBundle\Entity\Matiere $matieres = null)
     {
-        $this->optionnel = $optionnel;
+        $this->matieres = $matieres;
+
+        return $this;
+    }
+
+    /**
+     * Get matieres.
+     *
+     * @return \UpjvBundle\Entity\Matiere|null
+     */
+    public function getMatieres()
+    {
+        return $this->matieres;
+    }
+
+    /**
+     * Set parcours.
+     *
+     * @param \UpjvBundle\Entity\Parcours|null $parcours
+     *
+     * @return MatiereParcours
+     */
+    public function setParcours(\UpjvBundle\Entity\Parcours $parcours = null)
+    {
+        $this->parcours = $parcours;
+
+        return $this;
+    }
+
+    /**
+     * Get parcours.
+     *
+     * @return \UpjvBundle\Entity\Parcours|null
+     */
+    public function getParcours()
+    {
+        return $this->parcours;
     }
 }

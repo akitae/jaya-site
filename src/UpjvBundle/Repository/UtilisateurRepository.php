@@ -3,6 +3,8 @@
 namespace UpjvBundle\Repository;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
+use UpjvBundle\Entity\Matiere;
+use UpjvBundle\Entity\Semestre;
 use UpjvBundle\Entity\Utilisateur;
 
 /**
@@ -141,6 +143,77 @@ class UtilisateurRepository extends \Doctrine\ORM\EntityRepository
             ->orderBy('e.nom');
 
         return $queryBuilder->getQuery()->getResult();
+    }
+
+    /**
+     * @param Matiere $matiere
+     * @param bool $optionnel
+     * @param bool $stagiare
+     * @return array|mixed
+     * @throws \Doctrine\DBAL\DBALException
+     * Return la liste des utilisateurs pour une matiere
+     */
+    public function findListUserByMatiere(Matiere $matiere, Semestre $semestre, $optionnel = false, $stagiare = false){
+        $sql = "
+        SELECT u.id FROM utilisateur u  JOIN parcours p on u.parcours_id = p.id WHERE p.stagiare= :stagiare AND u.parcours_id IN
+        (SELECT mp.parcours_id FROM matiere JOIN matiere_parcours mp on matiere.id = mp.matieres_id WHERE matiere.id= :matiereId AND mp.optionnel = :optionnel AND matiere.semestre_id = :semestre);
+        ";
+
+        $stmt = $this->getEntityManager()->getConnection()->prepare($sql);
+        $stmt->bindValue('stagiare',$stagiare);
+        $stmt->bindValue('matiereId',$matiere->getId());
+        $stmt->bindValue('optionnel',$optionnel);
+        $stmt->bindValue('semestre',$semestre->getId());
+
+        $stmt
+            ->execute();
+        $result = $stmt->fetchAll();
+        if($result == null){
+            return $result;
+        }
+        foreach ($result as $r){
+            $resultat[] = $r['id'];
+        }
+
+        return $this->createQueryBuilder('u')
+            ->where('u.id IN (:result)')
+            ->andWhere('u.roles like :roles')
+            ->setParameter('roles','%'.Utilisateur::ROLE_ETUDIANT.'%')
+            ->setParameter('result',$resultat)
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findListUserForMatiereOptionnel(Matiere $matiere,Semestre $semestre, $ordre, $stagiare){
+        return $this
+            ->createQueryBuilder('u')
+            ->join('u.optionnel','o')
+            ->join('o.matiere','matiere')
+            ->join('matiere.semestre', 'semestre')
+            ->join('u.parcours','parcours')
+            ->where('matiere.semestre = :semestre')
+            ->setParameter('semestre',$semestre)
+            ->andWhere('matiere = :matiere')
+            ->setParameter('matiere', $matiere)
+            ->andWhere('o.ordre = :ordre')
+            ->setParameter('ordre', $ordre)
+            ->andWhere('parcours.stagiare = :stagiaire')
+            ->setParameter('stagiaire',$stagiare)
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
+    public function getUniqueListUserOptionnelByPole($poleDeCompetence){
+        return $this
+            ->createQueryBuilder('u')
+            ->join('u.optionnel','optionnel')
+            ->join('optionnel.matiere','matiere')
+            ->where('matiere.poleDeCompetence = :poleDeCompetence')
+            ->setParameter('poleDeCompetence',$poleDeCompetence)
+            ->getQuery()
+            ->getResult()
+            ;
     }
 
 }
