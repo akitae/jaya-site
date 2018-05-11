@@ -43,25 +43,6 @@ class ParcoursType extends AbstractType
         'class' => 'form-control select2'
       ]
     ])
-    ->add('matieres', EntityType::class,
-        [
-            'class' => Matiere::class,
-            'query_builder' => function(MatiereRepository $er)
-            {
-                return $er->findAll();
-            },
-            'multiple' => true,
-            'expanded' => true,
-            'attr' => [
-                'hidden' => 'hidden'
-            ]
-        ])
-    ->add('matiereOptionnelle', EntityType::class,
-        [
-            'class' => Matiere::class,
-            'multiple' => true,
-            'expanded' => true
-        ])
     ->add('stagiare', CheckboxType::class,
         [
             'required' => false,

@@ -80,6 +80,16 @@ class MatiereParcours
     }
 
     /**
+     * Get optionnel.
+     *
+     * @return bool
+     */
+    public function isOptionnel()
+    {
+        return $this->optionnel;
+    }
+
+    /**
      * Set matieres.
      *
      * @param \UpjvBundle\Entity\Matiere|null $matieres
