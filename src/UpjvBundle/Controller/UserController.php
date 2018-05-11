@@ -13,6 +13,7 @@ use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Routing\Annotation\Route;
 use UpjvBundle\Entity\Utilisateur;
 use UpjvBundle\Form\UtilisateurType;
+use UpjvBundle\Repository\MatiereParcoursRepository;
 
 class UserController extends Controller
 {
