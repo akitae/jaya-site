@@ -133,7 +133,7 @@ class UserController extends Controller
         ]);
     }
     /**
-     * @Route("/admin/user/validateAll", name="admin_validate_all_user")
+     * @Route("/admin/validateAll", name="admin_validate_all_user")
      * @return mixed
      */
     public function validateAllAction()
@@ -149,5 +149,43 @@ class UserController extends Controller
          return $this->redirectToRoute('admin_user');
     }
     
+    /**
+     * @Route("/admin/validateUser", name="admin_validate_some_user")
+     * @return mixed
+     */
+    public function validateSomeAction()
+    {
+        $em = $this->getDoctrine()->getManager();
+ 
+        if (!empty($_POST)) {
+            try{
+              
+                foreach ($_POST as $name => $value){
+                    $idUser = explode('_',$name);
+       
+                    if($value === 'on')
+                    {
+                        $user = $em->getRepository(Utilisateur::class)->find($idUser[1]);
+                        $user->setEnabled(true);
+                        $em->persist($user);
+                        
+                    
+                    }
+                }
+                $em->flush();
+                $this->get('session')->getFlashBag()->add('success', 'Les étudiants sélectionnés ont été validés.');
+               
+                
+                }catch (\Exception $e){
+                    $this->get('session')->getFlashBag()->add('erreur', 'Une erreur s\'est produite lors de l\'enregistrement. '.$e->getMessage());
+                     return $this->redirectToRoute('admin_user');
+                }
+
+             
+            }
+
+            return $this->redirectToRoute('admin_user');
+         
+    }
 
 }
