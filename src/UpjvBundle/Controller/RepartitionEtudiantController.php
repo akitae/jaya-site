@@ -33,16 +33,14 @@ class RepartitionEtudiantController extends Controller
             $em->getRepository(Matiere::class)->resetMatiereUtilisateur();
             $semestre = $em->getRepository(Semestre::class)->find($_POST['repartition']);
 
-            //TODO: faire pour le semestre choisi aussi pour obligatoire!
-//            $this->repartitionObligatoire();
+            $this->repartitionObligatoire($semestre);
             $this->repartitionOptionnel($semestre);
 
-
             /** Répartition des stagiares */
-//            $this->repartitionObligatoire(true);
+            $this->repartitionObligatoire($semestre,true);
+            $this->repartitionOptionnel($semestre,true);
 
-            if($PasDerror = true){ //todo: ne pas flush en cas d'erreur
-                $em->flush();
+            if($PasDerror = true){ //todo: gérer les erreurs en ammont car on perd les données "place"
             }
 
         }
@@ -56,14 +54,13 @@ class RepartitionEtudiantController extends Controller
     /**
      * @param bool $stagiare
      */
-    public function repartitionObligatoire($stagiare = false){
+    public function repartitionObligatoire($semestre, $stagiare = false){
         $em= $this->getDoctrine()->getManager();
         $allMatieres = $em->getRepository(Matiere::class)->findAllToArray();
 
         /** @var Matiere $matiere */
         foreach ($allMatieres as $matiere){
-            $listUserByMatiere = $em->getRepository(Utilisateur::class)
-                ->findListUserByMatiere($matiere,false, $stagiare);
+            $listUserByMatiere = $em->getRepository(Utilisateur::class)->findListUserByMatiere($matiere,$semestre,false, $stagiare);
 
             /** @var Utilisateur $user */
             foreach ($listUserByMatiere as $user){
@@ -85,82 +82,92 @@ class RepartitionEtudiantController extends Controller
         $allPole = $em->getRepository(PoleDeCompetence::class)->findAll();
 
         foreach ($allPole as $poleDeCompetence){
-
-            $allChoice = $em->getRepository(MatiereOptionelle::class)->findBySemestre($semestre);
-
-//            /** @var MatiereOptionelle $choice */
-//            foreach ($allChoice as $choice){
-//                $arrayChoice[$choice->getOrdre()] = $choice;
-//            }
-
-
             $ordre = 1;
-            $arrayChoice[$ordre] = 'debut';
+            $ordreMax = $em->getRepository(MatiereOptionelle::class)->getNumberOrdreMaxForPoleDeCompetence($poleDeCompetence);
 
-            while($arrayChoice[$ordre] != null){
+            while($ordre<=$ordreMax){
                 $listMatiereOrderByOrdre = $em->getRepository(Matiere::class)->findDistinctMatiereByPoleAndOrdre($ordre, $poleDeCompetence);
+
+                $arrayChoice = [];
+                /** @var Matiere $matiere */
+                foreach ($listMatiereOrderByOrdre as $matiere){
+                    $tmp = $em->getRepository(Utilisateur::class)->findListUserForMatiereOptionnel($matiere, $semestre, $ordre);
+                    for($i=0; $i<count($tmp);$i++){
+                        $arrayChoice[$matiere->getId()][] = $tmp[$i];
+                    }
+                }
 
                 /** @var Matiere $matiere */
                 foreach ($listMatiereOrderByOrdre as $matiere){
-                    $listUserForMatiereOptionnel = $em->getRepository(Utilisateur::class)->findListUserForMatiereOptionnel($matiere, $semestre, $ordre);
+                    if(isset($arrayChoice[$matiere->getId()])){
+                        $arrayChoice = $this->deleteUserIfHaveMatiereByPole($arrayChoice,$poleDeCompetence);
 
-//                    dump($listUserForMatiereOptionnel);die;
-                    $arrayChoice[$ordre] = [];
-                    for($i=0; $i<count($listUserForMatiereOptionnel);$i++){
-                        $arrayChoice[$ordre][] = $listUserForMatiereOptionnel[$i];
-                    }
+                        $nbrEtudiant = intval($em->getRepository(MatiereOptionelle::class)->countNbrOptionEtudiantWant($matiere));
+                        if($nbrEtudiant <= $matiere->getNbrPlaces($stagiaire)){
 
-                    if(intval($em->getRepository(MatiereOptionelle::class)->countNbrOptionEtudiantWant($matiere)) <= $matiere->getNbrPlaces($stagiaire)){
-                        $this->assignAllStudentForMatiere($arrayChoice,$matiere,$ordre);
-//                        TODO: delete a choice
-                    }
-                    else{
-                        while($matiere->getNbrPlaces($stagiaire)>0 && !empty($arrayChoice[$ordre])){
-                            $arrayChoice =  $this->assignChoiceToUser($arrayChoice,$matiere, $poleDeCompetence,$ordre);
+                            $this->assignAllStudentForMatiere($arrayChoice[$matiere->getId()],$matiere,$poleDeCompetence,$ordre);
+                            $matiere->setNbrPlaces($matiere->getNbrPlaces($stagiaire)-$nbrEtudiant,$stagiaire);
+                            unset($arrayChoice[$matiere->getId()]);
+                        }
+                        else{
+                            while($matiere->getNbrPlaces($stagiaire)>0 && !empty($arrayChoice[$matiere->getId()])){
+                                $arrayChoice[$matiere->getId()] =  $this->assignChoiceToUser($arrayChoice[$matiere->getId()],$matiere, $poleDeCompetence,$ordre);
+                                $matiere->setNbrPlaces($matiere->getNbrPlaces($stagiaire)-1,$stagiaire);
+                            }
+                            unset($arrayChoice[$matiere->getId()]);
                         }
                     }
                 }
-
-                if(empty($arrayChoice[$ordre])) {
-                    unset($arrayChoice[$ordre]);
-                    $ordre++;
-                }
+                $em->flush();
+                $ordre++;
             }
         }
-
-        $em->flush();
     }
 
     public function assignChoiceToUser($arrayChoiceUser,Matiere $matiere, PoleDeCompetence $poleDeCompetence,$ordre){
         $em = $this->getDoctrine()->getManager();
-        $nbrRandom = rand(0,count($arrayChoiceUser[$ordre])-1);
-        $arrayChoiceUser[$ordre] = array_values($arrayChoiceUser[$ordre]); //on réordonne le tableau
-        $user = $arrayChoiceUser[$ordre][$nbrRandom];
+        $nbrRandom = rand(0,count($arrayChoiceUser)-1);
+        $arrayChoiceUser = array_values($arrayChoiceUser); //on réordonne le tableau
+        $user = $arrayChoiceUser[$nbrRandom];
 
         if(! $user instanceof Utilisateur){
             dump("erreur ce n'est pas un user ",$user);die;
         }
         $user->addMatiere($matiere);
-        unset($arrayChoiceUser[$ordre][$nbrRandom]);
-
-        if($user->getNbrMatiereOptionnelByPole($poleDeCompetence) >= $em->getRepository(PoleDeCompetenceParcours::class)->getNbrMatiereOptionnelMustHaveUserByPole($user,$poleDeCompetence)){
-        //l'utilisateur a tous ces choix pour le pôle, on lui enlève les autres choix pour le pole
-        foreach ($arrayChoiceUser[$ordre] as $userContent){
-                if($userContent instanceof Utilisateur and $userContent===$user){
-                    unset($arrayChoiceUser[$ordre][$userContent]);
-                }
-            }
-        }
+        unset($arrayChoiceUser[$nbrRandom]);
 
         return $arrayChoiceUser;
     }
 
-    public function assignAllStudentForMatiere($arrayListUser,Matiere $matiere,$ordre){
+    public function assignAllStudentForMatiere($arrayListUser,Matiere $matiere,PoleDeCompetence $poleDeCompetence, $ordre){
         /** @var Utilisateur $user */
-        foreach ($arrayListUser[$ordre] as $user){
+        foreach ($arrayListUser as $user){
             $user->addMatiere($matiere);
             $this->getDoctrine()->getManager()->persist($user);
         }
+        return $arrayListUser;
 
+    }
+
+    public function deleteUserIfHaveMatiereByPole($array, PoleDeCompetence $poleDeCompetence)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $listUser = $em->getRepository(Utilisateur::class)->getUniqueListUserOptionnelByPole($poleDeCompetence);
+
+        /** @var Utilisateur $user */
+        foreach ($listUser as $user) {
+            if ($em->getRepository(Matiere::class)->getNbrMatiereOptionnelByPole($user,$poleDeCompetence,true) >=
+                $em->getRepository(PoleDeCompetenceParcours::class)->getNbrMatiereOptionnelMustHaveUserByPole($user, $poleDeCompetence)) {
+                foreach ($array as $nomMatiere => $matiere) {
+                    foreach ($matiere as $key => $userContent) {
+                        if ($user === $userContent) {
+                            unset($array[$nomMatiere][$key]);
+                        }
+                    }
+                }
+            }
+        }
+        return $array;
     }
 }

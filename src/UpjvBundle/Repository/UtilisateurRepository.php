@@ -137,16 +137,17 @@ class UtilisateurRepository extends \Doctrine\ORM\EntityRepository
      * @throws \Doctrine\DBAL\DBALException
      * Return la liste des utilisateurs pour une matiere
      */
-    public function findListUserByMatiere(Matiere $matiere, $optionnel = false, $stagiare = false){
+    public function findListUserByMatiere(Matiere $matiere, Semestre $semestre, $optionnel = false, $stagiare = false){
         $sql = "
         SELECT u.id FROM utilisateur u  JOIN parcours p on u.parcours_id = p.id WHERE p.stagiare= :stagiare AND u.parcours_id IN
-        (SELECT mp.parcour_id FROM matiere JOIN matiere_parcours mp on matiere.id = mp.matieres_id WHERE matiere.id= :matiereId AND mp.optionnel = :optionnel);
+        (SELECT mp.parcour_id FROM matiere JOIN matiere_parcours mp on matiere.id = mp.matieres_id WHERE matiere.id= :matiereId AND mp.optionnel = :optionnel AND matiere.semestre_id = :semestre);
         ";
 
         $stmt = $this->getEntityManager()->getConnection()->prepare($sql);
         $stmt->bindValue('stagiare',$stagiare);
         $stmt->bindValue('matiereId',$matiere->getId());
         $stmt->bindValue('optionnel',$optionnel);
+        $stmt->bindValue('semestre',$semestre->getId());
 
         $stmt
             ->execute();
@@ -179,6 +180,18 @@ class UtilisateurRepository extends \Doctrine\ORM\EntityRepository
             ->setParameter('matiere', $matiere)
             ->andWhere('o.ordre = :ordre')
             ->setParameter('ordre', $ordre)
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
+    public function getUniqueListUserOptionnelByPole($poleDeCompetence){
+        return $this
+            ->createQueryBuilder('u')
+            ->join('u.optionnel','optionnel')
+            ->join('optionnel.matiere','matiere')
+            ->where('matiere.poleDeCompetence = :poleDeCompetence')
+            ->setParameter('poleDeCompetence',$poleDeCompetence)
             ->getQuery()
             ->getResult()
             ;

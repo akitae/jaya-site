@@ -2,6 +2,7 @@
 
 namespace UpjvBundle\Repository;
 use UpjvBundle\Entity\Matiere;
+use UpjvBundle\Entity\PoleDeCompetence;
 use UpjvBundle\Entity\Semestre;
 
 /**
@@ -32,5 +33,23 @@ class MatiereOptionelleRepository extends \Doctrine\ORM\EntityRepository
             ->getQuery()
             ->getSingleScalarResult()
             ;
+    }
+
+    public function getNumberOrdreMaxForPoleDeCompetence(PoleDeCompetence $poleDeCompetence){
+        $result =  $this
+            ->createQueryBuilder('o')
+            ->select('MAX(o.ordre)')
+            ->join('o.matiere','matiere')
+            ->where('matiere.poleDeCompetence = :poleDeCompetence')
+            ->setParameter('poleDeCompetence',$poleDeCompetence)
+            ->getQuery()
+            ->getResult()
+            ;
+
+        if($result == null){
+            return null;
+        }else{
+            return intval($result[0][1]);
+        }
     }
 }

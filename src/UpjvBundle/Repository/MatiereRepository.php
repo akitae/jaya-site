@@ -1,8 +1,8 @@
 <?php
 
 namespace UpjvBundle\Repository;
-use UpjvBundle\Entity\Matiere;
 use UpjvBundle\Entity\PoleDeCompetence;
+use UpjvBundle\Entity\Utilisateur;
 
 /**
  * MatiereRepository
@@ -30,7 +30,7 @@ class MatiereRepository extends \Doctrine\ORM\EntityRepository
     }
 
     public function resetMatiereUtilisateur(){
-        $rawSql = "DELETE FROM utilisateur_matiere";
+        $rawSql = "DELETE FROM utilisateur_matiere WHERE matiere_id IN (SELECT matiere.id FROM matiere WHERE matiere.semestre_id = 1)";
 
         $stmt = $this->getEntityManager()->getConnection()->prepare($rawSql);
         $stmt->execute();
@@ -48,5 +48,24 @@ class MatiereRepository extends \Doctrine\ORM\EntityRepository
             ->getQuery()
             ->getResult()
             ;
+    }
+
+    public function getNbrMatiereOptionnelByPole(Utilisateur $user,PoleDeCompetence $poleDeCompetence,$optionnel){
+        $sql = "SELECT COUNT(*) FROM matiere JOIN utilisateur_matiere u on matiere.id = u.matiere_id JOIN matiere_parcours mp on matiere.id = mp.matieres_id
+WHERE utilisateur_id = :user AND pole_de_competence_id = :pole AND mp.optionnel = :optionnel";
+
+        $stmt = $this->getEntityManager()->getConnection()->prepare($sql);
+        $stmt->bindValue('user',$user->getId());
+        $stmt->bindValue('pole',$poleDeCompetence->getId());
+        $stmt->bindValue('optionnel',$optionnel);
+
+        $stmt
+            ->execute();
+        $result = $stmt->fetchAll();
+        return intval($result[0]['COUNT(*)']);
+
+        return $this;
+
+
     }
 }

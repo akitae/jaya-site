@@ -43,6 +43,11 @@ class Matiere
     private $place;
 
     /**
+     * @ORM\OneToMany(targetEntity="UpjvBundle\Entity\MatiereParcours",mappedBy="matieres")
+     */
+    private $parcours;
+
+    /**
      * @var int
      *
      * @ORM\Column(name="place_stagiare", type="integer")
@@ -177,6 +182,7 @@ class Matiere
         $this->poleDeCompetence = new \Doctrine\Common\Collections\ArrayCollection();
         $this->optionnel = new \Doctrine\Common\Collections\ArrayCollection();
         $this->utilisateurs = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->parcours = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -379,5 +385,41 @@ class Matiere
     public function getOptionnel()
     {
         return $this->optionnel;
+    }
+
+    /**
+     * Add parcour.
+     *
+     * @param \UpjvBundle\Entity\MatiereParcours $parcour
+     *
+     * @return Matiere
+     */
+    public function addParcour(\UpjvBundle\Entity\MatiereParcours $parcour)
+    {
+        $this->parcours[] = $parcour;
+
+        return $this;
+    }
+
+    /**
+     * Remove parcour.
+     *
+     * @param \UpjvBundle\Entity\MatiereParcours $parcour
+     *
+     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
+     */
+    public function removeParcour(\UpjvBundle\Entity\MatiereParcours $parcour)
+    {
+        return $this->parcours->removeElement($parcour);
+    }
+
+    /**
+     * Get parcours.
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getParcours()
+    {
+        return $this->parcours;
     }
 }

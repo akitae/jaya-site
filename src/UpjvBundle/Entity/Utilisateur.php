@@ -273,21 +273,4 @@ class Utilisateur extends BaseUser
     {
         return $this->optionnel;
     }
-
-    /**
-     * @param PoleDeCompetence $poleDeCompetence
-     * @return int
-     */
-    public function getNbrMatiereOptionnelByPole(PoleDeCompetence $poleDeCompetence)
-    {
-        $nbr = 0;
-        $matieres = $this->getMatieres();
-        /** @var Matiere $matiere */
-        foreach ($matieres as $matiere) {
-            if ($matiere->getPoleDeCompetence() == $poleDeCompetence && $matiere->getOptionnel()) {
-                $nbr++;
-            }
-        }
-        return $nbr;
-    }
 }
