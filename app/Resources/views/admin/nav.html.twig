@@ -10,7 +10,7 @@
     </div>
 	<ul class="nav navbar-top-links navbar-right">
 		<li>
-			<a href="{{ path('logout') }}" class="active"><i class="fa fa-sign-out fa-fw"></i> Se déconnecter</a>				
+			<a href="{{ path('fos_user_security_logout') }}" class="active"><i class="fa fa-sign-out fa-fw"></i> Se déconnecter</a>
 		</li>
 	</ul>
     <div class="navbar-default sidebar" role="navigation">
@@ -18,6 +18,9 @@
             <ul class="nav in" id="side-menu">
                 <li>
                     <a href="{{ path('admin_user') }}" class="active"><i class="fa fa fa-users fa-fw fa-fw"></i> Gestion des étudiants</a>
+                </li>
+				<li>
+                    <a href="{{ path('admin_validate_user') }}" class="active"><i class="fa fa fa-users fa-fw"></i> Valider les étudiants en attente</a>
                 </li>
                 <li>
                     <a href="{{ path('admin_professeur') }}" class="active"><i class="fa fa fa-users fa-fw"></i> Gestion des professeurs</a>
@@ -33,6 +36,15 @@
                 </li>
                 <li>
                     <a href="{{ path('admin_groupe') }}" class="active"><i class="fa fa-dashboard fa-fw"></i> Gestion des groupes</a>
+                </li>
+                <li>
+                    <a href="{{ path('admin_export_user') }}" class="active"><i class="fa fa-dashboard fa-fw"></i> Trie des étudiants / export </a>
+                </li>
+				<li>
+                    <a href="{{ path('admin_semestre') }}" class="active"><i class="fa fa-dashboard fa-fw"></i> Semestre</a>				
+                </li>
+                <li>
+                    <a href="{{ path('admin_repartition_etudiant') }}" class="active"><i class="fa fa-balance-scale fa-fw"></i> Répartir les étudiants par matières</a>
                 </li>
             </ul>
         </div>

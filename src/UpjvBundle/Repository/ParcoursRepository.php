@@ -1,6 +1,7 @@
 <?php
 
 namespace UpjvBundle\Repository;
+use UpjvBundle\Entity\Semestre;
 
 /**
  * ParcoursRepository
@@ -10,4 +11,19 @@ namespace UpjvBundle\Repository;
  */
 class ParcoursRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function findBySemestre(Semestre $semestre){
+        return $this->createQueryBuilder('m')
+            ->innerJoin('m.semestres','s')
+            ->where('s.id = :semestre')
+            ->setParameter('semestre', $semestre->getId())
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findMatieres(){
+        return $this->createQueryBuilder('m')
+            ->innerJoin('m.matieres', 'matiere')
+            ->getQuery()
+            ->getResult();
+    }
 }

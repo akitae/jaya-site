@@ -22,16 +22,6 @@
                         <td>Pôle Nom</td>
                         <td>{{ pole.nom }}</td>
                     </tr>
-                    <tr>
-                        <td>Matière(s)</td>
-                        <td>
-                            <ul>
-                                {% for matieres in pole.matieres %}
-                                    <li>{{ matieres }}</li>
-                                {% endfor %}
-                            </ul>
-                        </td>
-                    </tr>
                 </table>
 
                 <button type="button" onclick="location.href='{{ path('admin_pole')}}';" class="btn btn-default pull-left"> Retour </button>

@@ -56,13 +56,10 @@ class Semestre
      */
     private $dateFinChoix;
 
-    /**
-     * @ORM\OneToMany(targetEntity="Matiere", mappedBy="semestre")
-     */
     private $matieres;
 
     /**
-     * @ORM\ManyToMany(targetEntity="UpjvBundle\Entity\Parcours", cascade={"persist"})
+     *  @ORM\ManyToMany(targetEntity="UpjvBundle\Entity\Parcours", mappedBy="semestres")
      */
     private $parcours;
 
@@ -75,6 +72,12 @@ class Semestre
     public function getId()
     {
         return $this->id;
+    }
+
+    public function setId ($id) {
+        $this->id = $id;
+
+        return $this;
     }
 
     /**

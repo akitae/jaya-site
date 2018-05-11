@@ -43,14 +43,43 @@ class Parcours
     private $annee;
 
     /**
-     * @ORM\ManyToMany(targetEntity="UpjvBundle\Entity\PoleDeCompetence", cascade={"persist"})
-     */
-    private $polesDeCompetences;
-
-    /**
-     * @ORM\ManyToMany(targetEntity="UpjvBundle\Entity\Semestre", cascade={"persist"})
+     * @ORM\JoinTable(name="semestre_parcours")
+     * @ORM\ManyToMany(targetEntity="UpjvBundle\Entity\Semestre", cascade={"persist"}, inversedBy="parcours")
      */
     private $semestres;
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="stagiare", type="boolean")
+     */
+    private $stagiare = false;
+
+    /**
+     * @ORM\OneToMany(targetEntity="UpjvBundle\Entity\MatiereParcours", mappedBy="parcours")
+     */
+    private $matieres;
+
+    private $matiereOptionnelle;
+
+    /**
+     * @ORM\OneToMany(targetEntity="UpjvBundle\Entity\Utilisateur",mappedBy="parcours")
+     */
+    private $utilisateur;
+
+    /**
+     *
+     * @ORM\OneToMany(targetEntity="UpjvBundle\Entity\PoleDeCompetenceParcours", mappedBy="poleDeCompetence")
+     */
+    private $polesDeCompetence;
+
+    public function __construct()
+    {
+        $this->semestres =  new \Doctrine\Common\Collections\ArrayCollection();
+        $this->matieres =  new \Doctrine\Common\Collections\ArrayCollection();
+        $this->polesDeCompetence =  new \Doctrine\Common\Collections\ArrayCollection();
+        $this->utilisateur =  new \Doctrine\Common\Collections\ArrayCollection();
+    }
 
     /**
      * Get id.
@@ -134,53 +163,69 @@ class Parcours
         return $this->annee;
     }
 
+    public function __toString() {
+
+      return $this->nom;
+
+    }
+    
     /**
      * @return mixed
      */
-    public function getPolesDeCompetences()
+    public function getMatiereOptionnelle()
     {
-        return $this->polesDeCompetences;
+        return $this->matiereOptionnelle;
     }
 
     /**
-     * @param mixed $polesDeCompetences
+     * @param mixed $matiereOptionnelle
      */
-    public function setPolesDeCompetences($polesDeCompetences)
+    public function setMatiereOptionnelle($matiereOptionnelle)
     {
-        $this->polesDeCompetences = $polesDeCompetences;
-    }
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->polesDeCompetences = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->matiereOptionnelle = $matiereOptionnelle;
     }
 
     /**
-     * Add polesDeCompetence.
-     *
-     * @param \UpjvBundle\Entity\PoleDeCompetence $polesDeCompetence
-     *
-     * @return Parcours
+     * @return \Doctrine\Common\Collections\Collection
      */
-    public function addPolesDeCompetence(\UpjvBundle\Entity\PoleDeCompetence $polesDeCompetence)
+    public function getPolesDeCompetence()
     {
-        $this->polesDeCompetences[] = $polesDeCompetence;
-
-        return $this;
+        return $this->polesDeCompetence;
     }
 
     /**
-     * Remove polesDeCompetence.
-     *
-     * @param \UpjvBundle\Entity\PoleDeCompetence $polesDeCompetence
-     *
-     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
+     * @param mixed $polesDeCompetence
      */
-    public function removePolesDeCompetence(\UpjvBundle\Entity\PoleDeCompetence $polesDeCompetence)
+    public function setPolesDeCompetence($polesDeCompetence)
     {
-        return $this->polesDeCompetences->removeElement($polesDeCompetence);
+        $this->polesDeCompetence = $polesDeCompetence;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isStagiare()
+    {
+        return $this->stagiare;
+    }
+
+    /**
+     * @param bool $stagiare
+     */
+    public function setStagiare($stagiare)
+    {
+        $this->stagiare = $stagiare;
+    }
+
+
+    /**
+     * Get stagiare.
+     *
+     * @return bool
+     */
+    public function getStagiare()
+    {
+        return $this->stagiare;
     }
 
     /**
@@ -219,9 +264,101 @@ class Parcours
         return $this->semestres;
     }
 
-    public function __toString() {
+    /**
+     * Add matiere.
+     *
+     * @param \UpjvBundle\Entity\MatiereParcours $matiere
+     *
+     * @return Parcours
+     */
+    public function addMatiere(\UpjvBundle\Entity\MatiereParcours $matiere)
+    {
+        $this->matieres[] = $matiere;
 
-      return $this->nom;
+        return $this;
+    }
 
+    /**
+     * Remove matiere.
+     *
+     * @param \UpjvBundle\Entity\MatiereParcours $matiere
+     *
+     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
+     */
+    public function removeMatiere(\UpjvBundle\Entity\MatiereParcours $matiere)
+    {
+        return $this->matieres->removeElement($matiere);
+    }
+
+    /**
+     * Get matieres.
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getMatieres()
+    {
+        return $this->matieres;
+    }
+
+    /**
+     * Add polesDeCompetence.
+     *
+     * @param \UpjvBundle\Entity\PoleDeCompetenceParcours $polesDeCompetence
+     *
+     * @return Parcours
+     */
+    public function addPolesDeCompetence(\UpjvBundle\Entity\PoleDeCompetenceParcours $polesDeCompetence)
+    {
+        $this->polesDeCompetence[] = $polesDeCompetence;
+
+        return $this;
+    }
+
+    /**
+     * Remove polesDeCompetence.
+     *
+     * @param \UpjvBundle\Entity\PoleDeCompetenceParcours $polesDeCompetence
+     *
+     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
+     */
+    public function removePolesDeCompetence(\UpjvBundle\Entity\PoleDeCompetenceParcours $polesDeCompetence)
+    {
+        return $this->polesDeCompetence->removeElement($polesDeCompetence);
+    }
+
+    /**
+     * Add utilisateur.
+     *
+     * @param \UpjvBundle\Entity\Utilisateur $utilisateur
+     *
+     * @return Parcours
+     */
+    public function addUtilisateur(\UpjvBundle\Entity\Utilisateur $utilisateur)
+    {
+        $this->utilisateur[] = $utilisateur;
+
+        return $this;
+    }
+
+    /**
+     * Remove utilisateur.
+     *
+     * @param \UpjvBundle\Entity\Utilisateur $utilisateur
+     *
+     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
+     */
+    public function removeUtilisateur(\UpjvBundle\Entity\Utilisateur $utilisateur)
+    {
+        return $this->utilisateur->removeElement($utilisateur);
+    }
+
+    /**
+     * Get utilisateur.
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getUtilisateur()
+    {
+        return $this->utilisateur;
     }
 }

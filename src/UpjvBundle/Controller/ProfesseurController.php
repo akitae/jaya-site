@@ -21,7 +21,7 @@ class ProfesseurController extends Controller
      */
     public function indexAction()
     {
-        $listProfesseur = $this->getDoctrine()->getRepository(Utilisateur::class)->findBy(['type' => Utilisateur::TYPE_PROFESSEUR]);
+        $listProfesseur = $this->getDoctrine()->getRepository(Utilisateur::class)->findByRole(Utilisateur::ROLE_PROFESSEUR);
 
         return $this->render('UpjvBundle:Admin/Professeur:index.html.twig',[
             'listProfesseur' => $listProfesseur
@@ -36,13 +36,15 @@ class ProfesseurController extends Controller
      */
     public function updateAction($id,Request $request)
     {
-
+        $isNew = false;
+        $userManager = $this->get('fos_user.user_manager');
         $em = $this->getDoctrine()->getManager();
         /** @var Utilisateur $professeur */
         $professeur = $em->getRepository(Utilisateur::class)->find($id);
 
         if (!$professeur instanceof Utilisateur) {
             $professeur = new Utilisateur();
+            $isNew = true;
         }
 
         $form = $this->createForm(ProfesseurType::class,$professeur);
@@ -51,12 +53,17 @@ class ProfesseurController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             try{
                 $professeur = $form->getData();
-                $professeur->setType(Utilisateur::TYPE_PROFESSEUR);
-                $em->persist($professeur);
-                $em->flush();
+
+                if ($isNew) {
+                    $professeur->setPassword("jayaProfesseur");
+                    $professeur->setPlainPassword("jayaProfesseur");
+                    $professeur->addRole(Utilisateur::ROLE_PROFESSEUR);
+                }
+
+                $userManager->updateUser($professeur);
                 $this->get('session')->getFlashBag()->add('success', 'Le professeur a bien été enregistré.');
             }catch (\Exception $e){
-                $this->get('session')->getFlashBag()->add('erreur', 'Une erreur s\'est produite lors de l\'enregistrement.');
+                $this->get('session')->getFlashBag()->add('erreur', 'Une erreur s\'est produite lors de l\'enregistrement.'.$e->getMessage());
                 return $this->redirectToRoute('admin_professeur_edit',['id' => $id]);
             }
 
@@ -65,7 +72,8 @@ class ProfesseurController extends Controller
 
         return $this->render('UpjvBundle:Admin/Professeur:update.html.twig',[
             'professeur' => $professeur,
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'isNew' => $isNew
         ]);
     }
 

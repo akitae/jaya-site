@@ -21,7 +21,6 @@
             <table class="tableAdmin">
               <thead>
                 <tr role="row">
-                  <th>ID</th>
                   <th>Code</th>
                   <th>Nom</th>
                   <th>Année</th>
@@ -32,8 +31,7 @@
               <tbody>
                 {% for parcours in listParcours %}
                 <tr class="gradeA odd" role="row">
-                  <td class="sorting_1">{{ parcours.id }}</td>
-                  <td>{{ parcours.code }}</td>
+                  <td  class="sorting_1">{{ parcours.code }}</td>
                   <td>{{ parcours.nom }}</td>
                   <td>{{ parcours.annee }}</td>
                   <td>
@@ -44,6 +42,8 @@
                   <td>
                     <button type="button" onclick="location.href='{{ path('admin_parcours_show',{'id':parcours.id}) }}';" class="btn btn-default">Voir</button>
                     <button type="button" onclick="location.href='{{ path('admin_parcours_edit',{'id':parcours.id}) }}';" class="btn btn-primary">Modifier</button>
+                    <button type="button" onclick="location.href='{{ path('admin_parcours_matiere_edit',{'id':parcours.id}) }}';" class="btn btn-primary">Ajouter des matieres</button>
+                    <button type="button" onclick="location.href='{{ path('admin_poledecompetenceParcours_edit',{'id':parcours.id}) }}';" class="btn btn-primary">Modifier le nombre d'optionnel</button>
                     <button type="button" onclick="location.href='{{ path('admin_parcours_delete',{'id':parcours.id}) }}';" class="btn btn-danger">Supprimer</button>
                   </td>
                 </tr>

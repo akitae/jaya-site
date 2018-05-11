@@ -1,0 +1,24 @@
+{% extends 'jaya/baseJayaLogin.html.twig' %}
+{% block title %}
+    Réinitialisation du mot de passe
+{% endblock %}
+{% block body %}
+
+    <div class="bg-image">
+        <div class="wrapper-center">
+            <div class="container">
+                <form action="{{ path('fos_user_resetting_send_email') }}" method="POST">
+                    <div class="form-group">
+                        <label for="email">Identifiant ou adresse email</label>
+                        <input type="text" class="form-control input-login" id="username" name="username" placeholder="Identifiant ou adresse email">
+                    </div>
+                    <div>
+                        <input type="submit" class="btn btn-block btn-login" value="Réinitialisation du mot de passe" />
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </div>
+
+{% endblock %}

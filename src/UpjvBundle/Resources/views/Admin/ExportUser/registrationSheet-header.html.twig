@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Feuille d'emargement</title>
+        <link rel="stylesheet" type="text/css" href="/web/css/compiled/app.css"/>
+
+    </head>
+    <body>
+    <h3>Feuille d'emargement</h3>
+        <h3>
+            <label for="nom_enseignant">
+                Nom enseignant :
+                <input id="nom_enseignant" type="text"  size="20" style="height: 50px"/>
+            </label>
+            <label for="signature_enseignant">
+                Signature :
+                <input id="signature_enseignant" type="text" size="20" style="height: 50px"/>
+            </label>
+            <br><br>
+            <label for="date_enseignant">
+                Date :
+                <input id="date_enseignant" type="text" size="20" style="height: 50px"/>
+            </label>
+        </h3>
+        <h2>
+            {% if listUE %}UE : {% endif %}
+            {% for ue in listUE %}
+                {{ ue }}
+            {% endfor %}
+            <br>
+            {% if listGroupe %}Groupe : {% endif %}
+            {% for groupe in listGroupe %}
+                {{ groupe }}
+            {% endfor %}
+        </h2>
+        <h2>{% if commentaire %} {{ commentaire }} {% endif %}</h2>
+        <hr width="100%">
+    </body>
+</html>

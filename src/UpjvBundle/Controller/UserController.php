@@ -13,6 +13,7 @@ use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Routing\Annotation\Route;
 use UpjvBundle\Entity\Utilisateur;
 use UpjvBundle\Form\UtilisateurType;
+use UpjvBundle\Repository\MatiereParcoursRepository;
 
 class UserController extends Controller
 {
@@ -22,13 +23,13 @@ class UserController extends Controller
      */
     public function indexAction()
     {
-        $listUser = $this->getDoctrine()->getRepository(Utilisateur::class)->findBy(['type' => Utilisateur::TYPE_ETUDIANT]);
+        $listUser = $this->getDoctrine()->getRepository(Utilisateur::class)->findByRole(Utilisateur::ROLE_ETUDIANT);
 
         return $this->render('UpjvBundle:Admin/User:index.html.twig',[
             'listUser' => $listUser
         ]);
     }
-
+    
     /**
      * @param $id
      * @param $request
@@ -37,12 +38,15 @@ class UserController extends Controller
      */
     public function updateAction($id,Request $request)
     {
+        $isNew = false;
+        $userManager = $this->get('fos_user.user_manager');
         $em = $this->getDoctrine()->getManager();
         /** @var Utilisateur $user */
         $user = $em->getRepository(Utilisateur::class)->find($id);
 
         if (!$user instanceof Utilisateur) {
-            $user = new Utilisateur();
+            $user = $userManager->createUser();
+            $isNew = true;
         }
 
         $form = $this->createForm(UtilisateurType::class,$user);
@@ -51,11 +55,18 @@ class UserController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             try{
                 $user = $form->getData();
-                $user->setType(Utilisateur::TYPE_ETUDIANT);
-                $em->persist($user);
-                $em->flush();
+                
+                $user->setNom(strtoupper($user->getNom()));
+
+                if ($isNew == true) {
+                    $user->setPassword('jayaReborn');
+                    $user->setPlainPassword('jayaReborn');
+                }
+
+                $userManager->updateUser($user);
                 $this->get('session')->getFlashBag()->add('success', 'L\'utilisateur a bien été enregistré.');
             }catch (\Exception $e){
+                var_dump($e->getMessage());
                 $this->get('session')->getFlashBag()->add('erreur', 'Une erreur s\'est produite lors de l\'enregistrement. Le numéro étudiant doit être unique.');
                 return $this->redirectToRoute('admin_user_edit',['id' => $id]);
             }
@@ -65,7 +76,8 @@ class UserController extends Controller
 
         return $this->render('UpjvBundle:Admin/User:update.html.twig',[
             'user' => $user,
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'isNew' => $isNew,
         ]);
     }
 
@@ -108,4 +120,72 @@ class UserController extends Controller
 
         return $this->redirectToRoute('admin_user');
     }
+    /**
+     * @Route("/admin/user/validate", name="admin_validate_user")
+     * @return mixed
+     */
+   public function showValidateAction()
+    {
+        $listUser = $this->getDoctrine()->getRepository(Utilisateur::class)->findByValidate();
+
+        return $this->render('UpjvBundle:Admin/User:validate.html.twig',[
+            'listUser' => $listUser
+        ]);
+    }
+    /**
+     * @Route("/admin/validateAll", name="admin_validate_all_user")
+     * @return mixed
+     */
+    public function validateAllAction()
+    {
+        $em = $this->getDoctrine()->getManager();
+ 
+        $listUser = $this->getDoctrine()->getRepository(Utilisateur::class)->findByValidate();
+        foreach ($listUser as $user) {
+            $user->setEnabled(true);
+            $em->persist($user);
+                $em->flush();
+        }
+         return $this->redirectToRoute('admin_user');
+    }
+    
+    /**
+     * @Route("/admin/validateUser", name="admin_validate_some_user")
+     * @return mixed
+     */
+    public function validateSomeAction()
+    {
+        $em = $this->getDoctrine()->getManager();
+ 
+        if (!empty($_POST)) {
+            try{
+              
+                foreach ($_POST as $name => $value){
+                    $idUser = explode('_',$name);
+       
+                    if($value === 'on')
+                    {
+                        $user = $em->getRepository(Utilisateur::class)->find($idUser[1]);
+                        $user->setEnabled(true);
+                        $em->persist($user);
+                        
+                    
+                    }
+                }
+                $em->flush();
+                $this->get('session')->getFlashBag()->add('success', 'Les étudiants sélectionnés ont été validés.');
+               
+                
+                }catch (\Exception $e){
+                    $this->get('session')->getFlashBag()->add('erreur', 'Une erreur s\'est produite lors de l\'enregistrement. '.$e->getMessage());
+                     return $this->redirectToRoute('admin_user');
+                }
+
+             
+            }
+
+            return $this->redirectToRoute('admin_user');
+         
+    }
+
 }

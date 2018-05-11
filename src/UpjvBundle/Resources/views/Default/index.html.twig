@@ -1,14 +1,33 @@
-{% extends 'base.html.twig' %}
-
+{% extends 'jaya/baseJaya.html.twig' %}
+{% block title %}
+    jAYA Reborn
+{% endblock %}
 {% block body %}
+    <div class="content dashboard">
+        <div class="row">
+            <div class="col-md-12">
+                <h3 class="user-hello">Bonjour <b>{{ user.prenom }}</b>, pour info tout n'est pas responsive c'est en cours.</h3>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <a href="{{ path('choix_ue') }}">
+                    <div class="card">
+                        <div class="card-title"><i class="glyphicon glyphicon-education icon-title"></i>Choix des UEs</div>
+                        <div class="card-description">
+                            Sélectionnez vos unités d'enseignements optionnelles pour le semestre en cours.
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-title">Mon compte</div>
+                    <div class="card-description">
 
-<div id="page-wrapper" style="min-height: 518px;">
-    Hello World!
-    <button type="button" class="btn btn-default">Default</button>
-
-    <div class="test">TEST</div>
-
-</div>
-
-
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}

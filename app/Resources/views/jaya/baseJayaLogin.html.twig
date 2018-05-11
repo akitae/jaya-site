@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8" />
+    <title>{% block title %}Welcome!{% endblock %}</title>
+    {% block stylesheets %}{% endblock %}
+
+    <link rel="stylesheet" type="text/css" href="/vendor/bordercloud/startbootstrap-sb-admin-2/dist/css/sb-admin-2.css"/>
+    <link rel="stylesheet" type="text/css" href="/vendor/twbs/bootstrap/dist/css/bootstrap.min.css"/>
+
+    {#Font awesome with CDN#}
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
+
+    {#end CDN#}
+
+    {% stylesheets filter="cssrewrite"
+        'css/bootstrap.min.css'
+        'css/fontawesome.min.css'
+        'css/bootstrap-social.css'
+        'css/login.css'
+        'css/registration.css'
+        output='css/compiled/baseFront.css'
+    %}
+        <link rel="stylesheet" href="{{ asset_url }}" />
+        <link rel="stylesheet" href="{{ asset('vendor/twbs/bootstrap/dist/css/bootstrap.min.css') }}">
+    {% endstylesheets %}
+
+
+</head>
+<body>
+{% block header %}{% endblock %}
+{% block body %}{% endblock %}
+{% block javascripts %}{% endblock %}
+</body>
+
+{% javascripts
+    'js/jquery.min.js'
+    'js/bootstrap.min.js'
+    'js/dataTable.js'
+    'js/dataTables.bootstrap.min.js'
+    'js/jquery.min.js'
+    'js/main.js'
+    'js/jquery1.11.3.js'
+    output='js/compiled/appJayaLogin.js' %}
+    <script src="{{ asset_url }}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
+{% endjavascripts %}
+
+</html>

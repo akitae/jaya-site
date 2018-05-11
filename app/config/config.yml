@@ -7,11 +7,15 @@ imports:
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
-    locale: en
+    locale: fr
 
 framework:
     #esi: ~
-    #translator: { fallbacks: ['%locale%'] }
+    translator:
+      fallbacks: ['%locale%']
+      paths:
+          - '%kernel.project_dir%/app/Resources/translations'
+
     secret: '%secret%'
     router:
         resource: '%kernel.project_dir%/app/config/routing.yml'
@@ -33,6 +37,8 @@ framework:
     assets: ~
     php_errors:
         log: true
+    # Active la validation du formulaire.
+    validation: { enabled: true }
 
 # Twig Configuration
 twig:
@@ -65,6 +71,43 @@ doctrine:
 swiftmailer:
     transport: '%mailer_transport%'
     host: '%mailer_host%'
-    username: '%mailer_user%'
-    password: '%mailer_password%'
+    #username: '%mailer_user%'
+    #password: '%mailer_password%'
     spool: { type: memory }
+
+# Assetic pour que les chemins CSS soient automatiquement remplacer par les bon chemin.
+# Nécessaire pour les images et surtout les icônes.
+assetic:
+    debug:          '%kernel.debug%'
+    use_controller: '%kernel.debug%'
+    filters:
+        cssrewrite: ~
+
+
+fos_user:
+  db_driver: orm
+  firewall_name: main
+  user_class: UpjvBundle\Entity\Utilisateur
+  from_email:
+    address: noreply-jayareborn@etud.u-picardie.fr
+    sender_name: jAYA Reborn
+  registration:
+    confirmation:
+      enabled: true
+      from_email:
+        address: noreply-jayareborn@etud.u-picardie.fr
+        sender_name: jAYA Reborn
+
+#migration
+doctrine_migrations:
+    dir_name: "%kernel.root_dir%/DoctrineMigrations"
+    namespace: Application\Migrations
+    table_name: migration_versions
+    name: Application Migrations
+    organize_migrations: false # Version >= 1.2, possible values are: "BY_YEAR", "BY_YEAR_AND_MONTH", false
+    custom_template: ~ # Version >= 1.2, path to your custom migrations template
+
+knp_snappy:
+    pdf:
+        enabled:    true
+        binary:     "%knp_snappy%"

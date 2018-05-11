@@ -23,6 +23,54 @@ $(document).ready(function() {
             }
         }
     });
+
+    //mise a jour des groupes pour export (page d'emargement)
+    $('#filterGroup').click(function () {
+        var donneeToSend = "",
+            dernier = null,
+            select2Choice = $('#filterMatiere .select2-selection__choice'),
+            select2ResulteLi = $('.select2-results__options li');
+
+        for (var i=0; i<select2Choice.length; i++) {
+            donneeToSend = donneeToSend + 'matiere'+ i +'='+ select2Choice[i].title + '&';
+        }
+
+        for(var j=0;j<select2ResulteLi.length;j++) {
+            dernier = '#'+select2ResulteLi[j].id;
+        }
+        $(dernier).hide();
+
+        if(donneeToSend!==""){
+            $.ajax({
+                url : '/admin/listUser/filterGroupe', // La ressource ciblée
+                type : 'GET',
+                data : donneeToSend,
+                success : function(response, statut){
+                    var
+                        liGroupe = $('.select2-results__options li'),
+                        isEmpty = true;
+
+                    for(var j=0;j<liGroupe.length;j++){
+                        var id = liGroupe[j].id;
+                        if(response.indexOf(liGroupe[j].textContent) > -1){
+                            $('#'+id).show();
+                            isEmpty = false;
+                        }else{
+                            $('#'+id).hide();
+                        }
+                        dernier = '#'+id;
+                    }
+                    $(dernier).hide();
+                    if(isEmpty === true){
+                        $(dernier).show();
+                    }
+                }
+
+            });
+        }
+
+
+    });
 } );
 // For demo to fit into DataTables site builder...
 $('.tableAdmin')

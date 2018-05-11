@@ -2,8 +2,10 @@
 
 namespace UpjvBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Security\Core\User\UserInterface;
+use FOS\UserBundle\Model\User as BaseUser;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Utilisateur
@@ -11,69 +13,64 @@ use Symfony\Component\Security\Core\User\UserInterface;
  * @ORM\Table(name="utilisateur")
  * @ORM\Entity(repositoryClass="UpjvBundle\Repository\UtilisateurRepository")
  */
-class Utilisateur implements UserInterface, \Serializable
+class Utilisateur extends BaseUser
 {
-    const TYPE_ETUDIANT = 0;
-    const TYPE_PROFESSEUR = 1;
-    const TYPE_ADMIN = 2;
+
+    const ROLE_ETUDIANT = 'ROLE_ETUDIANT';
+
+    const ROLE_PROFESSEUR = 'ROLE_PROFESSEUR';
+
+    const ROLE_ADMIN  = 'ROLE_ADMIN';
 
     /**
-     * @var int
-     *
+     * Utilisateur constructor.
+     */
+    public function __construct()
+    {
+        parent::__construct();
+        $this->setEnabled(false);
+        $this->setRoles(array());
+        $this->optionnel = new ArrayCollection();
+    }
+
+    /**
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    private $id;
+    protected $id;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="nom", type="string", length=255)
+     * @ORM\Column(name="nom", type="string", length=180)
      */
     private $nom;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="prenom", type="string", length=255)
+     * @ORM\Column(name="prenom", type="string", length=180)
      */
     private $prenom;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="email", type="string", length=255)
-     */
-    private $email;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="motDePasse", type="string", length=255, nullable=true)
-     */
-    private $motDePasse;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="numeroEtudiant", type="string", length=255, unique=true, nullable=true)
+     * @ORM\Column(name="numeroEtudiant", type="integer", unique=true, nullable=true)
+     * @Assert\Regex(
+     *     pattern="/^([0-9]*)$/",
+     *     match=true,
+     *     message="Le numéro étudiant est invalide."
+     * )
      */
     private $numeroEtudiant;
 
     /**
-     * @var bool
-     *
-     * @ORM\Column(name="valide", type="boolean")
+     * Parcours
+     * @ORM\ManyToOne(targetEntity="UpjvBundle\Entity\Parcours", inversedBy="parcours")
      */
-    private $valide;
+    private $parcours;
 
     /**
-     * @var int
-     *
-     * @ORM\Column(name="type", type="integer")
+     * @ORM\ManyToMany(targetEntity="UpjvBundle\Entity\Matiere", inversedBy="utilisateurs")
+     * @ORM\OrderBy({"code" = "ASC"})
      */
-    private $type;
+    private $matieres;
 
     /**
      * @ORM\ManyToMany(targetEntity="UpjvBundle\Entity\Groupe", cascade={"persist"})
@@ -81,39 +78,12 @@ class Utilisateur implements UserInterface, \Serializable
     private $groupes;
 
     /**
-     * @ORM\ManyToOne(targetEntity="UpjvBundle\Entity\Parcours", inversedBy="parcours")
+     * @ORM\OneToMany(targetEntity="UpjvBundle\Entity\MatiereOptionelle", mappedBy="user")
      */
-    private $parcours;
-
+    private $optionnel;
 
     /**
-     * Get id.
-     *
-     * @return int
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    /**
-     * Set nom.
-     *
-     * @param string $nom
-     *
-     * @return Utilisateur
-     */
-    public function setNom($nom)
-    {
-        $this->nom = $nom;
-
-        return $this;
-    }
-
-    /**
-     * Get nom.
-     *
-     * @return string
+     * @return mixed
      */
     public function getNom()
     {
@@ -121,23 +91,15 @@ class Utilisateur implements UserInterface, \Serializable
     }
 
     /**
-     * Set prenom.
-     *
-     * @param string $prenom
-     *
-     * @return Utilisateur
+     * @param mixed $nom
      */
-    public function setPrenom($prenom)
+    public function setNom($nom)
     {
-        $this->prenom = $prenom;
-
-        return $this;
+        $this->nom = $nom;
     }
 
     /**
-     * Get prenom.
-     *
-     * @return string
+     * @return mixed
      */
     public function getPrenom()
     {
@@ -145,63 +107,15 @@ class Utilisateur implements UserInterface, \Serializable
     }
 
     /**
-     * Set email.
-     *
-     * @param string $email
-     *
-     * @return Utilisateur
+     * @param mixed $prenom
      */
-    public function setEmail($email)
+    public function setPrenom($prenom)
     {
-        $this->email = $email;
-
-        return $this;
+        $this->prenom = $prenom;
     }
 
     /**
-     * Get email.
-     *
-     * @return string
-     */
-    public function getEmail()
-    {
-        return $this->email;
-    }
-
-    /**
-     * @return string
-     */
-    public function getMotDePasse()
-    {
-        return $this->motDePasse;
-    }
-
-    /**
-     * @param string $motDePasse
-     */
-    public function setMotDePasse($motDePasse)
-    {
-        $this->motDePasse = $motDePasse;
-    }
-
-    /**
-     * Set numeroEtudiant.
-     *
-     * @param string $numeroEtudiant
-     *
-     * @return Utilisateur
-     */
-    public function setNumeroEtudiant($numeroEtudiant)
-    {
-        $this->numeroEtudiant = $numeroEtudiant;
-
-        return $this;
-    }
-
-    /**
-     * Get numeroEtudiant.
-     *
-     * @return string
+     * @return mixed
      */
     public function getNumeroEtudiant()
     {
@@ -209,51 +123,69 @@ class Utilisateur implements UserInterface, \Serializable
     }
 
     /**
-     * Set valide.
+     * @param mixed $numeroEtudiant
+     */
+    public function setNumeroEtudiant($numeroEtudiant)
+    {
+        $this->numeroEtudiant = $numeroEtudiant;
+    }
+
+    /**
+     * @return Parcours
+     */
+    public function getParcours()
+    {
+        return $this->parcours;
+    }
+
+    /**
+     * @param mixed $parcours
+     */
+    public function setParcours($parcours)
+    {
+        $this->parcours = $parcours;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getMatieres()
+    {
+        return $this->matieres;
+    }
+
+    /**
+     * @param mixed $matieres
+     */
+    public function setMatieres($matieres)
+    {
+        $this->matieres = $matieres;
+    }
+
+    /**
+     * Add matiere.
      *
-     * @param bool $valide
+     * @param \UpjvBundle\Entity\Matiere $matiere
      *
      * @return Utilisateur
      */
-    public function setValide($valide)
+    public function addMatiere(\UpjvBundle\Entity\Matiere $matiere)
     {
-        $this->valide = $valide;
+        $this->matieres[] = $matiere;
 
         return $this;
     }
 
     /**
-     * Get valide.
+     * Remove matiere.
      *
-     * @return bool
+     * @param \UpjvBundle\Entity\Matiere $matiere
+     *
+     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
      */
-    public function getValide()
+    public function removeMatiere(\UpjvBundle\Entity\Matiere $matiere)
     {
-        return $this->valide;
-    }
-
-    /**
-     * Set type.
-     *
-     * @param int $type
-     *
-     * @return Utilisateur
-     */
-    public function setType($type)
-    {
-        $this->type = $type;
-
-        return $this;
-    }
-
-    /**
-     * Get type.
-     *
-     * @return int
-     */
-    public function getType()
-    {
-        return $this->type;
+        return $this->matieres->removeElement($matiere);
     }
 
     /**
@@ -271,13 +203,6 @@ class Utilisateur implements UserInterface, \Serializable
     {
         $this->groupes = $groupes;
     }
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->groupes = new \Doctrine\Common\Collections\ArrayCollection();
-    }
 
     /**
      * Add groupe.
@@ -289,7 +214,6 @@ class Utilisateur implements UserInterface, \Serializable
     public function addGroupe(\UpjvBundle\Entity\Groupe $groupe)
     {
         $this->groupes[] = $groupe;
-
         return $this;
     }
 
@@ -305,62 +229,48 @@ class Utilisateur implements UserInterface, \Serializable
         return $this->groupes->removeElement($groupe);
     }
 
-    public function getRoles()
-    {
-        return array('ROLE_ADMIN');
-    }
-
-    public function getPassword()
-    {
-        return $this->motDePasse;
-    }
-
-    public function getSalt()
-    {
-        return '';
-    }
-
-    public function getUsername()
-    {
-        return $this->email;
-    }
-
-    public function eraseCredentials()
-    {
-        // TODO: Implement eraseCredentials() method.
-    }
-
-    public function serialize()
-    {
-        return serialize(array ($this->id, $this->getUsername(), $this->getPassword()));
-    }
-
-    public function unserialize($serialized)
-    {
-        list ($this->id, $this->username, $this->motDePasse) = unserialize($serialized);
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getParcours()
-    {
-        return $this->parcours;
-    }
-
-    /**
-     * @param mixed $parcours
-     */
-    public function setParcours($parcours)
-    {
-        $this->parcours = $parcours;
-    }
-
     /**
      * @return string
      */
     public function __toString()
     {
         return $this->getNom();
+    }
+
+
+    /**
+     * Add optionnel.
+     *
+     * @param \UpjvBundle\Entity\MatiereOptionelle $optionnel
+     *
+     * @return Utilisateur
+     */
+    public function addOptionnel(\UpjvBundle\Entity\MatiereOptionelle $optionnel)
+    {
+        $this->optionnel[] = $optionnel;
+
+        return $this;
+    }
+
+    /**
+     * Remove optionnel.
+     *
+     * @param \UpjvBundle\Entity\MatiereOptionelle $optionnel
+     *
+     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
+     */
+    public function removeOptionnel(\UpjvBundle\Entity\MatiereOptionelle $optionnel)
+    {
+        return $this->optionnel->removeElement($optionnel);
+    }
+
+    /**
+     * Get optionnel.
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getOptionnel()
+    {
+        return $this->optionnel;
     }
 }

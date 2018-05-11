@@ -1,0 +1,46 @@
+{# empty Twig template #}
+{% extends 'baseAdmin.html.twig' %}
+
+{% block body %}
+
+    {% if updateResponse is defined %}
+        <div class="alert alert-success alert-dismissable">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+            Le semestre a bien été enregistré.
+        </div>
+    {% endif %}
+    {% if deleteResponse is defined %}
+        <div class="alert alert-success alert-dismissable">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+            La semestre a bien été supprimée.
+        </div>
+    {% endif %}
+
+    <div class="panel panel-default">
+        <div class="col-lg-12">
+            <h1 class="page-header">Répartition des étudiants par matière</h1>
+        </div>
+        <div class="col-lg-12">
+        <!-- /.panel-heading -->
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                   Répartition
+                </div>
+                <div class="panel-body">
+                    Remarque : le nombre de matière obligatoire par parcours doit être renseigné ! <br>
+                    Remarque 2 : La répartion s'effectuera sur le semestre en cours et ne doit être effectué qu'après la date de fin de choix des étudiants <br>
+                    Remarque 3 : Les matières des étudiants pour se semestre sera supprimé pour être remplis de façon aléatoire par les choix des étudiants. Veuillez n'exécuter qu'une
+                    seule fois par semestre cette répartition par matière <br>
+                    Remarque 4: Il faut réassigné les places pour chaques parcours si vous avez déja exécuter cette répartition pour ce semestre <br/> <br>
+                    <form action="{{ path('admin_repartition_etudiant') }}" method="post">
+                        {% for semestre in listSemestre %}
+                            <button class="btn btn-danger" type="submit" name="repartition" value="{{ semestre.id }}">Semestre : {{ semestre.nom }}</button>
+                            <br><br>
+                        {% endfor %}
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+{% endblock %}

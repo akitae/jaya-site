@@ -5,6 +5,7 @@ namespace UpjvBundle\Form;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -28,22 +29,32 @@ class ProfesseurType extends AbstractType
                 'attr' => ['class' => 'form-control '],
                 'label' => 'Prénom'
             ])
+            ->add('username', TextType::class, [
+                'attr' => ['class' => 'form-control'],
+                'label' => 'Identifiant'
+            ])
             ->add('email', EmailType::class,[
                 'attr' => ['class' => 'form-control '],
                 'label' => 'Email'
             ])
-            ->add('valide', CheckboxType::class,[
-                'required' => false,
-                'label' => 'Enregistrement validé ?'
-            ])
-            ->add('groupes', EntityType::class,
+            ->add('roles', ChoiceType::class,
                 [
-                    'class' => Groupe::class,
+                    'choices' => array(
+                        'Super Administrateur' => 'ROLE_SUPER_ADMIN',
+                        'Administrateur' => 'ROLE_ADMIN',
+                        'Professeur' => 'ROLE_PROFESSEUR',
+                        'Etudiant' => 'ROLE_ETUDIANT'),
+                    'required' => true,
                     'multiple' => true,
-                    'required' => false,
-                    'attr' => [
-                        'class' => 'form-control select2'
-                    ]
+                ])
+            ->add('enabled', ChoiceType::class,
+                [
+                    'label' => 'Compte validé',
+                    'choices' => array(
+                        'Oui' => true,
+                        'Non' => false
+                    ),
+                    'required' => true
                 ])
             ->add('save', SubmitType::class,[
                 'label' => 'Enregistrer',
