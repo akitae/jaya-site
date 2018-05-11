@@ -26,7 +26,7 @@
                                 <div class="col-lg-5">
                                     Utilisateur sans groupe
                                     <div class="subject-info-box-1">
-                                        <select multiple="multiple" id='lstBox1' class="form-control" name="notInGroupe[]">
+                                        <select multiple="multiple" id='lstBox1' class="form-control" name="notInGroupe[]" style="height: 400px">
                                             {% for etudiant in listEtudiant %}
                                                 <option value="{{ etudiant.id }}" class="valueToClick" >{{ etudiant.nom}} {{ etudiant.prenom }}</option>
                                             {% endfor %}
@@ -34,7 +34,7 @@
                                     </div>
                                 </div>
                                 <div class="col-lg-2">
-                                    <div class="subject-info-arrows text-center">
+                                    <div class="subject-info-arrows text-center" style="height: 400px; padding-top: 50%;">
                                         <input type="button" id="btnAllRight" value=">>" class="btn btn-default" /><br />
                                         <input type="button" id="btnRight" value=">" class="btn btn-default" /><br />
                                         <input type="button" id="btnLeft" value="<" class="btn btn-default" /><br />
@@ -44,7 +44,7 @@
                                 <div class="col-lg-5">
                                     Utilisateur dans ce groupe
                                     <div class="subject-info-box-2">
-                                        <select multiple="multiple" id='lstBox2' class="form-control" name="inGroupe[]">
+                                        <select multiple="multiple" id='lstBox2' class="form-control" name="inGroupe[]" style="height: 400px">
                                             {% for etudiant in listEtudiantInMatiere %}
                                                 <option value="{{ etudiant.id }}" class="valueToClick">{{ etudiant.nom}} {{ etudiant.prenom }}</option>
                                             {% endfor %}
