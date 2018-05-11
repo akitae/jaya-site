@@ -156,7 +156,7 @@ class UtilisateurRepository extends \Doctrine\ORM\EntityRepository
     public function findListUserByMatiere(Matiere $matiere, Semestre $semestre, $optionnel = false, $stagiare = false){
         $sql = "
         SELECT u.id FROM utilisateur u  JOIN parcours p on u.parcours_id = p.id WHERE p.stagiare= :stagiare AND u.parcours_id IN
-        (SELECT mp.parcour_id FROM matiere JOIN matiere_parcours mp on matiere.id = mp.matieres_id WHERE matiere.id= :matiereId AND mp.optionnel = :optionnel AND matiere.semestre_id = :semestre);
+        (SELECT mp.parcours_id FROM matiere JOIN matiere_parcours mp on matiere.id = mp.matieres_id WHERE matiere.id= :matiereId AND mp.optionnel = :optionnel AND matiere.semestre_id = :semestre);
         ";
 
         $stmt = $this->getEntityManager()->getConnection()->prepare($sql);
@@ -184,18 +184,21 @@ class UtilisateurRepository extends \Doctrine\ORM\EntityRepository
             ->getResult();
     }
 
-    public function findListUserForMatiereOptionnel(Matiere $matiere,Semestre $semestre, $ordre){
+    public function findListUserForMatiereOptionnel(Matiere $matiere,Semestre $semestre, $ordre, $stagiare){
         return $this
             ->createQueryBuilder('u')
             ->join('u.optionnel','o')
             ->join('o.matiere','matiere')
             ->join('matiere.semestre', 'semestre')
+            ->join('u.parcours','parcours')
             ->where('matiere.semestre = :semestre')
             ->setParameter('semestre',$semestre)
             ->andWhere('matiere = :matiere')
             ->setParameter('matiere', $matiere)
             ->andWhere('o.ordre = :ordre')
             ->setParameter('ordre', $ordre)
+            ->andWhere('parcours.stagiare = :stagiaire')
+            ->setParameter('stagiaire',$stagiare)
             ->getQuery()
             ->getResult()
             ;

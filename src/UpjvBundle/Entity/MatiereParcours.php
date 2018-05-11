@@ -37,6 +37,13 @@ class MatiereParcours
      */
     private $optionnel = false;
 
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->matieres = new \Doctrine\Common\Collections\ArrayCollection();
+    }
 
     /**
      * Get id.
@@ -49,15 +56,47 @@ class MatiereParcours
     }
 
     /**
-     * Constructor
+     * Set optionnel.
+     *
+     * @param bool $optionnel
+     *
+     * @return MatiereParcours
      */
-    public function __construct()
+    public function setOptionnel($optionnel)
     {
-        $this->matieres = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->optionnel = $optionnel;
+
+        return $this;
     }
 
     /**
-     * @return mixed
+     * Get optionnel.
+     *
+     * @return bool
+     */
+    public function getOptionnel()
+    {
+        return $this->optionnel;
+    }
+
+    /**
+     * Set matieres.
+     *
+     * @param \UpjvBundle\Entity\Matiere|null $matieres
+     *
+     * @return MatiereParcours
+     */
+    public function setMatieres(\UpjvBundle\Entity\Matiere $matieres = null)
+    {
+        $this->matieres = $matieres;
+
+        return $this;
+    }
+
+    /**
+     * Get matieres.
+     *
+     * @return \UpjvBundle\Entity\Matiere|null
      */
     public function getMatieres()
     {
@@ -65,42 +104,26 @@ class MatiereParcours
     }
 
     /**
-     * @param mixed $matieres
+     * Set parcours.
+     *
+     * @param \UpjvBundle\Entity\Parcours|null $parcours
+     *
+     * @return MatiereParcours
      */
-    public function setMatieres($matieres)
+    public function setParcours(\UpjvBundle\Entity\Parcours $parcours = null)
     {
-        $this->matieres = $matieres;
+        $this->parcours = $parcours;
+
+        return $this;
     }
 
     /**
-     * @return mixed
+     * Get parcours.
+     *
+     * @return \UpjvBundle\Entity\Parcours|null
      */
     public function getParcours()
     {
         return $this->parcours;
-    }
-
-    /**
-     * @param mixed $parcours
-     */
-    public function setParcours($parcours)
-    {
-        $this->parcours = $parcours;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isOptionnel()
-    {
-        return $this->optionnel;
-    }
-
-    /**
-     * @param bool $optionnel
-     */
-    public function setOptionnel($optionnel)
-    {
-        $this->optionnel = $optionnel;
     }
 }
