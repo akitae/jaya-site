@@ -12,6 +12,7 @@ use UpjvBundle\Entity\Utilisateur;
  */
 class GroupeRepository extends \Doctrine\ORM\EntityRepository
 {
+
     public function getOneGroupeByUserAndMatiere(Matiere $matiere, Utilisateur $user){
         return $this
             ->createQueryBuilder('o')
@@ -25,4 +26,13 @@ class GroupeRepository extends \Doctrine\ORM\EntityRepository
             ->getOneOrNullResult()
             ;
     }
+  
+  public function resetAllGroupe()
+    {
+        $rawSql = "DELETE FROM groupe";
+
+        $stmt = $this->getEntityManager()->getConnection()->prepare($rawSql);
+        $stmt->execute();
+    }
+
 }
