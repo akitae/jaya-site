@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Optionnelle
  *
  * @ORM\Table(name="matiere_parcours")
- * @ORM\Entity(repositoryClass="MatiereOptionnelleRepository")
+ * @ORM\Entity(repositoryClass="UpjvBundle\Repository\MatiereParcoursRepository")
  */
 class MatiereParcours
 {
@@ -27,8 +27,7 @@ class MatiereParcours
     private $matieres;
 
     /**
-     * @ORM\ManyToOne(targetEntity="UpjvBundle\Entity\MatiereParcours", inversedBy="matieres")
-     * @ORM\JoinColumn(name="parcour_id", referencedColumnName="id")
+     * @ORM\ManyToOne(targetEntity="UpjvBundle\Entity\Parcours", cascade={"persist"})
      */
     private $parcours;
 
