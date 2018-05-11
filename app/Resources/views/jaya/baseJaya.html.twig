@@ -1,58 +1,49 @@
 <!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8" />
-    <title>{% block title %}Welcome!{% endblock %}</title>
-    {% block stylesheets %}{% endblock %}
-    <link rel="stylesheet" type="text/css" href="/vendor/twbs/bootstrap/dist/css/bootstrap.min.css"/>
+    <html lang="fr">
+    <head>
+        <meta charset="UTF-8" />
+        <title>{% block title %}jAYA Reborn{% endblock %}</title>
 
-    {#Font awesome with CDN#}
-    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"/>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
+        {% stylesheets filter="cssrewrite"
+            'css/bootstrap.min.css'
+            'css/fontawesome.min.css'
+            'css/bootstrap-social.css'
+            'css/front/navbar.css'
+            'css/front/footer.css'
+            'css/front/global.css'
+            'css/front/jaya.css'
+            output='css/compiled/base.css'
+        %}
+            <link rel="stylesheet" href="{{ asset_url }}" />
+        {% endstylesheets %}
+        {% block stylesheets %}{% endblock %}
+    </head>
 
-    {#end CDN#}
+    <body>
+        <div class="container">
+            {% block navbar %}
+                {% include '/jaya/navbar.html.twig' %}
+            {% endblock %}
 
-    {% stylesheets filter="cssrewrite"
-        'css/bootstrap.min.css'
-        'css/fontawesome.min.css'
-        'css/bootstrap-social.css'
-        'css/front/navbar.css'
-        'css/front/footer.css'
-        'css/front/global.css'
-        'css/jaya.css'
-        output='css/compiled/base.css'
-    %}
-        <link rel="stylesheet" href="{{ asset_url }}" />
-        <link rel="stylesheet" href="{{ asset('vendor/twbs/bootstrap/dist/css/bootstrap.min.css') }}">
-    {% endstylesheets %}
+            {% block header %}{% endblock %}
 
+            {% block body %}{% endblock %}
 
-</head>
-<body>
-    <div class="container">
-        {% block navbar %}
-            {% include '/jaya/navbar.html.twig' %}
-        {% endblock %}
-        {% block header %}
-
-        {% endblock %}
-        {% block body %}{% endblock %}
-        {% block javascripts %}{% endblock %}
-
-        <div class="footer">
-
+            {%  block footer %}
+                {% include '/jaya/footer.html.twig' %}
+            {% endblock %}
         </div>
-    </div>
-</body>
+    </body>
 
-{% javascripts
-    'js/jquery.min.js'
-    'js/bootstrap.min.js'
-    'js/front/global.js'
-    'js/choixUe.js'
-    output='js/compiled/app.js' %}
-    <script src="{{ asset_url }}"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
-{% endjavascripts %}
+    {% javascripts
+        'js/jquery.min.js'
+        'js/bootstrap.min.js'
+        'js/front/global.js'
+        'js/choixUe.js'
+        output='js/compiled/app.js' %}
+        <script src="{{ asset_url }}"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
+    {% endjavascripts %}
+    {% block javascripts %}{% endblock %}
 
 </html>

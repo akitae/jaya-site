@@ -2,11 +2,13 @@
 
 namespace UpjvBundle\Controller;
 
+use FOS\UserBundle\Model\UserInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use UpjvBundle\Entity\Matiere;
 use UpjvBundle\Entity\MatiereOptionelle;
 use UpjvBundle\Entity\MatiereParcours;
@@ -42,9 +44,8 @@ class UeChoiceController extends Controller
         $this->user = $this->getUser();
         $message = array();
 
-
-        if ($this->user == null) {
-            return $this->redirectToRoute('fos_user_security_login');
+        if (!is_object($this->user) || !$this->user instanceof UserInterface) {
+            throw new AccessDeniedException('This user does not have access to this section.');
         }
 
         if ($this->user->getParcours() == null) {
@@ -96,11 +97,14 @@ class UeChoiceController extends Controller
 
         }
 
+        $isAdmin = $this->container->get('security.authorization_checker')->isGranted(Utilisateur::ROLE_SUPER_ADMIN);
+
         return $this->render("UpjvBundle:UeChoice:index.html.twig", [
             "semestre" => $this->semestreToUse,
             "nowDate" => $nowDate,
             "poles" => $this->poles,
-            "matieres" => $this->matieresOptionelles
+            "matieres" => $this->matieresOptionelles,
+            "isAdmin" => $isAdmin
         ]);
     }
 

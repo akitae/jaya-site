@@ -1,8 +1,6 @@
 $(function () {
 
-    $(".nav a").on("click", function(){
-        $(".nav").find(".active").removeClass("active");
-        $(this).parent().addClass("active");
-    });
+    let url = window.location.pathname;
+    $('ul.nav a[href="'+ url +'"]').parent().addClass('active');
 
 });

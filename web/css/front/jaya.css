@@ -1,0 +1,80 @@
+
+/* PAGE DEFAUT */
+.dashboard {
+}
+
+.dashboard .user-hello {
+    padding-bottom: 10px;
+    border-bottom: 4px solid rgb(183, 21, 64);
+}
+
+.dashboard a:hover {
+    text-decoration: none;
+}
+
+.dashboard .card {
+    width: 100%;
+    height: 100%;
+    text-decoration: none;
+    color: white;
+
+    background-color: rgba(9, 132, 227, 0.7);
+
+    padding: 30px 40px;
+    margin-top: 10px;
+    border-radius: 2px;
+    border-bottom: 12px solid #0764ab;
+}
+
+.dashboard .card:hover {
+    background-color: rgba(9, 132, 227, 1);
+}
+
+.dashboard .card .card-title {
+    font-size: 2.5em;
+}
+
+.dashboard .card .card-title .icon-title {
+    padding-right: 10px;
+}
+
+.dashboard .card .card-description {
+    font-size: 1.2em;
+    color: #ecf0f1;
+}
+
+/* CHOIX UE */
+.choixUe .semestre-title {
+    border-bottom: 2px solid white;
+}
+
+.choixUe .pole-title {
+    padding-left: 5px;
+    margin-bottom: 5px;
+    border-left: 2px solid rgb(9, 132, 227);
+    border-right: 2px solid rgb(9, 132, 227);
+}
+
+.choixUe .pole-title > .pole-icon {
+    color: rgb(9, 132, 227);
+    padding-right: 10px;
+}
+
+.choixUe .pole-title > .pole-nom {
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
+.choixUe table.sortable tr.over {
+    border: 1px solid rgb(9, 132, 227);
+}
+
+.choixUe table.sortable tr td {
+    color: white!important;
+}
+
+.choixUe [draggable] {
+    user-select: none;
+    -webkit-user-drag: element;
+    cursor: move;
+}

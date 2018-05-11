@@ -4,7 +4,7 @@ html, body {
 }
 
 body {
-    background-image: url("../images/code_coffee.jpg");
+    background-image: url("../../images/code_coffee.jpg");
     background-position: top;
     background-repeat: no-repeat;
     background-size: cover;
@@ -16,6 +16,15 @@ body {
     height: 100%;
 
     padding-top: 15px;
+    padding-bottom: 15px;
+}
+
+.content {
+    background-color: rgba(65, 75, 86, 0.95);
+    color: white;
+    border-radius: 2px;
+    padding: 0 15px 20px 15px;
+    flex: 1 1 auto;
 }
 
 .alert {
