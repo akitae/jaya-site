@@ -10,4 +10,12 @@ namespace UpjvBundle\Repository;
  */
 class GroupeRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function resetAllGroupe()
+    {
+        $rawSql = "DELETE FROM groupe";
+
+        $stmt = $this->getEntityManager()->getConnection()->prepare($rawSql);
+        $stmt->execute();
+    }
+   
 }

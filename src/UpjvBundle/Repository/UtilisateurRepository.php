@@ -144,6 +144,25 @@ class UtilisateurRepository extends \Doctrine\ORM\EntityRepository
 
         return $queryBuilder->getQuery()->getResult();
     }
+    /**
+     * Supprime les utilisateurs suivant un role précis. Ne supprime pas ceux qui ont plusieurs rôles
+     * @param $role
+     * @return mixed
+     */
+    public function resetByRole ($roleDelete, $roleSave1, $roleSave2) {
+        $queryBuilder = $this->createQueryBuilder('e');
+        $queryBuilder
+            ->delete()
+            ->where('e.roles LIKE :roleDelete')
+            ->setParameter('roleDelete', '%'.$roleDelete.'%')
+            ->andWhere('e.roles NOT LIKE  :roleSave1')
+            ->setParameter('roleSave1', '%'.$roleSave1.'%')
+            ->andWhere('e.roles NOT LIKE :roleSave2')
+            ->setParameter('roleSave2', '%'.$roleSave2.'%')
+            
+            ;
+        return $queryBuilder->getQuery()->getResult();
+    }
 
     /**
      * @param Matiere $matiere
