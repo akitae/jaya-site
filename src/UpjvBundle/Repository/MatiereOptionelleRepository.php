@@ -4,6 +4,7 @@ namespace UpjvBundle\Repository;
 use UpjvBundle\Entity\Matiere;
 use UpjvBundle\Entity\PoleDeCompetence;
 use UpjvBundle\Entity\Semestre;
+use UpjvBundle\Entity\Utilisateur;
 
 /**
  * OptionnelleRepository
@@ -13,6 +14,20 @@ use UpjvBundle\Entity\Semestre;
  */
 class MatiereOptionelleRepository extends \Doctrine\ORM\EntityRepository
 {
+    /**
+     * @param $user Utilisateur
+     * @return mixed
+     */
+    public function findByUser($user) {
+        $queryBuilder = $this->createQueryBuilder('e');
+        $queryBuilder
+            ->where('e.user = :user')
+            ->setParameter('user', $user)
+            ->orderBy("e.ordre");
+
+        return $queryBuilder->getQuery()->getResult();
+    }
+
     public function findBySemestre(Semestre $semestre){
         return $this
             ->createQueryBuilder('o')

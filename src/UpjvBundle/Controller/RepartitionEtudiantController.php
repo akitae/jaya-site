@@ -75,6 +75,7 @@ class RepartitionEtudiantController extends Controller
                 }
             }
         }
+        $em->flush();
     }
 
     public function repartitionOptionnel($semestre, $stagiaire = false){
@@ -91,7 +92,7 @@ class RepartitionEtudiantController extends Controller
                 $arrayChoice = [];
                 /** @var Matiere $matiere */
                 foreach ($listMatiereOrderByOrdre as $matiere){
-                    $tmp = $em->getRepository(Utilisateur::class)->findListUserForMatiereOptionnel($matiere, $semestre, $ordre);
+                    $tmp = $em->getRepository(Utilisateur::class)->findListUserForMatiereOptionnel($matiere, $semestre, $ordre, $stagiaire);
                     for($i=0; $i<count($tmp);$i++){
                         $arrayChoice[$matiere->getId()][] = $tmp[$i];
                     }
