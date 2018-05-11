@@ -29,7 +29,7 @@ class PoleDeCompetenceParcours
     private $nbrMatiereOptionnelle;
 
     /**
-     * @ORM\ManyToOne(targetEntity="UpjvBundle\Entity\Parcours", cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity="UpjvBundle\Entity\Parcours", cascade={"persist"}, inversedBy="polesDeCompetence")
      */
     private $parcours;
 
