@@ -73,7 +73,7 @@ class Utilisateur extends BaseUser
     private $matieres;
 
     /**
-     * @ORM\ManyToMany(targetEntity="UpjvBundle\Entity\Groupe", cascade={"persist"})
+     * @ORM\ManyToMany(targetEntity="UpjvBundle\Entity\Groupe", cascade={"persist"}, mappedBy="utilisateurs")
      */
     private $groupes;
 
