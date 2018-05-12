@@ -1,0 +1,87 @@
+{% extends 'baseAdmin.html.twig' %}
+
+{% block body %}
+
+<div class="panel panel-default">
+  <div class="col-lg-12">
+    <h1 class="page-header"><i class="fa fa-check-home"></i> Dashboard </h1>
+  </div>
+  <!-- Liste des étudiants validés -->
+  <div class="col-lg-12">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        Liste des étudiants non validés
+      </div>
+      <div class="panel-body">
+        <button type="button" onclick="location.href='{{ path('admin_validate_user')}}'" class="btn btn-primary pull-right"><i class="fa fa-check-circle"></i> Valider les étudiants</button>
+        <div class="row">
+          <div class="col-sm-12">
+            <table class="tableAdmin">
+              <thead>
+                <tr role="row">
+                  <th>Nom</th>
+                  <th>Numéro</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for user in user_list %}
+                <tr class="gradeA odd" role="row">
+                  <td class="sorting_1">{{ user.nom }} </td>
+                  <td>{{ user.numeroEtudiant }}</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- emargement -->
+  <div class="col-lg-12">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        Feuille d'émargement
+      </div>
+      <div class="panel-body">
+        <div class="row">
+          <div class="col-sm-12">
+            <form action="/admin/listUser/sendData" method="post">
+              <div class="panel-body">
+                <div class="row">
+                  <div class="col-sm-6">
+                    <label>Groupe</label>
+                    <select class="js-example-basic-multiple filter-table" multiple="multiple" name="groupe[]">
+                      {% for groupe in listGroup %}
+                      <option>{{ groupe }}</option>
+                      {% endfor %}
+                    </select>
+                  </div>
+                  <div class="col-sm-6">
+                    <label>UE / Matière</label>
+                    <select  class="js-example-basic-multiple filter-table" multiple="multiple" name="matiere[]">
+                      {% for matiere in listMatieres %}
+                      <option>{{ matiere }}</option>
+                      {% endfor %}
+                    </select>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-sm-6">
+                    <br/>
+                    <input type="text" placeholder="Possibilité d'ajouter un commentaire" name="commentaireRegistrationSheet" class="col-sm-6">
+                    <button type="submit" name="registrationSheet" class="btn btn-primary ">Feuille d'emargement </button>
+                    <br/>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
