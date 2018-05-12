@@ -1,0 +1,38 @@
+{% extends 'jaya/baseJaya.html.twig' %}
+{% block title %}Mon compte{% endblock %}
+{% block body %}
+
+    <div class="content my-account">
+
+        <div class="row">
+            <div class="col-md-offset-3 col-md-6">
+                {{ form_start(form) }}
+
+                <div class="form-profile">
+                    <!-- IDENTIFIANT -->
+                    <div class="form-group">
+                        {{ form_label(form.username) }} :
+                        {{ form_widget(form.username, { 'attr' : { 'class': 'form-control' }}) }}
+                    </div>
+                    <!-- ADRESSE EMAIL -->
+                    <div class="form-group">
+                        {{ form_label(form.email) }} :
+                        {{ form_widget(form.email, { 'attr': { 'class': 'form-control' }}) }}
+                    </div>
+                    <!-- MOT DE PASSE -->
+                    <div class="form-group">
+                        {{ form_label(form.current_password) }} :
+                        {{ form_widget(form.current_password, { 'attr': { 'class': 'form-control' }}) }}
+                    </div>
+
+                    <div>
+                        <button type="submit" class="btn btn-block btn-lg btn-blue">Mettre à jour</button>
+                    </div>
+                </div>
+
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

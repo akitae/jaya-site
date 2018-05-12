@@ -9,6 +9,11 @@
                 <h3 class="user-hello">Bonjour <b>{{ user.prenom }}</b>, ou plutôt devrais-je dire <b>{{ user.username }}</b> <img class="ninja" src="{{ asset('images/ninja.png') }}"></img> !</h3>
             </div>
         </div>
+
+        {% block retour %}
+            {% include ':jaya:retour.html.twig' %}
+        {% endblock %}
+
         <div class="row">
             <div class="col-md-6">
                 <a href="{{ path('choix_ue') }}">
@@ -24,7 +29,7 @@
                 <div class="card">
                     <div class="card-title">Mon compte</div>
                     <div class="card-description">
-
+                        Mettez à jour vos informations de compte comme votre adresse email ou votre identifiant de compte.
                     </div>
                 </div>
             </div>

@@ -1,7 +1,16 @@
 
 .footer {
-    min-height: 50px;
     background-color: rgb(65, 75, 86);
+    font-size: 1.1em;
+    padding: 5px;
     margin-top: 15px;
     border-radius: 2px;
+}
+
+.footer .upjv {
+    text-align: center;
+}
+
+.footer a img {
+    width: 50px;
 }
