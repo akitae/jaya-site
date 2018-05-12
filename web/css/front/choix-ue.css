@@ -1,0 +1,77 @@
+
+.choixUe .semestre-title {
+    border-bottom: 2px solid white;
+}
+
+.choixUe .pole {
+    margin-bottom: 10px;
+    border-bottom: 2px solid rgb(9, 132, 227);
+}
+
+.choixUe .pole-title {
+    display: flex;
+    align-items: center;
+    font-size: 1.4em;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.choixUe .pole-title > .pole-icon {
+    color: rgb(9, 132, 227);
+    padding-right: 10px;
+}
+
+.choixUe .sort-title {
+    font-size: 1.2em;
+    font-weight: bold;
+    padding-bottom: 10px;
+}
+
+.choixUe .sort {
+    margin-bottom: 30px;
+}
+
+.choixUe .sort .matiere {
+    display: flex;
+    align-items: center;
+    font-size: 1.2em;
+    min-height: 35px;
+    padding-top: 7px;
+    padding-bottom: 7px;
+    margin-bottom: 4px;
+    background-color: #4d5966;
+    border-left: 4px solid rgb(183, 21, 64);
+    border-right: 3px solid rgb(183, 21, 64);
+    cursor: move;
+}
+
+.choixUe .sort .matiere-ghost {
+    border-color: rgb(9, 132, 227);
+}
+
+.choixUe .sort .move-icon {
+    display: flex;
+    align-items: center;
+    text-align: center;
+}
+
+.choixUe .sort .matiere .ordre {
+    display: flex;
+    align-items: center;
+}
+
+.choixUe .sort .matiere .ordre .badge {
+    font-size: 0.9em;
+    min-width: 1.5em;
+    font-weight: bold;
+    margin: 0;
+}
+
+.choixUe .sort .matiere .place {
+    text-align: right;
+}
+
+.choixUe .sort .matiere .label-place {
+    margin: 0;
+    padding: 0.4em 0.6em 0.3em;
+}

@@ -74,12 +74,28 @@ class UeChoiceController extends Controller
             }
         }
 
+        /**
+         * On vérifie que l'on se situe dans une période de choix.
+         */
         if ($this->semestreToUse != null && $nowDate > $this->semestreToUse->getDateDebutChoix() && $nowDate < $this->semestreToUse->getDateFinChoix()) {
 
-            $this->matieresOptionelles = $this->getMatieresOptionelles();
+            $this->matieresOptionelles = $this->getMatieresOptTemp();
 
+            /**
+             * Si c'est la première fois que l'étudiant arrive sur cette page aucune données ne se trouve dans la table temporaire.
+             * Dans ce cas on les insère.
+             */
             if ($this->matieresOptionelles == null) {
-                $this->matieresOptionelles = $this->insertMatiereOptionelle();
+                $this->matieresOptionelles = $this->insertMatieresOptTemp();
+            } else {
+                /**
+                 * Dans le cas contraire on effectue une vérification d'intégritée.
+                 * On vérifie qu'entre temps il n'y a pas eu de matière optionelle de rajouté.
+                 */
+                if (count($this->matieresOptionelles) != count($this->getMatieresOptByParcours())) {
+                    $this->deleteMatieresOptTemp($this->matieresOptionelles);
+                    $this->matieresOptionelles = $this->insertMatieresOptTemp();
+                }
             }
 
             /**
@@ -90,6 +106,7 @@ class UeChoiceController extends Controller
             foreach ($this->matieresOptionelles as $matieresOptionelle) {
                 array_push($this->poles, $matieresOptionelle->getMatiere()->getPoleDeCompetence());
             }
+
             /**
              * On rends unique la présence d'un pole.
              */
@@ -97,6 +114,9 @@ class UeChoiceController extends Controller
 
         }
 
+        /**
+         * Si l'utilisateur est administrateur on affiche un lien vers l'administration.
+         */
         $isAdmin = $this->container->get('security.authorization_checker')->isGranted(Utilisateur::ROLE_SUPER_ADMIN);
 
         return $this->render("UpjvBundle:UeChoice:index.html.twig", [
@@ -113,12 +133,11 @@ class UeChoiceController extends Controller
      * Dans les cas suivants les valeurs sont récupéré de cette table temporaire.
      * @return mixed
      */
-    private function insertMatiereOptionelle () {
+    private function insertMatieresOptTemp () {
         /**
-         * On remonte toutes les UEs optionnelles de l'étudiant.
+         * On remonte toutes les UEs optionnelles disponible dans le parcours.
          */
-        $listMatiereParcours = $this->getDoctrine()->getRepository(MatiereParcours::class)->findOptionelleByParcours($this->parcours);
-
+        $listMatiereParcours = $this->getMatieresOptByParcours();
 
         /**
          * Pour toutes les matières optionnelles du parcours on vérifie qu'elle appartiennent au semestre en cours.
@@ -129,10 +148,10 @@ class UeChoiceController extends Controller
         foreach ($listMatiereParcours as $parcoursMatiere) {
             /** @var Matiere $matiere */
             $matiere = $parcoursMatiere->getMatieres();
-            if ($matiere->getSemestre() == $this->semestreToUse) {
+            if ($matiere->getSemestre() === $this->semestreToUse) {
                 array_push($matieres, $matiere);
                 /**
-                 * On ajoute le pole de compétence dans un tableau.
+                 * On ajoute le pole de compétence dans un tableau pour ordonner par la suite les matières par pôle.
                  */
                 array_push($poles, $matiere->getPoleDeCompetence());
             }
@@ -147,7 +166,6 @@ class UeChoiceController extends Controller
          * On crée l'ordonnancement temporaire des choix et on persist.
          */
         $em = $this->getDoctrine()->getManager();
-        $matieresOptionelles = array();
         /** @var PoleDeCompetence $pole */
         foreach ($poles as $pole) {
             /** @var int $index */
@@ -170,15 +188,35 @@ class UeChoiceController extends Controller
 
         $em->flush();
 
-        return $this->getMatieresOptionelles();
+        return $this->getMatieresOptTemp();
+    }
+
+    /**
+     * Retourne les matières optionelles par parcours.
+     * @return mixed
+     */
+    private function  getMatieresOptByParcours () {
+        return $this->getDoctrine()->getRepository(MatiereParcours::class)->findOptionelleByParcours($this->parcours);
     }
 
     /**
      * Retourne les choix optionelles de l'utilisateur.
      * @return mixed
      */
-    private function getMatieresOptionelles () {
+    private function getMatieresOptTemp () {
         return $this->getDoctrine()->getRepository(MatiereOptionelle::class)->findByUser($this->user);
+    }
+
+    /**
+     * @param $matieresOptTemp
+     */
+    private function deleteMatieresOptTemp ($matieresOptTemp) {
+        $em = $this->getDoctrine()->getManager();
+        /** @var MatiereOptionelle $matiereTemp */
+        foreach ($matieresOptTemp as $matiereTemp) {
+            $em->remove($matiereTemp);
+        }
+        $em->flush();
     }
 
     /**

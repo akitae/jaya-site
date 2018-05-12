@@ -8,19 +8,20 @@ body {
     background-position: top;
     background-repeat: no-repeat;
     background-size: cover;
+    background-attachment: fixed;
 }
 
 .container {
     display: flex;
     flex-flow: column;
-    height: 100%;
+    min-height: 100%;
 
     padding-top: 15px;
     padding-bottom: 15px;
 }
 
 .content {
-    background-color: rgba(65, 75, 86, 0.95);
+    background-color: rgba(65, 75, 86, 0.97);
     color: white;
     border-radius: 2px;
     padding: 0 15px 20px 15px;

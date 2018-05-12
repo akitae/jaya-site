@@ -1,5 +1,4 @@
 
-/* PAGE DEFAUT */
 .dashboard {
 }
 
@@ -43,38 +42,5 @@
     color: #ecf0f1;
 }
 
-/* CHOIX UE */
-.choixUe .semestre-title {
-    border-bottom: 2px solid white;
-}
 
-.choixUe .pole-title {
-    padding-left: 5px;
-    margin-bottom: 5px;
-    border-left: 2px solid rgb(9, 132, 227);
-    border-right: 2px solid rgb(9, 132, 227);
-}
 
-.choixUe .pole-title > .pole-icon {
-    color: rgb(9, 132, 227);
-    padding-right: 10px;
-}
-
-.choixUe .pole-title > .pole-nom {
-    font-size: 1.2em;
-    font-weight: bold;
-}
-
-.choixUe table.sortable tr.over {
-    border: 1px solid rgb(9, 132, 227);
-}
-
-.choixUe table.sortable tr td {
-    color: white!important;
-}
-
-.choixUe [draggable] {
-    user-select: none;
-    -webkit-user-drag: element;
-    cursor: move;
-}

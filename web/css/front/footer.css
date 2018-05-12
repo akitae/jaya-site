@@ -1,6 +1,6 @@
 
 .footer {
-    height: 50px;
+    min-height: 50px;
     background-color: rgb(65, 75, 86);
     margin-top: 15px;
     border-radius: 2px;
