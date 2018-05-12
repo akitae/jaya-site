@@ -5,6 +5,10 @@
     border-radius: 2px;
 }
 
+.navbar .logout-icon {
+    padding-left: 5px;
+}
+
 .navbar-inverse .navbar-brand {
     color: white;
 }

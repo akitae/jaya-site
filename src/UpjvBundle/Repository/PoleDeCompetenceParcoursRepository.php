@@ -1,6 +1,7 @@
 <?php
 
 namespace UpjvBundle\Repository;
+use UpjvBundle\Entity\Parcours;
 use UpjvBundle\Entity\PoleDeCompetence;
 use UpjvBundle\Entity\Utilisateur;
 
@@ -28,6 +29,20 @@ class PoleDeCompetenceParcoursRepository extends \Doctrine\ORM\EntityRepository
             ->getResult();
 
         return $result[0]['nbrMatiereOptionnelle'];
+    }
+
+    /**
+     * Recherche par parcours.
+     * @param $parcours Parcours
+     * @return mixed
+     */
+    public function findByParcours ($parcours) {
+        $queryBuilder = $this->createQueryBuilder('e');
+        $queryBuilder
+            ->where("e.parcours = :parcours")
+            ->setParameter("parcours", $parcours);
+
+        return $queryBuilder->getQuery()->getResult();
     }
 
 }

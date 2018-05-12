@@ -4,16 +4,27 @@
 }
 
 .choixUe .pole {
+    padding-bottom: 5px;
     margin-bottom: 10px;
     border-bottom: 2px solid rgb(9, 132, 227);
 }
 
-.choixUe .pole-title {
+.choixUe .pole .pole-title, .choixUe .pole .nb-choix {
     display: flex;
     align-items: center;
     font-size: 1.4em;
     font-weight: bold;
-    margin-bottom: 5px;
+}
+
+.choixUe .pole .choix-icon {
+    padding-right: 10px;
+}
+
+.choixUe .pole .nb-choix {
+    font-size: 1.2em;
+    font-weight: normal;
+    padding-right: 10px;
+    border-right: 3px solid rgb(9, 132, 227);
 }
 
 .choixUe .pole-title > .pole-icon {
@@ -38,7 +49,7 @@
     min-height: 35px;
     padding-top: 7px;
     padding-bottom: 7px;
-    margin-bottom: 4px;
+    margin-bottom: 8px;
     background-color: #4d5966;
     border-left: 4px solid rgb(183, 21, 64);
     border-right: 3px solid rgb(183, 21, 64);
@@ -49,15 +60,16 @@
     border-color: rgb(9, 132, 227);
 }
 
-.choixUe .sort .move-icon {
+.choixUe .sort .matiere .move-icon {
     display: flex;
     align-items: center;
-    text-align: center;
+    justify-content: center;
 }
 
-.choixUe .sort .matiere .ordre {
+.choixUe .sort .matiere .ordre, .choixUe .sort-title .ordre {
     display: flex;
     align-items: center;
+    justify-content: center;
 }
 
 .choixUe .sort .matiere .ordre .badge {
@@ -74,4 +86,8 @@
 .choixUe .sort .matiere .label-place {
     margin: 0;
     padding: 0.4em 0.6em 0.3em;
+}
+
+.choixUe .response {
+    font-size: 1.1em;
 }

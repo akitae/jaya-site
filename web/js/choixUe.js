@@ -41,7 +41,7 @@ $(function() {
         $.ajax({
             url: "/choixUe/enregistrer/",
             data: {array_Matiere:arrayMatiere},
-            method: "POST"
+            method: "POST",
         }).done(function (res) {
             $('#response').removeClass("hidden");
             $('#response').append("<div class='alert alert-success alert-dismissable'><a href=\"#\" class=\"close\" data-dismiss=\"alert\" aria-label=\"close\">&times;</a>"+res+"</div>");

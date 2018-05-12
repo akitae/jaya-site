@@ -14,6 +14,7 @@ use UpjvBundle\Entity\MatiereOptionelle;
 use UpjvBundle\Entity\MatiereParcours;
 use UpjvBundle\Entity\Parcours;
 use UpjvBundle\Entity\PoleDeCompetence;
+use UpjvBundle\Entity\PoleDeCompetenceParcours;
 use UpjvBundle\Entity\Semestre;
 use UpjvBundle\Entity\Utilisateur;
 
@@ -34,6 +35,9 @@ class UeChoiceController extends Controller
 
     /** @var MatiereOptionelle */
     private $matieresOptionelles;
+
+    /** @var PoleDeCompetenceParcours */
+    private $polesParcours;
 
     /**
      * @Route("/choixUE", name="choix_ue")
@@ -112,6 +116,12 @@ class UeChoiceController extends Controller
              */
             $this->poles = array_unique($this->poles);
 
+            $this->poles = $this->sortPoles($this->poles);
+
+            /**
+             * On recherche le nombre de choix de disponible par pole suivant le parcours de l'étudiant.
+             */
+            $this->polesParcours = $this->getDoctrine()->getRepository(PoleDeCompetenceParcours::class)->findByParcours($this->user->getParcours());
         }
 
         /**
@@ -124,6 +134,7 @@ class UeChoiceController extends Controller
             "nowDate" => $nowDate,
             "poles" => $this->poles,
             "matieres" => $this->matieresOptionelles,
+            "polesParcours" => $this->polesParcours,
             "isAdmin" => $isAdmin
         ]);
     }
@@ -189,6 +200,20 @@ class UeChoiceController extends Controller
         $em->flush();
 
         return $this->getMatieresOptTemp();
+    }
+
+    /**
+     * Trie les pôles suivant leur nom.
+     * @param $poles
+     * @return mixed
+     */
+    private function sortPoles ($poles) {
+
+        usort($poles, function ($obj1, $obj2) {
+            return strcmp($obj1->getNom(), $obj2->getNom());
+        });
+
+        return $poles;
     }
 
     /**
