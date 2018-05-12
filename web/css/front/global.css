@@ -28,6 +28,12 @@ body {
     flex: 1 1 auto;
 }
 
+.content .border-title {
+    padding-bottom: 8px;
+    margin-bottom: 15px;
+    border-bottom: 4px solid rgb(231, 50, 98);
+}
+
 .alert {
     border-radius: 2px;
 }
