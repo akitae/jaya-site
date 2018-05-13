@@ -36,7 +36,7 @@ class DefaultController extends Controller
   }
 
   /**
-  *  @Route("/dashboard", name="dashboard")
+  *  @Route("/admin", name="admin")
   * @return mixed
   */
   public function dashboardAction()
