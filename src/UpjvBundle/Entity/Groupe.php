@@ -148,7 +148,7 @@ class Groupe
     }
 
     public function getNombreEtudiant(){
-        $nbr = 1;
+        $nbr = 0;
         foreach ($this->getUtilisateurs() as $utilisateur){
             $nbr++;
         }
