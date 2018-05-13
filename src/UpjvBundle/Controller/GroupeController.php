@@ -54,7 +54,6 @@ class GroupeController extends Controller
             try{
                 /** @var Groupe $groupe */
                 $groupe = $form->getData();
-//                dump($groupe);die;
                 $em->persist($groupe);
                 $em->flush();
 
@@ -89,8 +88,10 @@ class GroupeController extends Controller
         $groupe = $em->getRepository(Groupe::class)->find($id);
         $matiere = $groupe->getMatiere();
 
+//dump($matiere);die;
         $listEtudiantSansGroupeForMatiere = $em->getRepository(Utilisateur::class)->findByEtudiantNoGroupeForMatiere($matiere);
         $listEtudiantInThisGroupe = $em->getRepository(Utilisateur::class)->findByRoleAndMatiere($matiere);
+//        dump($listEtudiantInThisGroupe);die;
 
         if (!$groupe instanceof Groupe) {
             $groupe = new Groupe();
