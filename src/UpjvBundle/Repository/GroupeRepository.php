@@ -10,4 +10,14 @@ namespace UpjvBundle\Repository;
  */
 class GroupeRepository extends \Doctrine\ORM\EntityRepository
 {
+
+    public function findByMatiere ($arrayMatiere) {
+        $queryBuilder = $this->createQueryBuilder('e');
+        $queryBuilder
+            ->where('e.matiere IN (:matiere)')
+            ->setParameter('matiere', $arrayMatiere);
+
+        return $queryBuilder->getQuery()->getResult();
+    }
+
 }

@@ -90,6 +90,7 @@ class UeChoiceController extends Controller
              * Dans ce cas on les insère.
              */
             if ($this->matieresOptionelles == null) {
+                var_dump("null");
                 $this->matieresOptionelles = $this->insertMatieresOptTemp();
             } else {
                 /**
@@ -97,6 +98,7 @@ class UeChoiceController extends Controller
                  * On vérifie qu'entre temps il n'y a pas eu de matière optionelle de rajouté.
                  */
                 if (count($this->matieresOptionelles) != count($this->getMatieresOptByParcours())) {
+                    var_dump("differece");
                     $this->deleteMatieresOptTemp($this->matieresOptionelles);
                     $this->matieresOptionelles = $this->insertMatieresOptTemp();
                 }
@@ -145,6 +147,7 @@ class UeChoiceController extends Controller
      * @return mixed
      */
     private function insertMatieresOptTemp () {
+        var_dump("insert mat opt");
         /**
          * On remonte toutes les UEs optionnelles disponible dans le parcours.
          */
@@ -255,7 +258,7 @@ class UeChoiceController extends Controller
             $em = $this->getDoctrine()->getManager();
             foreach ($arrayMatiere as $object) {
                 $matiere = $em->getRepository(MatiereOptionelle::class)->find($object["id"]);
-                $matiere->setOrdre($object['ordre']);
+                $matiere->setOrdre(intval($object['ordre']));
 
                 $em->persist($matiere);
             }

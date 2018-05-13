@@ -16,6 +16,15 @@ use UpjvBundle\Entity\Utilisateur;
 class UtilisateurRepository extends \Doctrine\ORM\EntityRepository
 {
 
+    public function findUtilisateurByParcours($listParcours) {
+        $queryBuilder = $this->createQueryBuilder('e');
+        $queryBuilder
+            ->where('e.parcours IN (:parcours)')
+            ->setParameter('parcours', $listParcours);
+
+        return $queryBuilder->getQuery()->getResult();
+    }
+
     public function findUser ($email, $motDePasse) {
         $queryBuilder = $this->createQueryBuilder('e');
         $queryBuilder->where('e.email = :email')->setParameter('email', $email)

@@ -21,7 +21,8 @@ class AppKernel extends Kernel
             new \FOS\UserBundle\FOSUserBundle(),
             new Doctrine\Bundle\MigrationsBundle\DoctrineMigrationsBundle(),
             new Knp\Bundle\SnappyBundle\KnpSnappyBundle(),
-            new \Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle()
+            new \Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
+            new JMS\SerializerBundle\JMSSerializerBundle()
         ];
 
         if (in_array($this->getEnvironment(), ['dev', 'test'], true)) {

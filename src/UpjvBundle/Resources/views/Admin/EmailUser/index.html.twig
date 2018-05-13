@@ -1,0 +1,102 @@
+{% extends "baseAdmin.html.twig" %}
+
+{% block body %}
+
+    <div class="col-lg-12">
+        <h1 class="page-header">Envoyer un mail à une liste d'étudiant</h1>
+    </div>
+
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                Rédigez votre mail
+            </div>
+
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-offset-3 col-md-6">
+                        {{ form_start(form) }}
+                        <div class="form-group">
+                            {{ form_label(form.listParcours) }}
+                            {{ form_widget(form.listParcours) }}
+                        </div>
+
+                        <div class="form-group">
+                            {{ form_label(form.listMatiere) }}
+                            {{ form_widget(form.listMatiere) }}
+                        </div>
+
+                        <div class="form-group">
+                            {{ form_label(form.listGroupe) }}
+                            {{ form_widget(form.listGroupe) }}
+                        </div>
+                        {{ form_end(form) }}
+                    </div>
+                </div>
+
+                <div id="response">
+
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+{% endblock %}
+
+ {% block myjavascript %}
+    <script>
+
+        $('#email_listParcours').on('change', function () {
+            let data = {
+                array_Parcours: $(this).val()
+            };
+
+            $.ajax({
+                url: '{{ path('admin_select_matiere') }}',
+                data: data,
+                method: "POST",
+                dataType: "json"
+            }).done(function (res) {
+                console.log("good");
+                console.log(res);
+                $('#email_listMatiere').empty();
+                res.forEach(function (matiere) {
+                    $('#email_listMatiere').append('<option value="'+matiere.id+'">'+matiere.nom+'</option>')
+                });
+            }).fail(function (res) {
+                console.log('fail');
+                $('#response').append(res);
+            });
+        });
+
+        $('#email_listMatiere').on('change', function () {
+            let data = {
+                array_Matiere: $(this).val()
+            };
+
+            console.log(data);
+
+            $.ajax({
+                url: '{{ path('admin_select_groupe') }}',
+                data: data,
+                method: 'POST',
+                dataType: 'json'
+            }).done(function (res) {
+                console.log("good");
+                console.log(res);
+                $('#response').append(res);
+                $('#email_listGroupe').empty();
+                res.forEach(function (groupe) {
+                    $('#email_listGroupe').append('<option value="'+groupe.id+'">'+groupe.nom+'</option>');
+                });
+            }).fail(function (res) {
+                console.log('fail');
+                console.log(res.responseText);
+                $('#response').append(res.responseText);
+            });
+        });
+
+    </script>
+{% endblock %}
