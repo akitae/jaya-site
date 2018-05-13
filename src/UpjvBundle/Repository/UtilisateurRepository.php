@@ -3,6 +3,7 @@
 namespace UpjvBundle\Repository;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
+use UpjvBundle\Entity\Groupe;
 use UpjvBundle\Entity\Matiere;
 use UpjvBundle\Entity\Semestre;
 use UpjvBundle\Entity\Utilisateur;
@@ -144,6 +145,25 @@ class UtilisateurRepository extends \Doctrine\ORM\EntityRepository
 
         return $queryBuilder->getQuery()->getResult();
     }
+    /**
+     * Supprime les utilisateurs suivant un role précis. Ne supprime pas ceux qui ont plusieurs rôles
+     * @param $role
+     * @return mixed
+     */
+    public function resetByRole ($roleDelete, $roleSave1, $roleSave2) {
+        $queryBuilder = $this->createQueryBuilder('e');
+        $queryBuilder
+            ->delete()
+            ->where('e.roles LIKE :roleDelete')
+            ->setParameter('roleDelete', '%'.$roleDelete.'%')
+            ->andWhere('e.roles NOT LIKE  :roleSave1')
+            ->setParameter('roleSave1', '%'.$roleSave1.'%')
+            ->andWhere('e.roles NOT LIKE :roleSave2')
+            ->setParameter('roleSave2', '%'.$roleSave2.'%')
+            
+            ;
+        return $queryBuilder->getQuery()->getResult();
+    }
 
     /**
      * @param Matiere $matiere
@@ -211,6 +231,53 @@ class UtilisateurRepository extends \Doctrine\ORM\EntityRepository
             ->join('optionnel.matiere','matiere')
             ->where('matiere.poleDeCompetence = :poleDeCompetence')
             ->setParameter('poleDeCompetence',$poleDeCompetence)
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
+    public function findByEtudiantNoGroupeForMatiere(Matiere $matiere){
+        $sql = "
+        SELECT utilisateur.id FROM utilisateur JOIN utilisateur_matiere u on utilisateur.id = u.utilisateur_id WHERE matiere_id = :matiere AND utilisateur.roles LIKE '%etudiant%'AND utilisateur.id NOT IN 
+        (SELECT DISTINCT(utilisateur_id) FROM groupe_utilisateur JOIN groupe g on groupe_utilisateur.groupe_id = g.id AND g.matiere_id = :matiere);
+       
+        ";
+
+        $stmt = $this->getEntityManager()->getConnection()->prepare($sql);
+        $stmt->bindValue('matiere',$matiere->getId());
+        $stmt->execute();
+
+        $result = $stmt->fetchAll();
+
+        if($result == null){
+            return $result;
+        }
+        foreach ($result as $key => $r){
+            $utilisateur[] = intval($r['id']);
+        }
+
+        return $this
+            ->createQueryBuilder('u')
+            ->where('u.id IN (:utilisateur)')
+            ->setParameter('utilisateur', $utilisateur)
+            ->orderBy('u.nom')
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * Recherche les utilisateurs suivant un role précis.
+     * @param $role
+     * @return mixed
+     */
+    public function findByRoleAndMatiere (Matiere $matiere, Groupe $groupe) {
+        return $this
+            ->createQueryBuilder('u')
+            ->join('u.groupes','groupes')
+            ->where('groupes.matiere = :matiere')
+            ->andWhere('groupes = :groupe')
+            ->setParameter('groupe',$groupe)
+            ->setParameter('matiere',$matiere)
             ->getQuery()
             ->getResult()
             ;
