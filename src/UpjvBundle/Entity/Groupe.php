@@ -147,4 +147,11 @@ class Groupe
         return $this->getNom();
     }
 
+    public function getNombreEtudiant(){
+        $nbr = 0;
+        foreach ($this->getUtilisateurs() as $utilisateur){
+            $nbr++;
+        }
+        return $nbr;
+    }
 }

@@ -3,6 +3,7 @@
 namespace UpjvBundle\Repository;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
+use UpjvBundle\Entity\Groupe;
 use UpjvBundle\Entity\Matiere;
 use UpjvBundle\Entity\Semestre;
 use UpjvBundle\Entity\Utilisateur;
@@ -237,8 +238,8 @@ class UtilisateurRepository extends \Doctrine\ORM\EntityRepository
 
     public function findByEtudiantNoGroupeForMatiere(Matiere $matiere){
         $sql = "
-        SELECT utilisateur.id FROM utilisateur JOIN utilisateur_matiere u on utilisateur.id = u.utilisateur_id WHERE matiere_id =1 AND utilisateur.roles LIKE '%etudiant%'AND utilisateur.id NOT IN 
-        (SELECT DISTINCT(utilisateur_id) FROM groupe_utilisateur JOIN groupe g on groupe_utilisateur.groupe_id = g.id);
+        SELECT utilisateur.id FROM utilisateur JOIN utilisateur_matiere u on utilisateur.id = u.utilisateur_id WHERE matiere_id = :matiere AND utilisateur.roles LIKE '%etudiant%'AND utilisateur.id NOT IN 
+        (SELECT DISTINCT(utilisateur_id) FROM groupe_utilisateur JOIN groupe g on groupe_utilisateur.groupe_id = g.id AND g.matiere_id = :matiere);
        
         ";
 
@@ -269,34 +270,17 @@ class UtilisateurRepository extends \Doctrine\ORM\EntityRepository
      * @param $role
      * @return mixed
      */
-    public function findByRoleAndMatiere (Matiere $matiere) {
-        $sql = "
-        SELECT utilisateur.id FROM utilisateur JOIN utilisateur_matiere u on utilisateur.id = u.utilisateur_id WHERE matiere_id =1 AND utilisateur.roles LIKE '%etudiant%'AND utilisateur.id IN 
-        (SELECT DISTINCT(utilisateur_id) FROM groupe_utilisateur JOIN groupe g on groupe_utilisateur.groupe_id = g.id);
-       
-        ";
-
-        $stmt = $this->getEntityManager()->getConnection()->prepare($sql);
-        $stmt->bindValue('matiere',$matiere->getId());
-        $stmt->execute();
-
-        $result = $stmt->fetchAll();
-
-        if($result == null){
-            return null;
-        }
-
-        foreach ($result as $key => $r){
-            $utilisateur[] = intval($r['id']);
-        }
-
+    public function findByRoleAndMatiere (Matiere $matiere, Groupe $groupe) {
         return $this
             ->createQueryBuilder('u')
-            ->where('u.id IN (:utilisateur)')
-            ->setParameter('utilisateur', $utilisateur)
-            ->orderBy('u.nom')
+            ->join('u.groupes','groupes')
+            ->where('groupes.matiere = :matiere')
+            ->andWhere('groupes = :groupe')
+            ->setParameter('groupe',$groupe)
+            ->setParameter('matiere',$matiere)
             ->getQuery()
-            ->getResult();
+            ->getResult()
+            ;
     }
 
 }

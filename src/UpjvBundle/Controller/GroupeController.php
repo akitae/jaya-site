@@ -22,7 +22,8 @@ class GroupeController extends Controller
      */
     public function indexAction()
     {
-        $listGroupe = $this->getDoctrine()->getRepository(Groupe::class)->findAll();
+        $em = $this->getDoctrine()->getManager();
+        $listGroupe = $em->getRepository(Groupe::class)->findAll();
 
         return $this->render('UpjvBundle:Admin/Groupe:index.html.twig',[
             'listGroupe' => $listGroupe
@@ -54,7 +55,6 @@ class GroupeController extends Controller
             try{
                 /** @var Groupe $groupe */
                 $groupe = $form->getData();
-//                dump($groupe);die;
                 $em->persist($groupe);
                 $em->flush();
 
@@ -90,7 +90,7 @@ class GroupeController extends Controller
         $matiere = $groupe->getMatiere();
 
         $listEtudiantSansGroupeForMatiere = $em->getRepository(Utilisateur::class)->findByEtudiantNoGroupeForMatiere($matiere);
-        $listEtudiantInThisGroupe = $em->getRepository(Utilisateur::class)->findByRoleAndMatiere($matiere);
+        $listEtudiantInThisGroupe = $em->getRepository(Utilisateur::class)->findByRoleAndMatiere($matiere,$groupe);
 
         if (!$groupe instanceof Groupe) {
             $groupe = new Groupe();
