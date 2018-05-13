@@ -29,7 +29,7 @@ class Groupe
     private $nom;
 
     /**
-     * @ORM\ManyToMany(targetEntity="UpjvBundle\Entity\Utilisateur", cascade={"persist"})
+     * @ORM\ManyToMany(targetEntity="UpjvBundle\Entity\Utilisateur", cascade={"persist"}, inversedBy="groupes")
      */
     private $utilisateurs;
 

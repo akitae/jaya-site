@@ -40,8 +40,8 @@ class RepartitionEtudiantController extends Controller
             $this->repartitionObligatoire($semestre,true);
             $this->repartitionOptionnel($semestre,true);
 
-            if($PasDerror = true){ //todo: gérer les erreurs en ammont car on perd les données "place"
-            }
+            $this->get('session')->getFlashBag()->add('success', 'Répartition exécuter, en cas d\'erreur, veuillez ajuster le nombre de place par parcours. Rendez-vous sur la page 
+            Trie des étudiants' );
 
         }
 
@@ -70,8 +70,11 @@ class RepartitionEtudiantController extends Controller
                 $matiere->setNbrPlaces($matiere->getNbrPlaces($stagiare)-1,$stagiare);
                 }else{
                     $Isstagiare = $stagiare==true ?'oui':'non';
-                    dump("Le nombre d'étudiant ayant la maitère obligatoire est supérieure aux nombres de places disponible, matière :".$matiere->getNom()
-                    .' Concerne les stagaires : '.$Isstagiare);die;
+                    $this->get('session')->getFlashBag()->add('erreur',
+                        "Le nombre d'étudiant ayant la maitère obligatoire est supérieure aux nombres de places disponible, matière $matiere
+                         Concerne les stagaires : $Isstagiare
+                        Verifier le nombre de place pour les matières");
+                    return $this->redirectToRoute('admin_repartition_etudiant');
                 }
             }
         }
