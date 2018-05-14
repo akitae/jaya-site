@@ -7,11 +7,14 @@ use Doctrine\ORM\Mapping\Entity;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use UpjvBundle\Entity\Groupe;
 use UpjvBundle\Entity\MatiereParcours;
 use UpjvBundle\Entity\Parcours;
 
@@ -23,17 +26,30 @@ class EmailType extends AbstractType
 
     public function buildForm (FormBuilderInterface $builder, array $options) {
 
+        /**
+         * Parameters
+         */
         $this->em = $options['em'];
 
         $builder
             ->add('listParcours', EntityType::class, array(
+                'label' => 'Sélectionnez un ou plusieurs parcours :',
                 'class' => 'UpjvBundle:Parcours',
                 'multiple' => 'true',
-                'choice_value' => function (Parcours $parcours = null) {
-                    return $parcours ? $parcours->getId() : '';
-                },
                 'attr' => [
                     'class' => 'js-example-basic-multiple form-control'
+                ]
+            ))
+            ->add('object', TextType::class, array(
+                'label' => 'Objet :',
+                'attr' => [
+                    'class' => 'form-control'
+                ]
+            ))
+            ->add('message', TextareaType::class, array(
+                'label' => 'Message :',
+                'attr' => [
+                    'class' => 'form-control textarea-width'
                 ]
             ))
             ->add('save', SubmitType::class, [
@@ -43,7 +59,7 @@ class EmailType extends AbstractType
                 ]
             ]);
 
-        $formModifier = function (FormInterface $form, $listParcours = null) {
+        $formMatiere = function (FormInterface $form, $listParcours = null) {
 
             $listMatiereParcours = null === $listParcours ? array() : $this->em->getRepository(MatiereParcours::class)->findMatieresByParcours($listParcours);
 
@@ -54,9 +70,10 @@ class EmailType extends AbstractType
             }
 
             $form->add('listMatiere', EntityType::class, array(
+                'label' => 'Sélectionnez une ou plusieurs matières :',
                 'class' => 'UpjvBundle:Matiere',
                 'choices' => $listMatiere,
-                'multiple' => 'true',
+                'multiple' => true,
                 'required' => false,
                 'attr' => [
                     'class' => 'js-example-basic-multiple form-control'
@@ -64,11 +81,11 @@ class EmailType extends AbstractType
             ));
         };
 
-        $formGroupe = function (FormInterface $form, array $listGroupe = null) {
-
-            $listGroupe = null === $listGroupe ? array() : array();
+        $formGroupe = function (FormInterface $form, array $listMatiere = null) {
+            $listGroupe = null === $listMatiere ? array() : $this->em->getRepository(Groupe::class)->findByMatiere($listMatiere);
 
             $form->add('listGroupe', EntityType::class, array(
+                'label' => 'Sélectionnez un ou plusieurs groupes :',
                 'class' => 'UpjvBundle:Groupe',
                 'choices' => $listGroupe,
                 'multiple' => true,
@@ -81,10 +98,10 @@ class EmailType extends AbstractType
 
         $builder->addEventListener(
             FormEvents::PRE_SET_DATA,
-            function (FormEvent $event) use ($formModifier) {
+            function (FormEvent $event) use ($formMatiere) {
                 $data = $event->getData();
 
-                $formModifier($event->getForm(), $data->getListParcours());
+                $formMatiere($event->getForm(), $data->getListParcours());
             }
         );
 
@@ -93,21 +110,33 @@ class EmailType extends AbstractType
             function (FormEvent $event) use ($formGroupe) {
                 $data = $event->getData();
 
-                $formGroupe($event->getForm(), $data->getListGroupe());
+                $formGroupe($event->getForm(), $data->getListMatiere());
             }
         );
 
-        $builder->get('listParcours')->addEventListener(
-            FormEvents::POST_SUBMIT,
-            function (FormEvent $event) use ($formModifier) {
-                $listParcours = $event->getForm()->getData();
+        $builder->addEventListener(
+            FormEvents::PRE_SUBMIT,
+            function (FormEvent $event) use ($formMatiere) {
+                $data = $event->getData();
 
-                $formModifier($event->getForm()->getParent(), $listParcours);
+                $listParcours = $data['listParcours'];
+
+                $formMatiere($event->getForm(), $listParcours);
+            }
+        );
+
+        $builder->addEventListener(
+            FormEvents::PRE_SUBMIT,
+            function (FormEvent $event) use ($formGroupe) {
+                $data = $event->getData();
+
+                $listMatiere = array_key_exists('listMatiere', $data) ? $data['listMatiere'] : null;
+
+                $formGroupe($event->getForm(), $listMatiere);
             }
         );
 
     }
-
 
     public function configureOptions(OptionsResolver $resolver)
     {
@@ -115,6 +144,5 @@ class EmailType extends AbstractType
             'em' => null
         ));
     }
-
 
 }

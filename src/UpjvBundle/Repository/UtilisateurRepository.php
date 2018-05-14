@@ -25,6 +25,24 @@ class UtilisateurRepository extends \Doctrine\ORM\EntityRepository
         return $queryBuilder->getQuery()->getResult();
     }
 
+    public function findUserByMatieres ($listMatiere) {
+        $queryBuilder = $this->createQueryBuilder('e');
+        $queryBuilder
+            ->where(":matieres MEMBER OF e.matieres")
+            ->setParameter('matieres', $listMatiere);
+
+        return $queryBuilder->getQuery()->getResult();
+    }
+
+    public function findUserByGroupes ($listGroupe) {
+        $queryBuilder = $this->createQueryBuilder('e');
+        $queryBuilder
+            ->where(":groupes MEMBER OF e.groupes")
+            ->setParameter('groupes', $listGroupe);
+
+        return $queryBuilder->getQuery()->getResult();
+    }
+
     public function findUser ($email, $motDePasse) {
         $queryBuilder = $this->createQueryBuilder('e');
         $queryBuilder->where('e.email = :email')->setParameter('email', $email)

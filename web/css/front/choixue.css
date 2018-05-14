@@ -56,6 +56,10 @@
     border-color: rgb(9, 132, 227);
 }
 
+.choixUe .sort .matiere-ghost .ordre .badge {
+    background-color: rgb(231, 50, 98);;
+}
+
 .choixUe .sort .matiere .move-icon {
     display: flex;
     align-items: center;

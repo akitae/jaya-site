@@ -17,3 +17,8 @@
 .form-control.dateTime{
     height: 80px;
 }
+
+.textarea-width {
+    max-width: 100%;
+    min-height: 250px;
+}

@@ -45,16 +45,3 @@ body {
 .margin-bottom {
     margin-bottom: 15px;
 }
-
-.btn-blue {
-    background-color: rgba(9, 132, 227, 0.5);
-    color: white;
-    font-weight: bold;
-    border-radius: 0;
-}
-
-.btn-blue:hover, .btn-blue:focus {
-    background-color: rgba(9, 132, 227, 1);
-    color: white;
-    outline: none;
-}

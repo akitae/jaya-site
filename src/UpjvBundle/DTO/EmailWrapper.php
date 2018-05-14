@@ -20,6 +20,12 @@ class EmailWrapper
     /** @var array */
     private $listGroupe;
 
+    /** @var string */
+    private $object;
+
+    /** @var string */
+    private $message;
+
     /**
      * @return array
      */
@@ -66,6 +72,38 @@ class EmailWrapper
     public function setListGroupe($listGroupe)
     {
         $this->listGroupe = $listGroupe;
+    }
+
+    /**
+     * @return string
+     */
+    public function getObject()
+    {
+        return $this->object;
+    }
+
+    /**
+     * @param string $object
+     */
+    public function setObject($object)
+    {
+        $this->object = $object;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMessage()
+    {
+        return $this->message;
+    }
+
+    /**
+     * @param string $message
+     */
+    public function setMessage($message)
+    {
+        $this->message = $message;
     }
 
 }
