@@ -2,6 +2,18 @@
     Utilisé coté admin et étudiant.
  */
 
+
+.btn-red {
+    background-color: rgba(183, 21, 64, 0.5);
+    font-weight: bold;
+    border-radius: 0;
+}
+
+.btn-red:hover, .btn-red:focus {
+    color: white;
+    background-color: rgba(183, 21, 64, 1);
+}
+
 .btn-blue {
     background-color: rgba(9, 132, 227, 0.5);
     color: white;

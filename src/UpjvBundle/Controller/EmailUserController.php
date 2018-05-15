@@ -53,11 +53,13 @@ class EmailUserController extends Controller
                 $listUtilisateur = $this->getDoctrine()->getRepository(Utilisateur::class)->findUtilisateurByParcours($listParcours);
 
                 /** @var array $listEmail */
-                $listEmail = $this->getEmailFromUser($listUtilisateur);
+                $listEmail = $this->getListEmailFromListUser($listUtilisateur);
 
                 //var_dump($listEmail);
 
                 $this->sendMailToUser($object, $this->getFromForMail(), $listEmail,$message);
+
+                return $this->emailSend(count($listEmail));
             } else if ($arrayIdParcours != null && count($arrayIdParcours) != 0 && $arrayIdMatiere != null && count($arrayIdMatiere) != 0 && ($arrayIdGroupe == null || count($arrayIdGroupe) == 0)) {
                 //var_dump("matiere");
                 /** @var array $listMatiere */
@@ -67,11 +69,13 @@ class EmailUserController extends Controller
                 $listUtilisateur = $this->getDoctrine()->getRepository(Utilisateur::class)->findUserByMatieres($listMatiere);
 
                 /** @var array $listEmail */
-                $listEmail = $this->getEmailFromUser($listUtilisateur);
+                $listEmail = $this->getListEmailFromListUser($listUtilisateur);
 
                 //var_dump($listEmail);
 
                 $this->sendMailToUser($object, $this->getFromForMail(), $listEmail,$message);
+
+                return $this->emailSend(count($listEmail));
             } else if ($arrayIdParcours != null && count($arrayIdParcours) != 0 && $arrayIdMatiere != null && count($arrayIdMatiere) != 0 && $arrayIdGroupe != null && count($arrayIdGroupe) != 0) {
                 //var_dump("groupe");
                 /** @var array $listGroupe */
@@ -81,11 +85,13 @@ class EmailUserController extends Controller
                 $listUtilisateur = $this->getDoctrine()->getRepository(Utilisateur::class)->findUserByGroupes($listGroupe);
 
                 /** @var array $listEmail */
-                $listEmail = $this->getEmailFromUser($listUtilisateur);
+                $listEmail = $this->getListEmailFromListUser($listUtilisateur);
 
                 //var_dump($listEmail);
 
                 $this->sendMailToUser($object, $this->getFromForMail(), $listEmail,$message);
+
+                return $this->emailSend(count($listEmail));
             }
         }
 
@@ -94,7 +100,25 @@ class EmailUserController extends Controller
         ]);
     }
 
-    private function getEmailFromUser ($listUtilisateur) {
+    /**
+     * Page affichée une fois les emails envoyés.
+     * @param $nbUser
+     * @return \Symfony\Component\HttpFoundation\Response
+     *
+     */
+    public function emailSend ($nbUser) {
+
+        return $this->render("@Upjv/Admin/EmailUser/email_sent.html.twig", [
+            'nbUser' => $nbUser
+        ]);
+    }
+
+    /**
+     * Retourne la liste des emails des utilisateurs.
+     * @param $listUtilisateur array
+     * @return array
+     */
+    private function getListEmailFromListUser ($listUtilisateur) {
         /** @var array $listEmail */
         $listEmail = array();
         /** @var Utilisateur $utilisateur */
@@ -105,10 +129,21 @@ class EmailUserController extends Controller
         return $listEmail;
     }
 
+    /**
+     * Retourne l'adrese mail utilisé pour l'envoi des mails aux étudiants.
+     * @return int|null|string
+     */
     private function getFromForMail () {
         return $from = key($this->container->getParameter('fos_user.registration.confirmation.from_email'));
     }
 
+    /**
+     * Envoi le mail aux étudiants.
+     * @param $object string
+     * @param $from string
+     * @param $listTo array
+     * @param $body string
+     */
     private function sendMailToUser ($object, $from, $listTo, $body) {
         //var_dump('sendmail');
         $message = (new \Swift_Message($object))
@@ -119,6 +154,11 @@ class EmailUserController extends Controller
         $this->get('mailer')->send($message);
     }
 
+    /**
+     * Retourne la liste des parcours suivant les Ids.
+     * @param $arrayIdParcours array
+     * @return array
+     */
     private function getParcoursById ($arrayIdParcours) {
         $arrayParcours = array();
         foreach ($arrayIdParcours as $idParcours) {
@@ -128,6 +168,11 @@ class EmailUserController extends Controller
         return $arrayParcours;
     }
 
+    /**
+     * Retourne la liste des matières suivant les Ids.
+     * @param $arrayIdMatiere array
+     * @return array
+     */
     private function getMatieresById ($arrayIdMatiere) {
         /** @var array $arrayMatiere */
         $arrayMatiere = array();
@@ -138,6 +183,11 @@ class EmailUserController extends Controller
         return $arrayMatiere;
     }
 
+    /**
+     * Retourne la liste des groupes suivant les Ids.
+     * @param $arrayIdGroupe array
+     * @return array
+     */
     private function getGroupesByid ($arrayIdGroupe) {
         /** @var array $arrayGroupe */
         $arrayGroupe = array();
@@ -149,9 +199,10 @@ class EmailUserController extends Controller
     }
 
     /**
+     * Retourne les listes des matières suivant les Ids des parcours.
      * @Route("/admin/selectMatiere", name="admin_select_matiere")
-     * @param $arrayParcours
-     * @return mixed
+     * @param Request $request
+     * @return JsonResponse
      */
     public function selectMatiere (Request $request) {
         $arrayIdParcours = $request->request->get('array_Parcours');
@@ -186,7 +237,7 @@ class EmailUserController extends Controller
             foreach ($arrayMatiere as $matiere) {
                 array_push($jsonArrayMatiere, [
                     "id" => $matiere->getId(),
-                    "nom" => $matiere->getNom()
+                    "nom" => $matiere->__toString()
                 ]);
             }
         }
@@ -195,6 +246,7 @@ class EmailUserController extends Controller
     }
 
     /**
+     * Retourne les listes des groupes suivant la liste des Ids des matières.
      * @Route("/admin/selectGroupe", name="admin_select_groupe")
      * @param Request $request
      * @return JsonResponse

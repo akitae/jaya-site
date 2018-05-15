@@ -3,7 +3,6 @@
 namespace UpjvBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * Class MatiereOptionelle

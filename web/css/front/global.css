@@ -11,29 +11,6 @@ body {
     background-attachment: fixed;
 }
 
-.container {
-    display: flex;
-    flex-flow: column;
-    min-height: 100%;
-
-    padding-top: 15px;
-    padding-bottom: 15px;
-}
-
-.content {
-    background-color: rgba(65, 75, 86, 0.97);
-    color: white;
-    border-radius: 2px;
-    padding: 0 15px 20px 15px;
-    flex: 1 1 auto;
-}
-
-.content .border-title {
-    padding-bottom: 8px;
-    margin-bottom: 15px;
-    border-bottom: 4px solid rgb(231, 50, 98);
-}
-
 .alert {
     border-radius: 2px;
 }
