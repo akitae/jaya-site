@@ -1,0 +1,38 @@
+# Configure the PHP version SensioLabsInsight should use to analyze
+# your project. It can be defined to 5, 7.0, or 7.1. If not
+# present, it will prefer 7.1 but fallback to 5 if errored.
+php_version: 7.1
+
+# Configure which PHP extensions your project need to be analyzed.
+php_ini: |
+    extension=openssl.so
+    extension=mcrypt.so
+
+# Configure the failure conditions for your commit status.
+# If at least one of these conditions is verified, the commit status is displayed as failed.
+commit_failure_conditions:
+    - "pr.severity.critical > 0"
+    - "pr.severity.major > 0"
+
+# Configure rules.
+rules:
+    # Disable a rule
+    php.duplicated_code:
+        enabled: false
+
+    # Configure a rule
+    php.class_too_long:
+        max_length: 2000
+        threshold:  10
+
+# Configure in which directory your code is located.
+# This can be set to any subdirectory of your project.
+#working_directory: myapp
+
+# This section will be executed before installing dependencies.
+# You should configure here what is needed for Composer to run without
+# issue: install libraries, prepare the database, etc.
+pre_composer_script: |
+    #!/bin/bash
+    cp app/config/parameters.yml.dist app/config/parameters.yml
+    sed -i -e "s/assets_version:.*/assets_version: `date +'%s'`" app/config/parameters.yml
