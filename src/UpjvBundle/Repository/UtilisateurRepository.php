@@ -37,11 +37,19 @@ class UtilisateurRepository extends \Doctrine\ORM\EntityRepository
      */
     public function findByRole ($role) {
         $queryBuilder = $this->createQueryBuilder('e');
-        $queryBuilder
-            ->where('e.roles LIKE :roles')
-            ->setParameter('roles', '%'.$role.'%')
-            ->orderBy('e.nom');
 
+        if(is_array($role)){
+            for($i=0;$i<count($role);$i++){
+                $queryBuilder
+                    ->orWhere("e.roles LIKE '%$role[$i]%'");
+            }
+        }else{
+            $queryBuilder
+                ->where('e.roles LIKE :roles')
+                ->setParameter('roles', '%'.$role.'%');
+        }
+        $queryBuilder
+            ->orderBy('e.nom');
         return $queryBuilder->getQuery()->getResult();
     }
     
