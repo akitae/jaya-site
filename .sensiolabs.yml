@@ -38,6 +38,6 @@ commit_failure_conditions:
     # - "pr.category.performance > 0"
     # - "pr.category.readability > 0"
     # - "pr.category.security > 0"
-    #
+
     # # By total violations count, limited to the violations concerning files edited by the current PR
     # - "pr.violations > 150"
