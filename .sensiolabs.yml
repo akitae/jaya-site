@@ -32,7 +32,7 @@ working_directory: jaya-site
 # This section will be executed before installing dependencies.
 # You should configure here what is needed for Composer to run without
 # issue: install libraries, prepare the database, etc.
-pre_composer_script: |
-    #!/bin/bash
-    cp app/config/parameters.yml.dist app/config/parameters.yml
-    sed -i -e "s/assets_version:.*/assets_version: `date +'%s'`" app/config/parameters.yml
+#pre_composer_script: |
+#    #!/bin/bash
+#    cp app/config/parameters.yml.dist app/config/parameters.yml
+#    sed -i -e "s/assets_version:.*/assets_version: `date +'%s'`" app/config/parameters.yml
