@@ -27,7 +27,7 @@ rules:
 
 # Configure in which directory your code is located.
 # This can be set to any subdirectory of your project.
-#working_directory: myapp
+working_directory: jaya-site
 
 # This section will be executed before installing dependencies.
 # You should configure here what is needed for Composer to run without
