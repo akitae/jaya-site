@@ -14,6 +14,7 @@ use UpjvBundle\Entity\Utilisateur;
  */
 class MatiereOptionelleRepository extends \Doctrine\ORM\EntityRepository
 {
+
     /**
      * @param $user Utilisateur
      * @return mixed

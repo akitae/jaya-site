@@ -6,15 +6,18 @@
 
         {% stylesheets filter="cssrewrite"
             'css/bootstrap.min.css'
-            'css/fontawesome.min.css'
-            'css/bootstrap-social.css'
             'css/front/navbar.css'
             'css/front/footer.css'
+            'css/component-global.css'
             'css/front/global.css'
+            'css/front/global-user.css'
             'css/front/jaya.css'
+            'css/front/choixue.css'
+            'css/front/account.css'
             output='css/compiled/baseJaya.css'
         %}
             <link rel="stylesheet" href="{{ asset_url }}" />
+            <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
         {% endstylesheets %}
         {% block stylesheets %}{% endblock %}
     </head>
@@ -40,9 +43,9 @@
         'js/bootstrap.min.js'
         'js/front/global.js'
         'js/choixUe.js'
+        'js/sortable/Sortable.js'
         output='js/compiled/appJaya.js' %}
         <script src="{{ asset_url }}"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
     {% endjavascripts %}
     {% block javascripts %}{% endblock %}
 

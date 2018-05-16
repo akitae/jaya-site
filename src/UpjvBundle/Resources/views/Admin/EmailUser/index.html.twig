@@ -1,0 +1,113 @@
+{% extends "baseAdmin.html.twig" %}
+
+{% block body %}
+
+    <div class="col-lg-offset-1 col-lg-6">
+        <h1 class="page-header"><i class="fa fa-envelope fa-fw"></i> Envoyer un mail à une liste d'étudiant</h1>
+    </div>
+
+    <div class="col-lg-offset-1 col-lg-6">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                Rédigez votre mail
+            </div>
+
+            <div class="panel-body">
+
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="alert alert-danger hidden" id="ajax-error"></div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-12">
+                        {{ form_start(form) }}
+                        <div class="form-group required">
+                            {{ form_label(form.listParcours) }}
+                            {{ form_widget(form.listParcours) }}
+                        </div>
+
+                        <div class="form-group">
+                            {{ form_label(form.listMatiere) }}
+                            {{ form_widget(form.listMatiere) }}
+                        </div>
+
+                        <div class="form-group">
+                            {{ form_label(form.listGroupe) }}
+                            {{ form_widget(form.listGroupe) }}
+                        </div>
+
+                        <div class="form-group">
+                            {{ form_label(form.object) }}
+                            {{ form_widget(form.object) }}
+                        </div>
+
+                        <div class="form-group">
+                            {{ form_label(form.message) }}
+                            {{ form_widget(form.message) }}
+                        </div>
+                        {{ form_end(form) }}
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+{% endblock %}
+
+ {% block myjavascript %}
+    <script type="text/javascript" charset="utf-8">
+
+        $('#email_listParcours').on('change', function () {
+            let data = {
+                array_Parcours: $(this).val()
+            };
+
+            $.ajax({
+                url: '{{ path('admin_select_matiere') }}',
+                data: data,
+                method: "POST",
+                dataType: "json"
+            }).done(function (res) {
+                $('#ajax-error').addClass('hidden');
+
+                $('#email_listMatiere').empty();
+                res.forEach(function (matiere) {
+                    $('#email_listMatiere').append('<option value="'+matiere.id+'">'+matiere.nom+'</option>')
+                });
+
+            }).fail(function (res) {
+                $('#ajax-error').removeClass('hidden');
+                $('#ajax-error').text("Une erreur est survenue pendant la récupération des matières appartenant aux parcours sélectionnés.");
+            });
+        });
+
+        $('#email_listMatiere').on('change', function () {
+            let data = {
+                array_Matiere: $(this).val()
+            };
+
+            $.ajax({
+                url: '{{ path('admin_select_groupe') }}',
+                data: data,
+                method: 'POST',
+                dataType: 'json'
+            }).done(function (res) {
+                $('#ajax-error').addClass('hidden');
+
+                $('#email_listGroupe').empty();
+                res.forEach(function (groupe) {
+                    $('#email_listGroupe').append('<option value="'+groupe.id+'">'+groupe.nom+'</option>');
+                });
+
+            }).fail(function (res) {
+                $('#ajax-error').removeClass('hidden');
+                $('#ajax-error').text("Une erreur est survenue pendant la récupération des groupes appartenant aux matières sélectionnées.");
+            });
+        });
+
+    </script>
+{% endblock %}

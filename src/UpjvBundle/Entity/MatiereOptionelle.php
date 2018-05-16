@@ -3,7 +3,6 @@
 namespace UpjvBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * Class MatiereOptionelle
@@ -34,7 +33,6 @@ class MatiereOptionelle
     private $matiere;
 
     /**
-     * @Gedmo\SortablePosition()
      * @ORM\Column(name="ordre", type="integer")
      */
     private $ordre;

@@ -26,4 +26,18 @@ class MatiereParcoursRepository extends \Doctrine\ORM\EntityRepository
         return $queryBuilder->getQuery()->getResult();
     }
 
+    /**
+     * Retourne toutes les matières appartemenet aux parcours.
+     * @param $arrayParcours
+     * @return mixed
+     */
+    public function findMatieresByParcours ($arrayParcours) {
+        $queryBuilder = $this->createQueryBuilder('e');
+        $queryBuilder
+            ->where("e.parcours IN (:parcours)")
+            ->setParameter("parcours", $arrayParcours);
+
+        return $queryBuilder->getQuery()->getResult();
+    }
+
 }
