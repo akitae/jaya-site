@@ -68,4 +68,13 @@ class MatiereOptionelleRepository extends \Doctrine\ORM\EntityRepository
             return intval($result[0][1]);
         }
     }
+    
+    
+    public function resetAllMatiereOption()
+    {
+        $rawSql = "DELETE FROM matiere_optionelle";
+
+        $stmt = $this->getEntityManager()->getConnection()->prepare($rawSql);
+        $stmt->execute();
+    }
 }

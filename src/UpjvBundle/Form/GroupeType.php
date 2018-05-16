@@ -30,16 +30,8 @@ class GroupeType extends AbstractType
         'class' => 'form-control select2'
       ]
     ])
-    ->add('utilisateurs', EntityType::class,
-    [
-      'class' => Utilisateur::class,
-      'multiple' => true,
-      'attr' => [
-        'class' => 'form-control select2'
-      ]
-    ])
     ->add('save', SubmitType::class,[
-      'label' => 'Enregistrer',
+      'label' => 'Modifier les utilisateurs du groupe',
       'attr'  => [
         'class' => 'btn btn-primary pull-right'
       ]

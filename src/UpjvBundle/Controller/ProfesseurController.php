@@ -21,7 +21,7 @@ class ProfesseurController extends Controller
      */
     public function indexAction()
     {
-        $listProfesseur = $this->getDoctrine()->getRepository(Utilisateur::class)->findByRole(Utilisateur::ROLE_PROFESSEUR);
+        $listProfesseur = $this->getDoctrine()->getRepository(Utilisateur::class)->findByRole([Utilisateur::ROLE_PROFESSEUR,Utilisateur::ROLE_ADMIN,Utilisateur::ROLE_SUPER_ADMIN]);
 
         return $this->render('UpjvBundle:Admin/Professeur:index.html.twig',[
             'listProfesseur' => $listProfesseur

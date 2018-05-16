@@ -35,6 +35,7 @@ class MatiereRepository extends \Doctrine\ORM\EntityRepository
         $stmt = $this->getEntityManager()->getConnection()->prepare($rawSql);
         $stmt->execute();
     }
+    
 
     public function findDistinctMatiereByPoleAndOrdre($ordre, PoleDeCompetence $poleDeCompetence, $optionnel = false){
         return $this
@@ -67,5 +68,21 @@ WHERE utilisateur_id = :user AND pole_de_competence_id = :pole AND mp.optionnel 
         return $this;
 
 
+    }
+    
+    public function resetAllMatiereUtilisateur(){
+        $rawSql = "DELETE FROM utilisateur_matiere";
+
+        $stmt = $this->getEntityManager()->getConnection()->prepare($rawSql);
+        $stmt->execute();
+    }
+
+    public function resetAllSemestre()
+    {
+        $rawSql = "UPDATE matiere SET semestre_id = null ";
+
+        $stmt = $this->getEntityManager()->getConnection()->prepare($rawSql);
+        $stmt->execute();
+  
     }
 }

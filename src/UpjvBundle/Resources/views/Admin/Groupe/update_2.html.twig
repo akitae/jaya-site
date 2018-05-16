@@ -1,0 +1,68 @@
+{% extends 'baseAdmin.html.twig' %}
+{% block body %}
+    <div class="panel panel-default">
+        <div class="col-lg-12">
+            <h1 class="page-header">Gestion des groupes</h1>
+        </div>
+        <div class="col-lg-12">
+            <!-- /.panel-heading -->
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    Créer ou modifier un groupe ( Étapes 2 : choix des étudiants)
+                </div>
+                <div class="panel-body">
+                    <form action="{{ path('admin_groupe_edit_2', {'id': groupe.id }) }}" method="post">
+                        <table class="table table-bordered">
+                            <tr>
+                                <td>Nom du groupe</td>
+                                <td>{{ groupe.nom }}</td>
+                            </tr>
+                            <tr>
+                                <td>Matière</td>
+                                <td>{{ matiere }}</td>
+                            </tr>
+                        </table>
+                            <div class="row" >
+                                <div class="col-lg-5">
+                                    Utilisateur sans groupe
+                                    <div class="subject-info-box-1">
+                                        <select multiple="multiple" id='lstBox1' class="form-control" name="notInGroupe[]" style="height: 400px">
+                                            {% for etudiant in listEtudiant %}
+                                                <option value="{{ etudiant.id }}" class="valueToClick" >{{ etudiant.nom}} {{ etudiant.prenom }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-lg-2">
+                                    <div class="subject-info-arrows text-center" style="height: 400px; padding-top: 50%;">
+                                        <input type="button" id="btnAllRight" value=">>" class="btn btn-default" /><br />
+                                        <input type="button" id="btnRight" value=">" class="btn btn-default" /><br />
+                                        <input type="button" id="btnLeft" value="<" class="btn btn-default" /><br />
+                                        <input type="button" id="btnAllLeft" value="<<" class="btn btn-default" />
+                                    </div>
+                                </div>
+                                <div class="col-lg-5">
+                                    Utilisateur dans ce groupe
+                                    <div class="subject-info-box-2">
+                                        <select multiple="multiple" id='lstBox2' class="form-control" name="inGroupe[]" style="height: 400px">
+                                            {% for etudiant in listEtudiantInMatiere %}
+                                                <option value="{{ etudiant.id }}" class="valueToClick">{{ etudiant.nom}} {{ etudiant.prenom }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        <button type="submit" class="btn btn-primary pull-right" name="submit" onclick="selectAll()">Enregistrer</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        //selectionne tous les champs pour les retourners
+        function selectAll() {
+            $('.valueToClick').prop('selected',true);
+        }
+    </script>
+{% endblock %}

@@ -13,7 +13,6 @@ use UpjvBundle\Entity\MatiereParcours;
 use UpjvBundle\Entity\Parcours;
 use UpjvBundle\Entity\Utilisateur;
 use UpjvBundle\Form\EmailType;
-use Zend\Code\Scanner\Util;
 
 class EmailUserController extends Controller
 {
@@ -27,6 +26,7 @@ class EmailUserController extends Controller
 
         /** @var EmailWrapper $emailWrapper */
         $emailWrapper = new EmailWrapper();
+
 
         $form = $this->createForm(EmailType::class, $emailWrapper, array(
             'em' => $this->getDoctrine()->getManager()
@@ -227,6 +227,7 @@ class EmailUserController extends Controller
             /**
              * De ces relations on récupère toutes ces matières.
              */
+
             $arrayMatiere = array();
             /** @var MatiereParcours $matiereParcours */
             foreach ($matieresParcours as $matiereParcours) {
@@ -237,6 +238,7 @@ class EmailUserController extends Controller
             foreach ($arrayMatiere as $matiere) {
                 array_push($jsonArrayMatiere, [
                     "id" => $matiere->getId(),
+
                     "nom" => $matiere->__toString()
                 ]);
             }
@@ -246,10 +248,10 @@ class EmailUserController extends Controller
     }
 
     /**
-     * Retourne les listes des groupes suivant la liste des Ids des matières.
      * @Route("/admin/selectGroupe", name="admin_select_groupe")
      * @param Request $request
      * @return JsonResponse
+     * @throws \Doctrine\ORM\ORMException
      */
     public function selectGroupe (Request $request) {
         $arrayIdMatiere = $request->request->get('array_Matiere');
@@ -263,7 +265,13 @@ class EmailUserController extends Controller
             /** @var array $arrayMatiere */
             $arrayMatiere = array();
             foreach ($arrayIdMatiere as $idMatiere) {
-                array_push($arrayMatiere, $this->getDoctrine()->getRepository(Matiere::class)->find($idMatiere));
+                if(strpos($idMatiere,'-')){
+                    $idMatiere = explode(' - ', $idMatiere);
+                    $idMatiere = $idMatiere[0];
+                    array_push($arrayMatiere, $this->getDoctrine()->getRepository(Matiere::class)->findBy(['code' => $idMatiere]));
+                }else{
+                    array_push($arrayMatiere, $this->getDoctrine()->getRepository(Matiere::class)->find($idMatiere));
+                }
             }
 
             /**
@@ -285,5 +293,5 @@ class EmailUserController extends Controller
 
         return new JsonResponse($jsonArrayGroupe);
     }
-
+    
 }
