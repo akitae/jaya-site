@@ -1,5 +1,19 @@
-# Configure the failure conditions for your commit status
-# If at least one of these conditions is verified, the commit status is displayed as failed
+# Configure the PHP version SensioLabsInsight should use to analyze
+# your project. It can be defined to 5, 7.0, or 7.1. If not
+# present, it will prefer 7.1 but fallback to 5 if errored.
+php_version: 7.1
+
+# Configure which PHP extensions your project need to be analyzed.
+php_ini: |
+    extension=openssl.so
+    extension=mcrypt.so
+
+# Ignore some branches to avoid triggering analysis for these
+#ignore_branches:
+#    - gh-pages
+
+# Configure the failure conditions for your commit status.
+# If at least one of these conditions is verified, the commit status is displayed as failed.
 commit_failure_conditions:
     # By severities count (default configuration, any change will override it)
     - "project.severity.critical > 0"
@@ -38,6 +52,69 @@ commit_failure_conditions:
     # - "pr.category.performance > 0"
     # - "pr.category.readability > 0"
     # - "pr.category.security > 0"
-
+    #
     # # By total violations count, limited to the violations concerning files edited by the current PR
     # - "pr.violations > 150"
+
+# Configure rules.
+rules:
+    # Disable a rule
+    php.class_too_long:
+        enabled: true
+
+    # Re-enable a rule that is disabled by default
+    #symfony.use_dir_file_constant:
+    #    enabled: true
+
+    # Configure a rule
+    php.class_too_long:
+        max_length: 2000
+        threshold:  10
+
+# Configure in which directory your code is located.
+# This can be set to any subdirectory of your project.
+working_directory: .
+
+# This section will be executed before installing dependencies.
+# You should configure here what is needed for Composer to run without
+# issue: install libraries, prepare the database, etc.
+pre_composer_script: |
+    #!/bin/bash
+
+    cp app/config/parameters.yml.dist app/config/parameters.yml
+    sed -i -e "s/database_user:.*/database_user: root/" app/config/parameters.yml
+    sed -i -e "s/database_password:.*/database_password: Secr3t/" app/config/parameters.yml
+
+# This section will be executed after installing dependencies and
+# before running the actual analysis.
+# You should configure here what is needed for SensioLabsInsight
+# to analyse your code.
+post_composer_script: |
+    #!/bin/bash
+
+    ./bin/console doctrine:database:create --no-interaction
+    ./bin/console doctrine:schema:create --no-interaction
+    ./bin/console doctrine:fixtures:load --no-interaction
+
+# Configure the directories excluded from the analysis. By default,
+# this setting excldues directories commonly used to store tests
+# and third-party libraries.
+global_exclude_dirs:
+    - vendor
+    - vendors
+    - test
+    - tests
+    - Tests
+    - spec
+    - features
+    - Fixtures
+    - DataFixtures
+    - var
+
+# Configure patterns used by SensioLabsInsight to exclude specific
+# files and directories.
+exclude_patterns:
+    - app/check.php
+    - app/SymfonyRequirements.php
+    - web/config.php
+    - web/app_*.php
