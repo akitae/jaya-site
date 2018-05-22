@@ -90,15 +90,13 @@ class UeChoiceController extends Controller
              * Dans ce cas on les insère.
              */
             if ($this->matieresOptionelles == null) {
-                var_dump("null");
                 $this->matieresOptionelles = $this->insertMatieresOptTemp();
             } else {
                 /**
                  * Dans le cas contraire on effectue une vérification d'intégritée.
                  * On vérifie qu'entre temps il n'y a pas eu de matière optionelle de rajouté.
                  */
-                if (count($this->matieresOptionelles) != count($this->getMatieresOptByParcours())) {
-                    var_dump("differece");
+                if (count($this->matieresOptionelles) != count($this->getMatieresOptByParcoursSemestre())) {
                     $this->deleteMatieresOptTemp($this->matieresOptionelles);
                     $this->matieresOptionelles = $this->insertMatieresOptTemp();
                 }
@@ -142,12 +140,36 @@ class UeChoiceController extends Controller
     }
 
     /**
+     * Retourne les matières optionnelles du parcours et du semestre.
+     */
+    public function getMatieresOptByParcoursSemestre () {
+        /**
+         * On remonte toutes les UEs optionnelles disponible dans le parcours.
+         */
+        $listMatiereParcours = $this->getMatieresOptByParcours();
+
+        /**
+         * Pour toutes les matières optionnelles du parcours on vérifie qu'elle appartiennent au semestre en cours.
+         */
+        $matieres = array();
+        /** @var MatiereParcours $parcoursMatiere */
+        foreach ($listMatiereParcours as $parcoursMatiere) {
+            /** @var Matiere $matiere */
+            $matiere = $parcoursMatiere->getMatieres();
+            if ($matiere->getSemestre() === $this->semestreToUse) {
+                array_push($matieres, $matiere);
+            }
+        }
+
+        return $matieres;
+    }
+
+    /**
      * Insère les matières optionnelles dans la base temporaire au premier affichage de la page.
      * Dans les cas suivants les valeurs sont récupéré de cette table temporaire.
      * @return mixed
      */
     private function insertMatieresOptTemp () {
-        var_dump("insert mat opt");
         /**
          * On remonte toutes les UEs optionnelles disponible dans le parcours.
          */
