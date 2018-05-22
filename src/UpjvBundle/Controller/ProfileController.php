@@ -70,7 +70,7 @@ class ProfileController extends BaseController
         /**
          * Si l'utilisateur est administrateur on affiche un lien vers l'administration.
          */
-        $isAdmin = $this->container->get('security.authorization_checker')->isGranted(Utilisateur::ROLE_SUPER_ADMIN);
+        $isAdmin = $this->container->get('security.authorization_checker')->isGranted(Utilisateur::ROLE_ADMIN);
 
         return $this->render('@FOSUser/Profile/edit.html.twig', array(
             'form' => $form->createView(),

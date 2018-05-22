@@ -27,7 +27,7 @@ class DefaultController extends Controller
       throw new AccessDeniedException('This user does not have access to this section.');
     }
 
-    $isAdmin = $this->container->get('security.authorization_checker')->isGranted(Utilisateur::ROLE_SUPER_ADMIN);
+    $isAdmin = $this->container->get('security.authorization_checker')->isGranted(Utilisateur::ROLE_ADMIN);
 
     return $this->render('UpjvBundle:Default:index.html.twig', [
       "user" => $user,
