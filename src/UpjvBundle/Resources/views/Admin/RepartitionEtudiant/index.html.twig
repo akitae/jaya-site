@@ -27,11 +27,11 @@
                    Répartition
                 </div>
                 <div class="panel-body">
-                    Remarque : le nombre de matière obligatoire par parcours doit être renseigné ! <br>
-                    Remarque 2 : La répartion s'effectuera sur le semestre en cours et ne doit être effectué qu'après la date de fin de choix des étudiants <br>
-                    Remarque 3 : Les matières des étudiants pour se semestre sera supprimé pour être remplis de façon aléatoire par les choix des étudiants. Veuillez n'exécuter qu'une
+                    Remarque : Le nombre de matière optionnelle par parcours doit être renseigné ! <br>
+                    Remarque 2 : La répartion s'effectuera sur le semestre sélectionné et ne doit être effectué qu'après la date de fin de choix des étudiants <br>
+                    Remarque 3 : Les matières des étudiants pour ce semestre seront supprimées pour être remplies de façon aléatoire par les choix des étudiants. Veuillez n'exécuter qu'une
                     seule fois par semestre cette répartition par matière <br>
-                    Remarque 4: Il faut réassigné les places pour chaques parcours si vous avez déja exécuter cette répartition pour ce semestre <br/> <br>
+                    Remarque 4: Il faut réassigner les places pour chaque parcours si vous avez déjà exécuté cette répartition pour ce semestre <br/><br>
                     <form action="{{ path('admin_repartition_etudiant') }}" method="post">
                         {% for semestre in listSemestre %}
                             <button class="btn btn-danger" type="submit" name="repartition" value="{{ semestre.id }}">Semestre : {{ semestre.nom }}</button>
