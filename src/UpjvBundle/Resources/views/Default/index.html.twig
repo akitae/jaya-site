@@ -15,16 +15,18 @@
         {% endblock %}
 
         <div class="row">
-            <div class="col-md-6">
-                <a href="{{ path('choix_ue') }}">
-                    <div class="card">
-                        <div class="card-title"><i class="glyphicon glyphicon-education icon-title"></i>Choix des UEs</div>
-                        <div class="card-description">
-                            Sélectionnez vos unités d'enseignements optionnelles pour le semestre en cours.
+            {% if isEtudiant %}
+                <div class="col-md-6">
+                    <a href="{{ path('choix_ue') }}">
+                        <div class="card">
+                            <div class="card-title"><i class="glyphicon glyphicon-education icon-title"></i>Choix des UEs</div>
+                            <div class="card-description">
+                                Sélectionnez vos unités d'enseignements optionnelles pour le semestre en cours et consulter vos choix définitifs.
+                            </div>
                         </div>
-                    </div>
-                </a>
-            </div>
+                    </a>
+                </div>
+            {% endif %}
             <div class="col-md-6">
                 <a href="{{ path('fos_user_profile_edit') }}">
                     <div class="card">

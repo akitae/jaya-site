@@ -38,7 +38,7 @@
     margin-bottom: 30px;
 }
 
-.choixUe .sort .matiere {
+.choixUe .sort .matiere, .choixUe .final .matiere {
     display: flex;
     align-items: center;
     font-size: 1.2em;
@@ -50,6 +50,10 @@
     border-left: 4px solid rgb(231, 50, 98);
     border-right: 3px solid rgb(231, 50, 92);
     cursor: move;
+}
+
+.choixUe .final .matiere {
+    cursor: default;
 }
 
 .choixUe .sort .matiere-ghost {

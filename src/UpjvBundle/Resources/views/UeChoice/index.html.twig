@@ -30,6 +30,7 @@
                                 Vous pouvez choisir vos unités d'enseignements optionelles à partir de la date du <b>{{ semestre.dateDebutChoix|date("d/m/Y") }}</b> à <b>{{ semestre.dateDebutChoix|date('H\\hi') }}</b>.
                             {% elseif nowDate > semestre.dateFinChoix %}
                                 Le choix des unités d'enseignements optionelles est cloturés.
+                                Vous trouverez ci-dessous le résultat de vos choix d'UEs.
                             {% else %}
                                 Le choix des unités d'enseignements se cloture le <b>{{ semestre.dateFinChoix|date("d/m/Y") }}</b> à <b>{{ semestre.dateFinChoix|date("H\\hi") }}</b>.
                             {% endif %}
@@ -38,8 +39,55 @@
                 </div>
             </div>
 
+            {% if poles != null and isChoix == false %}
+                <div class="row">
+                    <div class=" col-md-offset-2 col-md-8">
+                        {% for pole in poles %}
+                            <!-- POLE -->
+                            <div class="row pole">
+                                <div class="col-xs-8">
+                                    <div class="pole-title">
+                                        <i class="glyphicon glyphicon-bookmark pole-icon"></i><span class="pole-nom">{{ pole.nom }}</span>
+                                    </div>
+                                </div>
+                                <div class="col-xs-4">
+                                    <div class="nb-choix pull-right">
+                                        {% for poleParcours in polesParcours %}
+                                            {% if poleParcours.poleDeCompetence == pole %}
+                                                <i class=" glyphicon glyphicon-hand-right choix-icon"></i>{{ poleParcours.nbrMatiereOptionnelle }} choix
+                                            {% endif %}
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- TITRE -->
+                            <div class="row sort-title">
+                                <div class="col-xs-12">
+                                    <div class="col-xs-12">Matière</div>
+                                </div>
+                            </div>
+
+                            <!-- MATIERES OPTIONELLES DU POLE -->
+                            <div class="row">
+                                <div class="col-xs-12 final">
+                                    {% for matiere in matieres %}
+                                        {% if matiere.poleDeCompetence == pole %}
+                                            <!-- MATIERE -->
+                                            <div class="matiere">
+                                                <div class="col-xs-12">{{ matiere.nom }}</div>
+                                            </div>
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endif %}
+
             <!-- Affichage des matières optionelles par pôle -->
-            {% if poles != null %}
+            {% if poles != null and isChoix == true %}
                 <div class="row">
                     <div class=" col-md-offset-2 col-md-8">
                         {% for pole in poles %}

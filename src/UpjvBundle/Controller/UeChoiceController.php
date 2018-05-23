@@ -39,6 +39,8 @@ class UeChoiceController extends Controller
     /** @var PoleDeCompetenceParcours */
     private $polesParcours;
 
+    private $isChoix;
+
     /**
      * @Route("/choixUE", name="choix_ue")
      */
@@ -48,8 +50,14 @@ class UeChoiceController extends Controller
         $this->user = $this->getUser();
         $message = array();
 
+        $this->isChoix = false;
+
         if (!is_object($this->user) || !$this->user instanceof UserInterface) {
             throw new AccessDeniedException('This user does not have access to this section.');
+        }
+
+        if ($this->container->get('security.authorization_checker')->isGranted(Utilisateur::ROLE_ETUDIANT) == false) {
+            return $this->redirectToRoute('upjv_homepage');
         }
 
         if ($this->user->getParcours() == null) {
@@ -82,7 +90,7 @@ class UeChoiceController extends Controller
          * On vérifie que l'on se situe dans une période de choix.
          */
         if ($this->semestreToUse != null && $nowDate > $this->semestreToUse->getDateDebutChoix() && $nowDate < $this->semestreToUse->getDateFinChoix()) {
-
+            $this->isChoix = true;
             $this->matieresOptionelles = $this->getMatieresOptTemp();
 
             /**
@@ -122,12 +130,57 @@ class UeChoiceController extends Controller
              * On recherche le nombre de choix de disponible par pole suivant le parcours de l'étudiant.
              */
             $this->polesParcours = $this->getDoctrine()->getRepository(PoleDeCompetenceParcours::class)->findByParcours($this->user->getParcours());
+        } else if ($this->semestreToUse != null && $nowDate > $this->semestreToUse->getDateFinChoix()) {
+            $this->isChoix = false;
+            /**
+             * On récupère les matières final de l'utilisateur et on vérifie qu'elles appartiennent au semestre.
+             */
+            $matieresUtilisateur = $this->user->getMatieres();
+            $matiereFinal = array();
+            /** @var Matiere $matiere */
+            foreach ($matieresUtilisateur as $matiere) {
+                if ($matiere->getSemestre() == $this->semestreToUse) {
+                    array_push($matiereFinal, $matiere);
+                }
+            }
+
+            /**
+             * On récupère uniquement les matières optionnelles.
+             */
+            $matiereOptFinal = array();
+            /** @var Matiere $matiere */
+            foreach ($matiereFinal as $matiere) {
+                /** @var MatiereParcours $matiereParcours */
+                $matiereParcours = $this->getDoctrine()->getRepository(MatiereParcours::class)->findByMatiereParcours($this->user->getParcours(), $matiere);
+                if ($matiereParcours->getOptionnel()) {
+                    array_push($matiereOptFinal, $matiere);
+                }
+            }
+
+            /**
+             * On récupère les pôles.
+             */
+            $this->poles = array();
+            /** @var Matiere $matiere */
+            foreach ($matiereOptFinal as $matiere) {
+                array_push($this->poles, $matiere->getPoleDeCompetence());
+            }
+
+            /**
+             * On rends unique la présence d'un pole.
+             */
+            $this->poles = array_unique($this->poles);
+
+            $this->poles = $this->sortPoles($this->poles);
+
+            $this->matieresOptionelles = $matiereOptFinal;
         }
 
         /**
          * Si l'utilisateur est administrateur on affiche un lien vers l'administration.
          */
         $isAdmin = $this->container->get('security.authorization_checker')->isGranted(Utilisateur::ROLE_ADMIN);
+        $isEtudiant = $this->container->get('security.authorization_checker')->isGranted(Utilisateur::ROLE_ETUDIANT);
 
         return $this->render("UpjvBundle:UeChoice:index.html.twig", [
             "semestre" => $this->semestreToUse,
@@ -135,7 +188,9 @@ class UeChoiceController extends Controller
             "poles" => $this->poles,
             "matieres" => $this->matieresOptionelles,
             "polesParcours" => $this->polesParcours,
-            "isAdmin" => $isAdmin
+            "isAdmin" => $isAdmin,
+            "isEtudiant" => $isEtudiant,
+            "isChoix" => $this->isChoix
         ]);
     }
 
