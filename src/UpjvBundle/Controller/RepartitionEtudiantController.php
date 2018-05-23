@@ -10,6 +10,7 @@ namespace UpjvBundle\Controller;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Routing\Annotation\Route;
+use UpjvBundle\Entity\Groupe;
 use UpjvBundle\Entity\Matiere;
 use UpjvBundle\Entity\MatiereOptionelle;
 use UpjvBundle\Entity\PoleDeCompetence;
@@ -28,6 +29,7 @@ class RepartitionEtudiantController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $listSemestre = $em->getRepository(Semestre::class)->findAll();
+        $em->getRepository(Groupe::class)->resetAllGroupe();
 
         if(!empty($_POST['repartition'])){
             $em->getRepository(Matiere::class)->resetMatiereUtilisateur();
