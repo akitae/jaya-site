@@ -11,6 +11,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use UpjvBundle\Entity\Matiere;
+use UpjvBundle\Entity\MatiereParcours;
 use UpjvBundle\Form\MatiereType;
 
 class MatiereController extends Controller
@@ -97,6 +98,10 @@ class MatiereController extends Controller
         $em = $this->getDoctrine()->getManager();
         try{
             $matiere = $em->getRepository(Matiere::class)->find($id);
+            $matiereParcours = $em->getRepository(MatiereParcours::class)->findBy(['matieres'=> $matiere]);
+            foreach ($matiereParcours as $matiereParcour){
+                $em->remove($matiereParcour);
+            }
             $em->remove($matiere);
             $em->flush();
             $this->get('session')->getFlashBag()->add('success', 'La matière a bien été supprimée');
