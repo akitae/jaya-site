@@ -17,7 +17,7 @@
                     <li class=""><a href="{{ path('choix_ue') }}">Choix des UEs</a></li>
                 {% endif %}
                 <li class=""><a href="{{ path('fos_user_profile_edit') }}">Mon compte</a></li>
-                {% if isAdmin %}
+                {% if app.user.isProfesseur or isAdmin %}
                 <li><a class="" href="{{ path('admin') }}" target="_blank">Administration</a></li>
                 {% endif %}
             </ul>

@@ -16,46 +16,52 @@
     <div class="navbar-default sidebar" role="navigation">
         <div class="sidebar-nav navbar-collapse">
             <ul class="nav in" id="side-menu">
-                <li>
-                    <a href="{{ path('admin_user') }}"><i class="fa fa fa-users fa-fw fa-fw"></i> Gestion des étudiants</a>
-                </li>
-				<li>
-                    <a href="{{ path('admin_validate_user') }}"><i class="fa fa fa-check fa-fw"></i> Valider les étudiants en attente</a>
-                </li>
-                <li>
-                    <a href="{{ path('admin_export_user') }}"><i class="fa fa-file-excel-o  fa-fw"></i> Trie des étudiants / export </a>
-                </li>
-                <!-- Envoi email -->
-                <li>
-                    <a href="{{ path('admin_envoi_email') }}"><i class="fa fa-envelope fa-fw"></i> Envoyer un email</a>
-                </li>
-                <li>
-                    <a href="{{ path('admin_professeur') }}"><i class="fa fa fa-users fa-fw"></i> Gestion des autres utilisateurs</a>
-                </li>
-                <li style="color: #337ab7;padding-left: 18%;padding-top: 7%;font-weight: bold;height: 39px;padding-bottom: 14%;">
-                    BASE DE DONNÉES
-                </li>
-                <li>
-                    <a href="{{ path('admin_semestre') }}"><i class="fa fa-calendar  fa-fw"></i> Semestre</a>
-                </li>
-                <li>
-                    <a href="{{ path('admin_pole') }}"><i class="fa fa-comment fa-fw"></i> Pôles de compétences</a>
-                </li>
-				<li>
-                    <a href="{{ path('admin_matiere') }}"><i class="fa fa-book fa-fw"></i> Matière</a>
-                </li>
-                <li>
-                    <a href="{{ path('admin_parcours') }}"><i class="fa fa-graduation-cap fa-fw"></i> Parcours</a>
-                </li>
-                <li>
-                    <a href="{{ path('admin_repartition_etudiant') }}"><i class="fa fa-balance-scale fa-fw"></i> Répartir les étudiants par matières</a>
-                </li>
-                <li>
-                    <a href="{{ path('admin_groupe') }}"><i class="fa fa-dashboard fa-fw"></i> Gestion des groupes</a>
-                </li>
-				<li>
-                    <a href="{{ path('admin_reset') }}"><i class="fa fa-trash-o  fa-fw"></i> Effacer les données de la base</a>
-                </li>
+                {% if isAdmin %}
+                    <li>
+                        <a href="{{ path('admin_user') }}"><i class="fa fa fa-users fa-fw fa-fw"></i> Gestion des étudiants</a>
+                    </li>
+                    <li>
+                        <a href="{{ path('admin_validate_user') }}"><i class="fa fa fa-check fa-fw"></i> Valider les étudiants en attente</a>
+                    </li>
+                {% endif %}
+                {% if app.user.isProfesseur %}
+                    <li>
+                        <a href="{{ path('admin_export_user') }}"><i class="fa fa-file-excel-o  fa-fw"></i> Trie des étudiants / export </a>
+                    </li>
+                    <!-- Envoi email -->
+                    <li>
+                        <a href="{{ path('admin_envoi_email') }}"><i class="fa fa-envelope fa-fw"></i> Envoyer un email</a>
+                    </li>
+                {% endif %}
+                {% if isAdmin %}
+                    <li>
+                        <a href="{{ path('admin_professeur') }}"><i class="fa fa fa-users fa-fw"></i> Gestion des autres utilisateurs</a>
+                    </li>
+                    <li style="color: #337ab7;padding-left: 18%;padding-top: 7%;font-weight: bold;height: 39px;padding-bottom: 14%;">
+                        BASE DE DONNÉES
+                    </li>
+                    <li>
+                        <a href="{{ path('admin_semestre') }}"><i class="fa fa-calendar  fa-fw"></i> Semestre</a>
+                    </li>
+                    <li>
+                        <a href="{{ path('admin_pole') }}"><i class="fa fa-comment fa-fw"></i> Pôles de compétences</a>
+                    </li>
+                    <li>
+                        <a href="{{ path('admin_matiere') }}"><i class="fa fa-book fa-fw"></i> Matière</a>
+                    </li>
+                    <li>
+                        <a href="{{ path('admin_parcours') }}"><i class="fa fa-graduation-cap fa-fw"></i> Parcours</a>
+                    </li>
+                    <li>
+                        <a href="{{ path('admin_repartition_etudiant') }}"><i class="fa fa-balance-scale fa-fw"></i> Répartir les étudiants par matières</a>
+                    </li>
+                    <li>
+                        <a href="{{ path('admin_groupe') }}"><i class="fa fa-dashboard fa-fw"></i> Gestion des groupes</a>
+                    </li>
+                    <li>
+                        <a href="{{ path('admin_reset') }}"><i class="fa fa-trash-o  fa-fw"></i> Effacer les données de la base</a>
+                    </li>
+                {% endif %}
             </ul>
         </div>
         <!-- /.sidebar-collapse -->

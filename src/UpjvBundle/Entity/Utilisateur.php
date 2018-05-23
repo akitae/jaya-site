@@ -17,9 +17,7 @@ class Utilisateur extends BaseUser
 {
 
     const ROLE_ETUDIANT = 'ROLE_ETUDIANT';
-
     const ROLE_PROFESSEUR = 'ROLE_PROFESSEUR';
-
     const ROLE_ADMIN  = 'ROLE_ADMIN';
 
     /**
@@ -272,5 +270,17 @@ class Utilisateur extends BaseUser
     public function getOptionnel()
     {
         return $this->optionnel;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isProfesseur(){
+        foreach ($this->getRoles() as $role){
+            if($role === ROLE_PROFESSEUR){
+                return true;
+            }
+        }
+        return false;
     }
 }
