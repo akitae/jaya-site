@@ -277,10 +277,36 @@ class Utilisateur extends BaseUser
      */
     public function isProfesseur(){
         foreach ($this->getRoles() as $role){
-            if($role === ROLE_PROFESSEUR){
+            if($role === ROLE_PROFESSEUR or $role === ROLE_ADMIN or $role === ROLE_SUPER_ADMIN){
                 return true;
             }
         }
         return false;
     }
+
+    /**
+     * @return bool
+     */
+    public function isAdmin(){
+        foreach ($this->getRoles() as $role){
+            if($role === ROLE_ADMIN or $role === ROLE_SUPER_ADMIN){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isSuperAdmin(){
+        foreach ($this->getRoles() as $role){
+            if($role === ROLE_SUPER_ADMIN){
+                return true;
+            }
+        }
+        return false;
+    }
+
+
 }
