@@ -17,9 +17,7 @@ class Utilisateur extends BaseUser
 {
 
     const ROLE_ETUDIANT = 'ROLE_ETUDIANT';
-
     const ROLE_PROFESSEUR = 'ROLE_PROFESSEUR';
-
     const ROLE_ADMIN  = 'ROLE_ADMIN';
 
     /**
@@ -73,7 +71,7 @@ class Utilisateur extends BaseUser
     private $matieres;
 
     /**
-     * @ORM\ManyToMany(targetEntity="UpjvBundle\Entity\Groupe", cascade={"persist"})
+     * @ORM\ManyToMany(targetEntity="UpjvBundle\Entity\Groupe", cascade={"persist"}, mappedBy="utilisateurs")
      */
     private $groupes;
 
@@ -273,4 +271,42 @@ class Utilisateur extends BaseUser
     {
         return $this->optionnel;
     }
+
+    /**
+     * @return bool
+     */
+    public function isProfesseur(){
+        foreach ($this->getRoles() as $role){
+            if($role === ROLE_PROFESSEUR or $role === ROLE_ADMIN or $role === ROLE_SUPER_ADMIN){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isAdmin(){
+        foreach ($this->getRoles() as $role){
+            if($role === ROLE_ADMIN or $role === ROLE_SUPER_ADMIN){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isSuperAdmin(){
+        foreach ($this->getRoles() as $role){
+            if($role === ROLE_SUPER_ADMIN){
+                return true;
+            }
+        }
+        return false;
+    }
+
+
 }

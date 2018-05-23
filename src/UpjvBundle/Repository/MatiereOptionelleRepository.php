@@ -14,6 +14,7 @@ use UpjvBundle\Entity\Utilisateur;
  */
 class MatiereOptionelleRepository extends \Doctrine\ORM\EntityRepository
 {
+
     /**
      * @param $user Utilisateur
      * @return mixed
@@ -66,5 +67,14 @@ class MatiereOptionelleRepository extends \Doctrine\ORM\EntityRepository
         }else{
             return intval($result[0][1]);
         }
+    }
+    
+    
+    public function resetAllMatiereOption()
+    {
+        $rawSql = "DELETE FROM matiere_optionelle";
+
+        $stmt = $this->getEntityManager()->getConnection()->prepare($rawSql);
+        $stmt->execute();
     }
 }

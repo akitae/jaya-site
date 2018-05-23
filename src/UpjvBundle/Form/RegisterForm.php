@@ -22,42 +22,42 @@ class RegisterForm extends AbstractType
     {
         $builder
             ->add('nom',TextType::class,[
-                'attr' => ['class' => 'form-control '],
+                'attr' => ['class' => 'form-control input-login'],
                 'label' => 'Nom'
             ])
             ->add('prenom',TextType::class,[
-                'attr' => ['class' => 'form-control'],
+                'attr' => ['class' => 'form-control input-login'],
                 'label' => 'Prénom'
             ])
             ->add('username', TextType::class, [
-                'attr' => ['class' => 'form-control'],
+                'attr' => ['class' => 'form-control input-login'],
                 'label' => 'Identifiant'
             ])
             ->add('email', EmailType::class,[
-                'attr' => ['class' => 'form-control'],
+                'attr' => ['class' => 'form-control input-login'],
                 'label' => 'Email'
             ])
             ->add('numeroEtudiant',TextType::class,[
-                'attr' => ['class' => 'form-control'],
+                'attr' => ['class' => 'form-control input-login'],
                 'label' => 'Numéro étudiant'
             ])
             ->add('password', PasswordType::class, [
-                'attr' => ['class' => 'form-control'],
+                'attr' => ['class' => 'form-control input-login'],
                 'label' => "Mot de passe"
             ])
             ->add('plainPassword', PasswordType::class, [
-                'attr' => ['class' => 'form-control'],
+                'attr' => ['class' => 'form-control input-login'],
                 'label' => 'Confirmer le mot de passe'
             ])
             ->add('parcours', EntityType::class, [
                 'class' => Parcours::class,
-                'attr' => ['class' => 'form-control'],
+                'attr' => ['class' => 'form-control js-example-basic-single input-login'],
                 'label' => 'Parcours'
             ])
             ->add('save', SubmitType::class,[
                 'label' => 'Valider',
                 'attr'  => [
-                    'class' => 'btn btn-lg btn-block btn-inscription'
+                    'class' => 'btn btn-lg btn-block btn-blue'
                 ]
             ])
         ;

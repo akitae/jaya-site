@@ -1,6 +1,7 @@
 <?php
 
 namespace UpjvBundle\Repository;
+use UpjvBundle\Entity\Matiere;
 use UpjvBundle\Entity\Parcours;
 
 /**
@@ -24,6 +25,38 @@ class MatiereParcoursRepository extends \Doctrine\ORM\EntityRepository
             ->setParameter('parcours', $parcours);
 
         return $queryBuilder->getQuery()->getResult();
+    }
+
+    /**
+     * Retourne toutes les matières appartemenet aux parcours.
+     * @param $arrayParcours
+     * @return mixed
+     */
+    public function findMatieresByParcours ($arrayParcours) {
+        $queryBuilder = $this->createQueryBuilder('e');
+        $queryBuilder
+            ->where("e.parcours IN (:parcours)")
+            ->setParameter("parcours", $arrayParcours);
+
+        return $queryBuilder->getQuery()->getResult();
+    }
+
+    /**
+     * @param $parcours
+     * @param $matiere
+     * @return mixed
+     * @throws \Doctrine\ORM\NoResultException
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function findByMatiereParcours ($parcours, $matiere) {
+        $queryBuilder = $this->createQueryBuilder('e');
+        $queryBuilder
+            ->where("e.parcours = :parcours")
+            ->andWhere("e.matieres = :matiere")
+            ->setParameter("parcours", $parcours)
+            ->setParameter("matiere", $matiere);
+
+        return $queryBuilder->getQuery()->getSingleResult();
     }
 
 }

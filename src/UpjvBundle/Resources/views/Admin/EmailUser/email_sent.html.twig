@@ -1,0 +1,42 @@
+{% extends "baseAdmin.html.twig" %}
+
+{% block body %}
+
+    <div class="col-lg-offset-1 col-lg-6">
+        <h1 class="page-header"><i class="fa fa-envelope fa-fw"></i> Envoyer un mail à une liste d'étudiant</h1>
+    </div>
+
+    <div class="col-lg-offset-1 col-lg-6">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                Mail envoyé !
+            </div>
+
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="alert alert-info">
+                                    {% if nbUser <= 1 %}
+                                        Votre message a été envoyé à {{ nbUser }} étudiant.
+                                    {% else %}
+                                        Votre message a été envoyé à {{ nbUser }} étudiants.
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <a href="" role="button" class="btn btn-lg btn-block btn-blue">Envoyer un nouveau mail</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+{% endblock %}

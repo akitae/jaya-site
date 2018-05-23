@@ -1,12 +1,22 @@
 {% extends 'jaya/baseJayaLogin.html.twig' %}
-{% block title %}
-    Réinitialisation du mot de passe
-{% endblock %}
+
+{% block title %}Réinitialisation du mot de passe{% endblock %}
+
 {% block body %}
 
 {% trans_default_domain 'FOSUserBundle' %}
 
-    <p>
-        {{ 'resetting.check_email'|trans({'%tokenLifetime%': tokenLifetime})|nl2br }}
-    </p>
+    <div class="container-center">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="alert alert-info">
+                        {{ 'resetting.check_email'|trans({'%tokenLifetime%': tokenLifetime})|nl2br }}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
 {% endblock %}

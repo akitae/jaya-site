@@ -1,0 +1,97 @@
+
+.choixUe .pole {
+    padding-bottom: 5px;
+    margin-bottom: 10px;
+    border-bottom: 2px solid rgb(9, 132, 227);
+}
+
+.choixUe .pole .pole-title, .choixUe .pole .nb-choix {
+    display: flex;
+    align-items: center;
+    font-size: 1.4em;
+    font-weight: bold;
+}
+
+.choixUe .pole .choix-icon {
+    padding-right: 10px;
+}
+
+.choixUe .pole .nb-choix {
+    font-size: 1.2em;
+    font-weight: normal;
+    padding-right: 10px;
+    border-right: 3px solid rgb(9, 132, 227);
+}
+
+.choixUe .pole-title > .pole-icon {
+    color: rgb(9, 132, 227);
+    padding-right: 10px;
+}
+
+.choixUe .sort-title {
+    font-size: 1.2em;
+    font-weight: bold;
+    padding-bottom: 10px;
+}
+
+.choixUe .sort {
+    margin-bottom: 30px;
+}
+
+.choixUe .sort .matiere, .choixUe .final .matiere {
+    display: flex;
+    align-items: center;
+    font-size: 1.2em;
+    min-height: 35px;
+    padding-top: 7px;
+    padding-bottom: 7px;
+    margin-bottom: 8px;
+    background-color: #4d5966;
+    border-left: 4px solid rgb(231, 50, 98);
+    border-right: 3px solid rgb(231, 50, 92);
+    cursor: move;
+}
+
+.choixUe .final .matiere {
+    cursor: default;
+}
+
+.choixUe .sort .matiere-ghost {
+    border-color: rgb(9, 132, 227);
+}
+
+.choixUe .sort .matiere-ghost .ordre .badge {
+    background-color: rgb(231, 50, 98);;
+}
+
+.choixUe .sort .matiere .move-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.choixUe .sort .matiere .ordre, .choixUe .sort-title .ordre {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.choixUe .sort .matiere .ordre .badge {
+    font-size: 0.9em;
+    min-width: 1.5em;
+    font-weight: bold;
+    margin: 0;
+}
+
+.choixUe .sort .matiere .place {
+    text-align: right;
+}
+
+.choixUe .sort .matiere .label-place {
+    margin: 0;
+    padding: 0.4em 0.6em 0.3em;
+}
+
+.choixUe .response {
+    font-size: 1.1em;
+}

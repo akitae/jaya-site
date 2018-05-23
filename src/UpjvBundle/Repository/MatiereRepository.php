@@ -2,6 +2,7 @@
 
 namespace UpjvBundle\Repository;
 use UpjvBundle\Entity\PoleDeCompetence;
+use UpjvBundle\Entity\Semestre;
 use UpjvBundle\Entity\Utilisateur;
 
 /**
@@ -29,12 +30,14 @@ class MatiereRepository extends \Doctrine\ORM\EntityRepository
         return $queryBuilder->getQuery()->getResult();
     }
 
-    public function resetMatiereUtilisateur(){
-        $rawSql = "DELETE FROM utilisateur_matiere WHERE matiere_id IN (SELECT matiere.id FROM matiere WHERE matiere.semestre_id = 1)";
+    public function resetMatiereUtilisateur(Semestre $semestre){
+        $rawSql = "DELETE FROM utilisateur_matiere WHERE matiere_id IN (SELECT matiere.id FROM matiere WHERE matiere.semestre_id = :semestre)";
 
         $stmt = $this->getEntityManager()->getConnection()->prepare($rawSql);
+        $stmt->bindValue('semestre',$semestre->getId());
         $stmt->execute();
     }
+    
 
     public function findDistinctMatiereByPoleAndOrdre($ordre, PoleDeCompetence $poleDeCompetence, $optionnel = false){
         return $this
@@ -67,5 +70,21 @@ WHERE utilisateur_id = :user AND pole_de_competence_id = :pole AND mp.optionnel 
         return $this;
 
 
+    }
+    
+    public function resetAllMatiereUtilisateur(){
+        $rawSql = "DELETE FROM utilisateur_matiere";
+
+        $stmt = $this->getEntityManager()->getConnection()->prepare($rawSql);
+        $stmt->execute();
+    }
+
+    public function resetAllSemestre()
+    {
+        $rawSql = "UPDATE matiere SET semestre_id = null ";
+
+        $stmt = $this->getEntityManager()->getConnection()->prepare($rawSql);
+        $stmt->execute();
+  
     }
 }

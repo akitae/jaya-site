@@ -1,6 +1,6 @@
 {% extends 'jaya/baseJaya.html.twig' %}
-{% block title %}
-    Connexion
+{% block title %}Choix des UEs{% endblock %}
+{% block stylesheets %}
 {% endblock %}
 {% block body %}
 
@@ -18,9 +18,7 @@
         {% if semestre != null %}
             <div class="row">
                 <div class="col-md-12">
-                    <div class="semestre-title">
-                        <h3>{{ semestre.nom }}</h3>
-                    </div>
+                    <h3 class="border-title">{{ semestre.nom }}</h3>
                 </div>
             </div>
 
@@ -32,6 +30,7 @@
                                 Vous pouvez choisir vos unités d'enseignements optionelles à partir de la date du <b>{{ semestre.dateDebutChoix|date("d/m/Y") }}</b> à <b>{{ semestre.dateDebutChoix|date('H\\hi') }}</b>.
                             {% elseif nowDate > semestre.dateFinChoix %}
                                 Le choix des unités d'enseignements optionelles est cloturés.
+                                Vous trouverez ci-dessous le résultat de vos choix d'UEs.
                             {% else %}
                                 Le choix des unités d'enseignements se cloture le <b>{{ semestre.dateFinChoix|date("d/m/Y") }}</b> à <b>{{ semestre.dateFinChoix|date("H\\hi") }}</b>.
                             {% endif %}
@@ -40,64 +39,113 @@
                 </div>
             </div>
 
-            <!-- Affichage des matières optionelles par pôle -->
-            {% if poles != null %}
+            {% if poles != null and isChoix == false %}
                 <div class="row">
-                    <div class="col-md-offset-3 col-md-6">
-                    {% for pole in poles %}
-                        <!-- POLE -->
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="pole-title">
-                                    <i class="glyphicon glyphicon-bookmark pole-icon"></i><span class="pole-nom">{{ pole.nom }}</span>
+                    <div class=" col-md-offset-2 col-md-8">
+                        {% for pole in poles %}
+                            <!-- POLE -->
+                            <div class="row pole">
+                                <div class="col-xs-8">
+                                    <div class="pole-title">
+                                        <i class="glyphicon glyphicon-bookmark pole-icon"></i><span class="pole-nom">{{ pole.nom }}</span>
+                                    </div>
+                                </div>
+                                <div class="col-xs-4">
+                                    <div class="nb-choix pull-right">
+                                        {% for poleParcours in polesParcours %}
+                                            {% if poleParcours.poleDeCompetence == pole %}
+                                                <i class=" glyphicon glyphicon-hand-right choix-icon"></i>{{ poleParcours.nbrMatiereOptionnelle }} choix
+                                            {% endif %}
+                                        {% endfor %}
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <!-- TABLEAU MATIERE -->
-                        <div class="row">
-                            <div class="col-md-12">
-                                <table class="table sortable">
-                                    <thead>
-                                        <tr>
-                                            <th class="col-md-1"></th>
-                                            <th class="col-md-2">Ordre</th>
-                                            <th class="col-md-7">Matière</th>
-                                            <th class="col-md-2">Code</th>
-                                        </tr>
-                                    </thead>
 
-                                    <tbody>
+                            <!-- TITRE -->
+                            <div class="row sort-title">
+                                <div class="col-xs-12">
+                                    <div class="col-xs-12">Matière</div>
+                                </div>
+                            </div>
+
+                            <!-- MATIERES OPTIONELLES DU POLE -->
+                            <div class="row">
+                                <div class="col-xs-12 final">
                                     {% for matiere in matieres %}
-                                        {% if matiere.matiere.poleDeCompetence == pole %}
-                                            <tr draggable="true" rel="{{ matiere.id }}">
-                                                <td><i class="glyphicon glyphicon-option-vertical"></i></td>
-                                                <td class="ordre">{{ matiere.ordre }}</td>
-                                                <td>{{ matiere.matiere.nom }}</td>
-                                                <td>{{ matiere.matiere.code }}</td>
-                                            </tr>
+                                        {% if matiere.poleDeCompetence == pole %}
+                                            <!-- MATIERE -->
+                                            <div class="matiere">
+                                                <div class="col-xs-12">{{ matiere.nom }}</div>
+                                            </div>
                                         {% endif %}
                                     {% endfor %}
-                                    </tbody>
-                                </table>
+                                </div>
                             </div>
-                        </div>
-                    {% endfor %}
-                        <div class="row">
-                            <div class="col-md-12">
-                                <button id="submit" type="submit" class="btn btn-lg btn-block btn-blue margin-bottom">Enregistrer mes choix</button>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endif %}
+
+            <!-- Affichage des matières optionelles par pôle -->
+            {% if poles != null and isChoix == true %}
+                <div class="row">
+                    <div class=" col-md-offset-2 col-md-8">
+                        {% for pole in poles %}
+                            <!-- POLE -->
+                            <div class="row pole">
+                                <div class="col-xs-8">
+                                    <div class="pole-title">
+                                        <i class="glyphicon glyphicon-bookmark pole-icon"></i><span class="pole-nom">{{ pole.nom }}</span>
+                                    </div>
+                                </div>
+                                <div class="col-xs-4">
+                                    <div class="nb-choix pull-right">
+                                        {% for poleParcours in polesParcours %}
+                                            {% if poleParcours.poleDeCompetence == pole %}
+                                                <i class=" glyphicon glyphicon-hand-right choix-icon"></i>{{ poleParcours.nbrMatiereOptionnelle }} choix
+                                            {% endif %}
+                                        {% endfor %}
+                                    </div>
+                                </div>
                             </div>
 
-                            <div id="response" class="col-md-12 hidden">
+                            <!-- TITRE -->
+                            <div class="row sort-title">
+                                <div class="col-xs-12">
+                                    <div class="col-xs-1"></div>
+                                    <div class="col-xs-2 ordre">Ordre</div>
+                                    <div class="col-xs-7">Matière</div>
+                                    <div class="col-xs-2">Place</div>
+                                </div>
+                            </div>
 
+                            <!-- MATIERES OPTIONELLES DU POLE -->
+                            <div class="row">
+                                <div class="col-xs-12 sort">
+                                {% for matiere in matieres %}
+                                    {% if matiere.matiere.poleDeCompetence == pole %}
+                                        <!-- MATIERE -->
+                                        <div class="matiere" rel="{{ matiere.id }}">
+                                            <div class="col-xs-1 move-icon"><i class="glyphicon glyphicon-move"></i></div>
+                                            <div class="col-xs-2 ordre"><label class="badge">{{ matiere.ordre }}</label></div>
+                                            <div class="col-xs-7">{{ matiere.matiere.nom }}</div>
+                                            <div class="col-xs-2 place"><label class="label label-default label-place">{{ matiere.matiere.place }}</label></div>
+                                        </div>
+                                    {% endif %}
+                                {% endfor %}
+                                </div>
+                            </div>
+                        {% endfor %}
+
+                        <div>
+                            <button id="submit" type="submit" class="btn btn-lg btn-block btn-blue margin-bottom">Enregistrer mes choix</button>
+                            <div id="response" class="response hidden">
                             </div>
                         </div>
                     </div>
                 </div>
-
             {% endif %}
-
         {% endif %}
-
     </div>
 
 {% endblock %}

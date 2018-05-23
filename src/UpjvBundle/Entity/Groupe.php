@@ -29,7 +29,7 @@ class Groupe
     private $nom;
 
     /**
-     * @ORM\ManyToMany(targetEntity="UpjvBundle\Entity\Utilisateur", cascade={"persist"})
+     * @ORM\ManyToMany(targetEntity="UpjvBundle\Entity\Utilisateur", cascade={"persist"}, inversedBy="groupes")
      */
     private $utilisateurs;
 
@@ -147,4 +147,11 @@ class Groupe
         return $this->getNom();
     }
 
+    public function getNombreEtudiant(){
+        $nbr = 0;
+        foreach ($this->getUtilisateurs() as $utilisateur){
+            $nbr++;
+        }
+        return $nbr;
+    }
 }
