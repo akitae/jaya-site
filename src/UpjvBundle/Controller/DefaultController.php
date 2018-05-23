@@ -29,9 +29,12 @@ class DefaultController extends Controller
 
     $isAdmin = $this->container->get('security.authorization_checker')->isGranted(Utilisateur::ROLE_ADMIN);
 
+    $isEtudiant = $this->container->get('security.authorization_checker')->isGranted(Utilisateur::ROLE_ETUDIANT);
+
     return $this->render('UpjvBundle:Default:index.html.twig', [
       "user" => $user,
-      "isAdmin" => $isAdmin
+      "isEtudiant" => $isEtudiant,
+      "isAdmin" => $isAdmin,
     ]);
   }
 

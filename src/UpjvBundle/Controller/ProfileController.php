@@ -71,10 +71,12 @@ class ProfileController extends BaseController
          * Si l'utilisateur est administrateur on affiche un lien vers l'administration.
          */
         $isAdmin = $this->container->get('security.authorization_checker')->isGranted(Utilisateur::ROLE_ADMIN);
+        $isEtudiant = $this->container->get('security.authorization_checker')->isGranted(Utilisateur::ROLE_ETUDIANT);
 
         return $this->render('@FOSUser/Profile/edit.html.twig', array(
             'form' => $form->createView(),
-            'isAdmin' => $isAdmin
+            'isAdmin' => $isAdmin,
+            'isEtudiant' => $isEtudiant
         ));
     }
 

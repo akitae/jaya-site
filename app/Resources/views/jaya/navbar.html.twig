@@ -13,10 +13,12 @@
 
         <div class="collapse navbar-collapse" id="menu">
             <ul class="nav navbar-nav">
-                <li class=""><a href="{{ path('choix_ue') }}">Choix des UEs</a></li>
+                {% if isEtudiant %}
+                    <li class=""><a href="{{ path('choix_ue') }}">Choix des UEs</a></li>
+                {% endif %}
                 <li class=""><a href="{{ path('fos_user_profile_edit') }}">Mon compte</a></li>
                 {% if isAdmin %}
-                <li><a class="" href="{{ path('admin_user') }}" target="_blank">Administration</a></li>
+                <li><a class="" href="{{ path('admin') }}" target="_blank">Administration</a></li>
                 {% endif %}
             </ul>
             <div class="nav navbar-form navbar-right">

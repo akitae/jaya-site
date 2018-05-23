@@ -11,7 +11,6 @@ security:
 
     role_hierarchy:
       ROLE_ETUDIANT: ROLE_USER
-      ROLE_ADMIN: ROLE_ETUDIANT
       ROLE_SUPER_ADMIN: ROLE_ADMIN
 
     firewalls:
