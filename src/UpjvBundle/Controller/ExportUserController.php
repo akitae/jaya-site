@@ -171,11 +171,10 @@ class ExportUserController extends Controller
                 /** @var Matiere $matiere */
                 foreach ($tabMatiere as $matiere){
                     $nbrLineToCell++;
-                    $listeMatiereOptionnel .= $matiere. "\n";
+                    $listeMatiereOptionnel .= $matiere. "\r\n";
                 }
             }
 //            Fin du trie par code UE
-
 
             $objExcel->getActiveSheet()->setCellValueByColumnAndRow($col, $row,$listeMatiereOptionnel);
 

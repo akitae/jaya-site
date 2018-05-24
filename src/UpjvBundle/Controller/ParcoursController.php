@@ -11,6 +11,7 @@ use UpjvBundle\Entity\Matiere;
 use UpjvBundle\Entity\MatiereParcours;
 use UpjvBundle\Entity\Parcours;
 use UpjvBundle\Entity\PoleDeCompetence;
+use UpjvBundle\Entity\PoleDeCompetenceParcours;
 use UpjvBundle\Form\ParcoursType;
 
 class ParcoursController extends Controller
@@ -111,6 +112,10 @@ class ParcoursController extends Controller
     $em = $this->getDoctrine()->getManager();
     try{
         $parcours = $em->getRepository(Parcours::class)->find($id);
+        $paroursPoleDeCompetence = $em->getRepository(PoleDeCompetenceParcours::class)->findBy(['parcours' => $parcours]);
+        foreach ($paroursPoleDeCompetence as $pole){
+            $em->remove($pole);
+        }
         $em->remove($parcours);
         $em->flush();
         $this->get('session')->getFlashBag()->add('success', 'L\'utilisateur a bien été supprimé');

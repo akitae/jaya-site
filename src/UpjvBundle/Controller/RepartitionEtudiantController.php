@@ -10,6 +10,7 @@ namespace UpjvBundle\Controller;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Routing\Annotation\Route;
+use UpjvBundle\Entity\Groupe;
 use UpjvBundle\Entity\Matiere;
 use UpjvBundle\Entity\MatiereOptionelle;
 use UpjvBundle\Entity\PoleDeCompetence;
@@ -29,9 +30,11 @@ class RepartitionEtudiantController extends Controller
 
         $listSemestre = $em->getRepository(Semestre::class)->findAll();
 
+//        $em->getRepository(Groupe::class)->resetAllGroupe();
+
         if(!empty($_POST['repartition'])){
-            $em->getRepository(Matiere::class)->resetMatiereUtilisateur();
             $semestre = $em->getRepository(Semestre::class)->find($_POST['repartition']);
+            $em->getRepository(Matiere::class)->resetMatiereUtilisateur($semestre);
 
             $this->repartitionObligatoire($semestre);
             $this->repartitionOptionnel($semestre);
@@ -67,7 +70,8 @@ class RepartitionEtudiantController extends Controller
                 if($matiere->getNbrPlaces($stagiare) > 0){
                     $user->addMatiere($matiere);
                     $em->persist($user);
-                $matiere->setNbrPlaces($matiere->getNbrPlaces($stagiare)-1,$stagiare);
+                    $matiere->setNbrPlaces($matiere->getNbrPlaces($stagiare)-1,$stagiare);
+                    $em->persist($matiere);
                 }else{
                     $Isstagiare = $stagiare==true ?'oui':'non';
                     $this->get('session')->getFlashBag()->add('erreur',
