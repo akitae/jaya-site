@@ -85,4 +85,17 @@ WHERE utilisateur_id = :user AND pole_de_competence_id = :pole AND mp.optionnel 
         $stmt->execute();
   
     }
+    public function resetAllMatiere()
+    {
+        $rawSql = "DELETE FROM matiere";
+        $stmt = $this->getEntityManager()->getConnection()->prepare($rawSql);
+        $stmt->execute();
+    }
+    public function resetAllPole()
+    {
+        $rawSql = "UPDATE matiere SET pole_de_competence_id = null ";
+
+        $stmt = $this->getEntityManager()->getConnection()->prepare($rawSql);
+        $stmt->execute();
+    }
 }

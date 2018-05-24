@@ -14,7 +14,12 @@ use UpjvBundle\Entity\Utilisateur;
 use UpjvBundle\Entity\Groupe;
 use UpjvBundle\Entity\Semestre;
 use UpjvBundle\Entity\Matiere;
+use UpjvBundle\Entity\Parcours;
 use UpjvBundle\Entity\MatiereOptionelle;
+use UpjvBundle\Entity\PoleDeCompetence;
+use UpjvBundle\Entity\PoleDeCompetenceParcours;
+use UpjvBundle\Entity\MatiereParcours;
+
 
 class ResetController extends Controller
 {
@@ -40,27 +45,83 @@ class ResetController extends Controller
          try{
 
              foreach ($_POST as $name => $value){
-                 if($name == 'semestre')
-                 {
-                     $em->getRepository(Matiere::class)->resetAllSemestre();
-                     $em->getRepository(Semestre::class)->resetAllSemestre();
-                 }
+                 if($name == 'matiere')
+                     $resetMatiere = true;
+                 else
+                     $resetMatiere = false;
                  if($name == 'groupe')
-                 {
-                     $em->getRepository(Groupe::class)->resetAllGroupe();             
-                 }
+                     $resetGroupe = true;
+                 else
+                     $resetGroupe = false;
                  if($name == 'option')
-                 {
-                     $em->getRepository(Matiere::class)->resetAllMatiereUtilisateur();
-                     $em->getRepository(MatiereOptionelle::class)->resetAllMatiereOption();
-                 }
+                     $resetOption = true;
+                 else
+                     $resetOption = false;
                  if($name == 'etudiant')
-                 {
-                     $em->getRepository(Utilisateur::class)->resetByRole(Utilisateur::ROLE_ETUDIANT , Utilisateur::ROLE_PROFESSEUR, Utilisateur::ROLE_ADMIN);
-                 }
-
-                 
+                     $resetEtudiant = true;
+                 else
+                     $resetEtudiant = false;
+                 if($name == 'pole')
+                     $resetPole = true;
+                 else
+                     $resetPole = false;
+                 if($name == 'parcours')
+                     $resetParcours = true;
+                 else
+                     $resetParcours = false;
+                 if($name == 'matiereParcours')
+                     $resetMatiereParcours = true;
+                 else
+                     $resetMatiereParcours = false;
+                 if($name == 'semestre')
+                     $resetSemestre = true;
+                 else
+                     $resetSemestre = false;
              }
+            if($resetSemestre == true)
+            {
+                $em->getRepository(Parcours::class)->resetAllSemestre();
+                $em->getRepository(Matiere::class)->resetAllSemestre();
+                $em->getRepository(Semestre::class)->resetAllSemestre();
+
+            }
+            if($resetGroupe == true)
+            {
+                $em->getRepository(Groupe::class)->resetAllGroupe();             
+            }
+            if($resetOption == true)
+            {
+                $em->getRepository(MatiereOptionelle::class)->resetAllMatiereOption();
+                $em->getRepository(Matiere::class)->resetAllMatiereUtilisateur();
+
+            }
+            
+            if($resetPole == true)
+            {
+                $em->getRepository(Matiere::class)->resetAllPole();
+                $em->getRepository(PoleDeCompetenceParcours::class)->resetAllPoledeCompetenceParcours();
+                $em->getRepository(PoleDeCompetence::class)->resetAllPole();
+
+            }
+            if($resetParcours == true)
+            {
+                $em->getRepository(PoleDeCompetenceParcours::class)->resetAllPoledeCompetenceParcours();
+                $em->getRepository(Parcours::class)->resetAllParcours();
+            }
+            if($resetMatiereParcours == true)
+            {                  
+                $em->getRepository(MatiereParcours::class)->resetAllMatiereParcours();
+            }
+            if($resetMatiere == true)
+            {
+                $em->getRepository(Matiere::class)->resetAllMatiere();
+            }
+            if($resetEtudiant == true)
+            {
+                $em->getRepository(Utilisateur::class)->resetByRole(Utilisateur::ROLE_ETUDIANT , Utilisateur::ROLE_PROFESSEUR, Utilisateur::ROLE_ADMIN);
+            }
+                 
+             
              $em->flush();
              $this->get('session')->getFlashBag()->add('success', 'Les éléments sélectionnés ont été supprimés.');
 

@@ -58,5 +58,11 @@ class MatiereParcoursRepository extends \Doctrine\ORM\EntityRepository
 
         return $queryBuilder->getQuery()->getSingleResult();
     }
+    public function resetAllMatiereParcours()
+    {
+        $rawSql = "DELETE FROM matiere_parcours";
+        $stmt = $this->getEntityManager()->getConnection()->prepare($rawSql);
+        $stmt->execute();
+    }
 
 }
