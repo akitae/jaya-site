@@ -43,82 +43,63 @@ class ResetController extends Controller
 
      if (!empty($_POST)) {
          try{
-
-             foreach ($_POST as $name => $value){
-                 if($name == 'matiere')
-                     $resetMatiere = true;
-                 else
-                     $resetMatiere = false;
-                 if($name == 'groupe')
-                     $resetGroupe = true;
-                 else
-                     $resetGroupe = false;
-                 if($name == 'option')
-                     $resetOption = true;
-                 else
-                     $resetOption = false;
-                 if($name == 'etudiant')
-                     $resetEtudiant = true;
-                 else
-                     $resetEtudiant = false;
-                 if($name == 'pole')
-                     $resetPole = true;
-                 else
-                     $resetPole = false;
-                 if($name == 'parcours')
-                     $resetParcours = true;
-                 else
-                     $resetParcours = false;
-                 if($name == 'matiereParcours')
-                     $resetMatiereParcours = true;
-                 else
-                     $resetMatiereParcours = false;
-                 if($name == 'semestre')
-                     $resetSemestre = true;
-                 else
-                     $resetSemestre = false;
-             }
-            if($resetSemestre == true)
+            if(isset($_POST['semestre']))
             {
-                $em->getRepository(Parcours::class)->resetAllSemestre();
-                $em->getRepository(Matiere::class)->resetAllSemestre();
-                $em->getRepository(Semestre::class)->resetAllSemestre();
-
+                $allSemestre = $em->getRepository(Semestre::class)->findAll();
+                /** @var Semestre $semestre */
+                foreach ($allSemestre as $semestre){
+                    $em->remove($semestre);
+                    /** @var Matiere $matiere */
+                    foreach ($semestre->getMatieres() as $matiere){
+                        $matiere->setSemestre(null);
+                    }
+                }
+                $em->flush();
             }
-            if($resetGroupe == true)
+            if(isset($_POST['groupe']))
             {
                 $em->getRepository(Groupe::class)->resetAllGroupe();             
             }
-            if($resetOption == true)
+            if(isset($_POST['option']))
             {
                 $em->getRepository(MatiereOptionelle::class)->resetAllMatiereOption();
                 $em->getRepository(Matiere::class)->resetAllMatiereUtilisateur();
 
             }
             
-            if($resetPole == true)
+            if(isset($_POST['pole']))
             {
                 $em->getRepository(Matiere::class)->resetAllPole();
                 $em->getRepository(PoleDeCompetenceParcours::class)->resetAllPoledeCompetenceParcours();
                 $em->getRepository(PoleDeCompetence::class)->resetAllPole();
 
             }
-            if($resetParcours == true)
+            if(isset($_POST['parcours']))
             {
+                $allParcours = $em->getRepository(Parcours::class)->findAll();
+                /** @var Parcours $allParcour */
+                foreach ($allParcours as $allParcour){
+                    /** @var Utilisateur $user */
+                    foreach ($allParcour->getUtilisateur() as $user){
+                        $user->setParcours(null);
+                    }
+                    $em->persist($user);
+                    $em->flush();
+                }
                 $em->getRepository(PoleDeCompetenceParcours::class)->resetAllPoledeCompetenceParcours();
                 $em->getRepository(Parcours::class)->resetAllParcours();
             }
-            if($resetMatiereParcours == true)
+            if(isset($_POST['matiereParcours']))
             {                  
                 $em->getRepository(MatiereParcours::class)->resetAllMatiereParcours();
             }
-            if($resetMatiere == true)
+            if(isset($_POST['matiere']))
             {
                 $em->getRepository(Matiere::class)->resetAllMatiere();
             }
-            if($resetEtudiant == true)
+            if(isset($_POST['etudiant']))
             {
-                $em->getRepository(Utilisateur::class)->resetByRole(Utilisateur::ROLE_ETUDIANT , Utilisateur::ROLE_PROFESSEUR, Utilisateur::ROLE_ADMIN);
+                $em->getRepository(Utilisateur::class)->resetByRole(Utilisateur::ROLE_ETUDIANT , Utilisateur::ROLE_PROFESSEUR, Utilisateur::ROLE_ADMIN, Utilisateur::ROLE_SUPER_ADMIN);
             }
                  
              

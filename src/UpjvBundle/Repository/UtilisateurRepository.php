@@ -191,7 +191,7 @@ class UtilisateurRepository extends \Doctrine\ORM\EntityRepository
      * @param $roleSave2
      * @return mixed
      */
-    public function resetByRole ($roleDelete, $roleSave1, $roleSave2) {
+    public function resetByRole ($roleDelete, $roleSave1, $roleSave2,$roleSave3) {
         $queryBuilder = $this->createQueryBuilder('e');
         $queryBuilder
             ->delete()
@@ -201,9 +201,10 @@ class UtilisateurRepository extends \Doctrine\ORM\EntityRepository
             ->setParameter('roleSave1', '%'.$roleSave1.'%')
             ->andWhere('e.roles NOT LIKE :roleSave2')
             ->setParameter('roleSave2', '%'.$roleSave2.'%')
+            ->andWhere('e.roles NOT LIKE :roleSave3')
+            ->setParameter('roleSave3', '%'.$roleSave3.'%')
             
             ;
-        dump( $queryBuilder->getQuery());die;
         return $queryBuilder->getQuery()->getResult();
     }
 

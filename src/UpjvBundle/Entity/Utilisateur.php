@@ -277,7 +277,7 @@ class Utilisateur extends BaseUser
      */
     public function isProfesseur(){
         foreach ($this->getRoles() as $role){
-            if($role === ROLE_PROFESSEUR or $role === ROLE_ADMIN or $role === ROLE_SUPER_ADMIN){
+            if($role === Utilisateur::ROLE_PROFESSEUR or $role === Utilisateur::ROLE_ADMIN or $role === Utilisateur::ROLE_SUPER_ADMIN){
                 return true;
             }
         }
@@ -289,7 +289,7 @@ class Utilisateur extends BaseUser
      */
     public function isAdmin(){
         foreach ($this->getRoles() as $role){
-            if($role === ROLE_ADMIN or $role === ROLE_SUPER_ADMIN){
+            if($role === Utilisateur::ROLE_ADMIN or $role === Utilisateur::ROLE_SUPER_ADMIN){
                 return true;
             }
         }
@@ -301,7 +301,7 @@ class Utilisateur extends BaseUser
      */
     public function isSuperAdmin(){
         foreach ($this->getRoles() as $role){
-            if($role === ROLE_SUPER_ADMIN){
+            if($role === Utilisateur::ROLE_SUPER_ADMIN){
                 return true;
             }
         }

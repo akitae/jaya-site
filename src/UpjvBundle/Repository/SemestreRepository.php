@@ -10,11 +10,4 @@ namespace UpjvBundle\Repository;
  */
 class SemestreRepository extends \Doctrine\ORM\EntityRepository
 {
-    public function resetAllSemestre()
-    {
-        $rawSql = "DELETE FROM semestre";
-
-        $stmt = $this->getEntityManager()->getConnection()->prepare($rawSql);
-        $stmt->execute();
-    }
 }

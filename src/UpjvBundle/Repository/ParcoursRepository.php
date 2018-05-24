@@ -26,13 +26,6 @@ class ParcoursRepository extends \Doctrine\ORM\EntityRepository
             ->getQuery()
             ->getResult();
     }
-    public function resetAllSemestre()
-    {
-        $rawSql = "UPDATE parcours SET semestre_id = null ";
-
-        $stmt = $this->getEntityManager()->getConnection()->prepare($rawSql);
-        $stmt->execute();
-    }
     public function resetAllParcours()
     {
         $rawSql = "delete from parcours";

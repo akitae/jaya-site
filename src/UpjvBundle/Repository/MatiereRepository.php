@@ -79,14 +79,6 @@ WHERE utilisateur_id = :user AND pole_de_competence_id = :pole AND mp.optionnel 
         $stmt->execute();
     }
 
-    public function resetAllSemestre()
-    {
-        $rawSql = "UPDATE matiere SET semestre_id = null ";
-
-        $stmt = $this->getEntityManager()->getConnection()->prepare($rawSql);
-        $stmt->execute();
-  
-    }
     public function resetAllMatiere()
     {
         $rawSql = "DELETE FROM matiere";
