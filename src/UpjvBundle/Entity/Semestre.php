@@ -56,6 +56,10 @@ class Semestre
      */
     private $dateFinChoix;
 
+    /**
+     * @var \Doctrine\Common\Collections\ArrayCollection
+     * @ORM\OneToMany(targetEntity="UpjvBundle\Entity\Matiere",mappedBy="semestre")
+     */
     private $matieres;
 
     /**

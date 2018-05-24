@@ -27,7 +27,7 @@ class GroupeRepository extends \Doctrine\ORM\EntityRepository
             ;
     }
   
-  public function resetAllGroupe()
+    public function resetAllGroupe()
     {
         $rawSql = "DELETE FROM groupe";
 
