@@ -30,12 +30,13 @@ class RepartitionEtudiantController extends Controller
 
         $listSemestre = $em->getRepository(Semestre::class)->findAll();
 
-//        $em->getRepository(Groupe::class)->resetAllGroupe();
+        $em->getRepository(Groupe::class)->resetAllGroupe();
 
         if(!empty($_POST['repartition'])){
             $semestre = $em->getRepository(Semestre::class)->find($_POST['repartition']);
             $em->getRepository(Matiere::class)->resetMatiereUtilisateur($semestre);
 
+            $this->reinitialiseMatiere();
             $this->repartitionObligatoire($semestre);
             $this->repartitionOptionnel($semestre);
 
@@ -177,5 +178,17 @@ class RepartitionEtudiantController extends Controller
             }
         }
         return $array;
+    }
+
+    public function reinitialiseMatiere(){
+
+        $allMatieres = $this->getDoctrine()->getManager()->getRepository(Matiere::class)->findAllToArray();
+
+        foreach ($allMatieres as $matiere){
+            $matiere->setNbrPlaces($matiere->getNbrPlaceMax());
+            $matiere->setPlaceStagiare($matiere->getNbrPlaceStagiareMax());
+            $this->getDoctrine()->getManager()->persist($matiere);
+        }
+        $this->getDoctrine()->getManager()->flush();
     }
 }

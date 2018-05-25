@@ -50,7 +50,10 @@ class MatiereController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
             try{
+                /** @var Matiere $matiere */
                 $matiere = $form->getData();
+                $matiere->setNbrPlaces($matiere->getNbrPlaceMax());
+                $matiere->setPlaceStagiare($matiere->getNbrPlaceStagiareMax());
                 $em->persist($matiere);
                 $em->flush();
                 $this->get('session')->getFlashBag()->add('success', 'La matière a bien été enregistrée.');
