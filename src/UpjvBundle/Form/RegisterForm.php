@@ -10,6 +10,7 @@ use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use UpjvBundle\Entity\Parcours;
+use UpjvBundle\Repository\ParcoursRepository;
 
 /**
  * Formulaire d'inscription.
@@ -51,6 +52,9 @@ class RegisterForm extends AbstractType
             ])
             ->add('parcours', EntityType::class, [
                 'class' => Parcours::class,
+                'query_builder' => function (ParcoursRepository $repo) {
+                    return $repo->createQueryBuilder('e')->where('e.stagiare = false');
+                },
                 'attr' => ['class' => 'form-control js-example-basic-single input-login'],
                 'label' => 'Parcours'
             ])

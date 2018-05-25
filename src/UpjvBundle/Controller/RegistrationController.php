@@ -25,6 +25,10 @@ class RegistrationController extends BaseControllers
      */
     public function registerAction(Request $request)
     {
+        if ($this->getUser() != null) {
+            return $this->redirectToRoute('upjv_homepage');
+        }
+
         // On crée un utilisateur avec le manager.
         $userManager = $this->get('fos_user.user_manager');
         /** @var Utilisateur $user */
