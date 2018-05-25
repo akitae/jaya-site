@@ -30,7 +30,6 @@
                     Remarque : Le nombre de matière optionnelle par parcours doit être renseigné ! <br>
                     Remarque 2 : La répartion s'effectuera sur le semestre sélectionné et ne doit être effectué qu'après la date de fin de choix des étudiants <br>
                     Remarque 3 : Veuillez n'exécuter qu'une seule fois par semestre cette répartition par matière dans le cas contraire, les groupes seront supprimé <br>
-                    Remarque 4: Il faut réassigner les places pour chaque parcours si vous avez déjà exécuté cette répartition pour ce semestre <br/><br>
                     <form action="{{ path('admin_repartition_etudiant') }}" method="post">
                         {% for semestre in listSemestre %}
                             <button class="btn btn-danger" type="submit" name="repartition" value="{{ semestre.id }}">Semestre : {{ semestre.nom }}</button>
