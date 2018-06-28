@@ -10,4 +10,5 @@ namespace UpjvBundle\Repository;
  */
 class MatiereProfesseurRepository extends \Doctrine\ORM\EntityRepository
 {
+   
 }

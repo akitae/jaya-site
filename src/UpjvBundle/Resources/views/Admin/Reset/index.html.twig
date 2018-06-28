@@ -13,7 +13,7 @@
                     Liste des étudiants
                 </div>
                 <div class="panel-body">
-                    <form action="/admin/reset/resetData" method="post">
+                    <form action="{{ path('admin_reset_data') }}" method="post">
                         <div class="row">
                     <div class="col-sm-12">
                         <table class="tableAdmin">
@@ -28,6 +28,22 @@
                                 <tr role="row">
                                     <td>Effacer les semestres</td>
                                     <td><input type="checkbox" name="semestre" id = "semestre"></td>
+                                </tr>
+                                <tr role="row">
+                                    <td>Effacer les pôles de compétences</td>
+                                    <td><input type="checkbox" name="pole" id = "pole"></td>
+                                </tr>
+                                <tr role="row">
+                                    <td>Effacer les parcours</td>
+                                    <td><input type="checkbox" name="parcours" id = "parcours"></td>
+                                </tr>
+                                <tr role="row">
+                                    <td>Effacer les matières</td>
+                                    <td><input type="checkbox" name="matiere" id = "matiere" onchange="checkMatiere(this)"></td>
+                                </tr>
+                                <tr role="row">
+                                    <td>Effacer les liens matières - pôle de compétence</td>
+                                    <td><input type="checkbox" name="matiereParcours" id = "matiereParcours" onchange="checkMatiereParcours(this)"></td>
                                 </tr>
                                 <tr role="row">
                                     <td>Effacer les groupes</td>
@@ -55,6 +71,22 @@
     </div>
     <script>
         
+        function checkMatiereParcours(checkboxElem)
+        {
+            if(!checkboxElem.checked)
+            {
+                document.getElementById("matiere").checked = false;
+            }
+        }
+        function checkMatiere(checkboxElem)
+        {
+            if(checkboxElem.checked)
+            {
+                document.getElementById("matiereParcours").checked = true;
+                document.getElementById("groupe").checked = true;
+                document.getElementById("option").checked = true;
+            }
+        }
         function checkEtudiant(checkboxElem)
         {
             if(checkboxElem.checked)
@@ -66,7 +98,10 @@
         function checkOption(checkboxElem)
         {
             if(!checkboxElem.checked)
+            {
                 document.getElementById("etudiant").checked = false;
+                document.getElementById("matiere").checked = false;
+            }
         }
         function checkGroupe(checkboxElem)
         {

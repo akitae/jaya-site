@@ -33,11 +33,11 @@ class MatiereType extends AbstractType
                 'label' => 'Nom'
             ])
             
-            ->add('place', IntegerType::class,[
+            ->add('nbrPlaceMax', IntegerType::class,[
                 'attr' => ['class' => 'form-control '],
                 'label' => 'Nombre de places total pour les non-stagiares'
             ])
-            ->add('placeStagiare', IntegerType::class,[
+            ->add('nbrPlaceStagiareMax', IntegerType::class,[
                 'attr' => ['class' => 'form-control '],
                 'label' => 'Nombre de places total pour les stagiares',
                 'empty_data' => 0

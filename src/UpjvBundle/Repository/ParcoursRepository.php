@@ -26,4 +26,11 @@ class ParcoursRepository extends \Doctrine\ORM\EntityRepository
             ->getQuery()
             ->getResult();
     }
+    public function resetAllParcours()
+    {
+        $rawSql = "delete from parcours";
+
+        $stmt = $this->getEntityManager()->getConnection()->prepare($rawSql);
+        $stmt->execute();
+    }
 }

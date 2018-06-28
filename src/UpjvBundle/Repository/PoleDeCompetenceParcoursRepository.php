@@ -44,5 +44,11 @@ class PoleDeCompetenceParcoursRepository extends \Doctrine\ORM\EntityRepository
 
         return $queryBuilder->getQuery()->getResult();
     }
+    public function resetAllPoledeCompetenceParcours()
+    {
+        $rawSql = "DELETE FROM pole_de_competence_parcours";
+        $stmt = $this->getEntityManager()->getConnection()->prepare($rawSql);
+        $stmt->execute();
+    }
 
 }

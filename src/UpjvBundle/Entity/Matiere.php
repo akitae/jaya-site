@@ -31,6 +31,7 @@ class Matiere
     /**
      * @var string
      *
+     *
      * @ORM\Column(name="nom", type="string", length=255)
      */
     private $nom;
@@ -43,6 +44,13 @@ class Matiere
     private $place;
 
     /**
+     * @var int
+     *
+     * @ORM\Column(name="nbrPlaceMax", type="integer",options={"default" : 0})
+     */
+    private $nbrPlaceMax = 0;
+
+    /**
      * @ORM\OneToMany(targetEntity="UpjvBundle\Entity\MatiereParcours",mappedBy="matieres")
      */
     private $parcours;
@@ -53,6 +61,13 @@ class Matiere
      * @ORM\Column(name="place_stagiare", type="integer")
      */
     private $placeStagiare = 0;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="nbrPlaceStagiareMax", type="integer",options={"default" : 0})
+     */
+    private $nbrPlaceStagiareMax = 0;
 
     /**
      * @ORM\ManyToOne(targetEntity="UpjvBundle\Entity\PoleDeCompetence", cascade={"persist"})
@@ -421,5 +436,37 @@ class Matiere
     public function getParcours()
     {
         return $this->parcours;
+    }
+
+    /**
+     * @return int
+     */
+    public function getNbrPlaceMax()
+    {
+        return $this->nbrPlaceMax;
+    }
+
+    /**
+     * @param int $nbrPlaceMax
+     */
+    public function setNbrPlaceMax($nbrPlaceMax)
+    {
+        $this->nbrPlaceMax = $nbrPlaceMax;
+    }
+
+    /**
+     * @return int
+     */
+    public function getNbrPlaceStagiareMax()
+    {
+        return $this->nbrPlaceStagiareMax;
+    }
+
+    /**
+     * @param int $nbrPlaceStagiareMax
+     */
+    public function setNbrPlaceStagiareMax($nbrPlaceStagiareMax)
+    {
+        $this->nbrPlaceStagiareMax = $nbrPlaceStagiareMax;
     }
 }

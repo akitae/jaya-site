@@ -14,7 +14,12 @@ use UpjvBundle\Entity\Utilisateur;
 use UpjvBundle\Entity\Groupe;
 use UpjvBundle\Entity\Semestre;
 use UpjvBundle\Entity\Matiere;
+use UpjvBundle\Entity\Parcours;
 use UpjvBundle\Entity\MatiereOptionelle;
+use UpjvBundle\Entity\PoleDeCompetence;
+use UpjvBundle\Entity\PoleDeCompetenceParcours;
+use UpjvBundle\Entity\MatiereParcours;
+
 
 class ResetController extends Controller
 {
@@ -38,29 +43,66 @@ class ResetController extends Controller
 
      if (!empty($_POST)) {
          try{
+            if(isset($_POST['semestre']))
+            {
+                $allSemestre = $em->getRepository(Semestre::class)->findAll();
+                /** @var Semestre $semestre */
+                foreach ($allSemestre as $semestre){
+                    $em->remove($semestre);
+                    /** @var Matiere $matiere */
+                    foreach ($semestre->getMatieres() as $matiere){
+                        $matiere->setSemestre(null);
+                    }
+                }
+                $em->flush();
+            }
+            if(isset($_POST['groupe']))
+            {
+                $em->getRepository(Groupe::class)->resetAllGroupe();             
+            }
+            if(isset($_POST['option']))
+            {
+                $em->getRepository(MatiereOptionelle::class)->resetAllMatiereOption();
+                $em->getRepository(Matiere::class)->resetAllMatiereUtilisateur();
 
-             foreach ($_POST as $name => $value){
-                 if($name == 'semestre')
-                 {
-                     $em->getRepository(Matiere::class)->resetAllSemestre();
-                     $em->getRepository(Semestre::class)->resetAllSemestre();
-                 }
-                 if($name == 'groupe')
-                 {
-                     $em->getRepository(Groupe::class)->resetAllGroupe();             
-                 }
-                 if($name == 'option')
-                 {
-                     $em->getRepository(Matiere::class)->resetAllMatiereUtilisateur();
-                     $em->getRepository(MatiereOptionelle::class)->resetAllMatiereOption();
-                 }
-                 if($name == 'etudiant')
-                 {
-                     $em->getRepository(Utilisateur::class)->resetByRole(Utilisateur::ROLE_ETUDIANT , Utilisateur::ROLE_PROFESSEUR, Utilisateur::ROLE_ADMIN);
-                 }
+            }
+            
+            if(isset($_POST['pole']))
+            {
+                $em->getRepository(Matiere::class)->resetAllPole();
+                $em->getRepository(PoleDeCompetenceParcours::class)->resetAllPoledeCompetenceParcours();
+                $em->getRepository(PoleDeCompetence::class)->resetAllPole();
 
+            }
+            if(isset($_POST['parcours']))
+            {
+                $allParcours = $em->getRepository(Parcours::class)->findAll();
+                /** @var Parcours $allParcour */
+                foreach ($allParcours as $allParcour){
+                    /** @var Utilisateur $user */
+                    foreach ($allParcour->getUtilisateur() as $user){
+                        $user->setParcours(null);
+                    }
+                    $em->persist($user);
+                    $em->flush();
+                }
+                $em->getRepository(PoleDeCompetenceParcours::class)->resetAllPoledeCompetenceParcours();
+                $em->getRepository(Parcours::class)->resetAllParcours();
+            }
+            if(isset($_POST['matiereParcours']))
+            {                  
+                $em->getRepository(MatiereParcours::class)->resetAllMatiereParcours();
+            }
+            if(isset($_POST['matiere']))
+            {
+                $em->getRepository(Matiere::class)->resetAllMatiere();
+            }
+            if(isset($_POST['etudiant']))
+            {
+                $em->getRepository(Utilisateur::class)->resetByRole(Utilisateur::ROLE_ETUDIANT , Utilisateur::ROLE_PROFESSEUR, Utilisateur::ROLE_ADMIN, Utilisateur::ROLE_SUPER_ADMIN);
+            }
                  
-             }
+             
              $em->flush();
              $this->get('session')->getFlashBag()->add('success', 'Les éléments sélectionnés ont été supprimés.');
 

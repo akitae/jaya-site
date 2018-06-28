@@ -39,7 +39,17 @@ class UeChoiceController extends Controller
     /** @var PoleDeCompetenceParcours */
     private $polesParcours;
 
-    private $isChoix;
+    /**
+     * Liste des pôles obligatoires.
+     * @var array
+     */
+    private $arrayPoleObl;
+
+    /**
+     * Liste des matières obligatoires.
+     * @var array
+     */
+    private $arrayMatiereObl;
 
     /**
      * @Route("/choixUE", name="choix_ue")
@@ -48,9 +58,6 @@ class UeChoiceController extends Controller
 
         /** @var Utilisateur $user */
         $this->user = $this->getUser();
-        $message = array();
-
-        $this->isChoix = false;
 
         if (!is_object($this->user) || !$this->user instanceof UserInterface) {
             throw new AccessDeniedException('This user does not have access to this section.');
@@ -60,9 +67,6 @@ class UeChoiceController extends Controller
             return $this->redirectToRoute('upjv_homepage');
         }
 
-        if ($this->user->getParcours() == null) {
-            array_push($message, "Vous ne possédez pas de parcous. Veuillez contacter l'administration.");
-        }
 
         /** @var Parcours $parcours */
         $this->parcours = $this->user->getParcours();
@@ -90,7 +94,6 @@ class UeChoiceController extends Controller
          * On vérifie que l'on se situe dans une période de choix.
          */
         if ($this->semestreToUse != null && $nowDate > $this->semestreToUse->getDateDebutChoix() && $nowDate < $this->semestreToUse->getDateFinChoix()) {
-            $this->isChoix = true;
             $this->matieresOptionelles = $this->getMatieresOptTemp();
 
             /**
@@ -131,7 +134,6 @@ class UeChoiceController extends Controller
              */
             $this->polesParcours = $this->getDoctrine()->getRepository(PoleDeCompetenceParcours::class)->findByParcours($this->user->getParcours());
         } else if ($this->semestreToUse != null && $nowDate > $this->semestreToUse->getDateFinChoix()) {
-            $this->isChoix = false;
             /**
              * On récupère les matières final de l'utilisateur et on vérifie qu'elles appartiennent au semestre.
              */
@@ -148,12 +150,15 @@ class UeChoiceController extends Controller
              * On récupère uniquement les matières optionnelles.
              */
             $matiereOptFinal = array();
+            $this->arrayMatiereObl = array();
             /** @var Matiere $matiere */
             foreach ($matiereFinal as $matiere) {
                 /** @var MatiereParcours $matiereParcours */
                 $matiereParcours = $this->getDoctrine()->getRepository(MatiereParcours::class)->findByMatiereParcours($this->user->getParcours(), $matiere);
                 if ($matiereParcours->getOptionnel()) {
                     array_push($matiereOptFinal, $matiere);
+                } else {
+                    array_push($this->arrayMatiereObl, $matiere);
                 }
             }
 
@@ -165,6 +170,17 @@ class UeChoiceController extends Controller
             foreach ($matiereOptFinal as $matiere) {
                 array_push($this->poles, $matiere->getPoleDeCompetence());
             }
+
+            /**
+             * On récupère les pôles des matières obligatoires.
+             */
+            /** @var array $arrayPolesObl */
+            $this->arrayPoleObl = array();
+            foreach ($this->arrayMatiereObl as $matiere) {
+                array_push($this->arrayPoleObl, $matiere->getPoleDeCompetence());
+            }
+            $this->arrayPoleObl = array_unique($this->arrayPoleObl);
+            $this->arrayPoleObl = $this->sortPoles($this->arrayPoleObl);
 
             /**
              * On rends unique la présence d'un pole.
@@ -190,7 +206,8 @@ class UeChoiceController extends Controller
             "polesParcours" => $this->polesParcours,
             "isAdmin" => $isAdmin,
             "isEtudiant" => $isEtudiant,
-            "isChoix" => $this->isChoix
+            "arrayPoleObl" => $this->arrayPoleObl,
+            "arrayMatiereObl" => $this->arrayMatiereObl
         ]);
     }
 

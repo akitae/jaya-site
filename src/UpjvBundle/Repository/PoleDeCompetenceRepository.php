@@ -10,4 +10,10 @@ namespace UpjvBundle\Repository;
  */
 class PoleDeCompetenceRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function resetAllPole()
+    {
+        $rawSql = "DELETE FROM pole_de_competence";
+        $stmt = $this->getEntityManager()->getConnection()->prepare($rawSql);
+        $stmt->execute();
+    }
 }
