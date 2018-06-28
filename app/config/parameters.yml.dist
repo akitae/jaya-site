@@ -15,7 +15,7 @@ parameters:
     mailer_user: ~
     mailer_password: ~
 
-    knp_snappy: /usr/local/bin/wkhtmltopdf
+    knp_snappy: ./wkhtmltopdf
 
     # A secret key that's used to generate certain security-related tokens
     secret: ThisTokenIsNotSoSecretChangeIt
