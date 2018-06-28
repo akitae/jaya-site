@@ -66,7 +66,7 @@
                                             Non
                                         {% endif %}
                                     </td>
-                                    <td>{{ user.parcours.annee }}</td>
+                                    <td>{% if user.parcours != null %}{{ user.parcours.annee }}{% endif %}</td>
                                     <td>
                                         <button type="button" onclick="location.href='{{ path('admin_user_show',{'id':user.id}) }}';" class="btn btn-default">Voir</button>
                                         <button type="button" onclick="location.href='{{ path('admin_user_edit',{'id':user.id}) }}';" class="btn btn-primary">Modifier</button>
