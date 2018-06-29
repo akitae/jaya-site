@@ -89,27 +89,33 @@ class ExportUserController extends Controller
         $html = $this->renderView('UpjvBundle:Admin/ExportUser:registrationSheet.html.twig',[
             'listUser' => $listUser,
             'commentaire' => isset($_POST['commentaireRegistrationSheet'])?$_POST['commentaireRegistrationSheet']:null,
-            'listUE' => isset($_POST['matiere'])?$_POST['matiere']:null
-        ]);
-        $html_header = $this->renderView('UpjvBundle:Admin/ExportUser:registrationSheet-header.html.twig',[
-            'listUser' => $listUser,
-            'commentaire' => isset($_POST['commentaireRegistrationSheet'])?$_POST['commentaireRegistrationSheet']:null,
             'listUE' => isset($_POST['matiere'])?$_POST['matiere']:null,
             'listGroupe' => isset($_POST['groupe'])?$_POST['groupe']:null
         ]);
+//        $html_header = $this->renderView('UpjvBundle:Admin/ExportUser:registrationSheet-header.html.twig',[
+//            'listUser' => $listUser,
+//            'commentaire' => isset($_POST['commentaireRegistrationSheet'])?$_POST['commentaireRegistrationSheet']:null,
+//            'listUE' => isset($_POST['matiere'])?$_POST['matiere']:null,
+//            'listGroupe' => isset($_POST['groupe'])?$_POST['groupe']:null
+//        ]);
+//
+//        $filename = sprintf('Emargement-%s.pdf', date('Y-m-d'));
 
-        $filename = sprintf('Emargement-%s.pdf', date('Y-m-d'));
 
-        return new Response(
-            $this->get('knp_snappy.pdf')
-                ->getOutputFromHtml($html,['header-html'=>$html_header])
-            ,
-            200,
-            [
-                'Content-Type'        => 'application/pdf',
-                'Content-Disposition' => sprintf('attachment; filename="%s"', $filename),
-            ]
-        );
+        $mpdf = $mpdf = new \Mpdf\Mpdf(['tempDir' => __DIR__ . '/tmp']);
+        $mpdf->WriteHTML($html,0);
+        $mpdf->Output();
+
+//        return new Response(
+//            $this->get('knp_snappy.pdf')
+//                ->getOutputFromHtml($html,['header-html'=>$html_header])
+//            ,
+//            200,
+//            [
+//                'Content-Type'        => 'application/pdf',
+//                'Content-Disposition' => sprintf('attachment; filename="%s"', $filename),
+//            ]
+//        );
     }
 
     /**

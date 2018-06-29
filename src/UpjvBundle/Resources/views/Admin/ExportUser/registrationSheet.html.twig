@@ -8,6 +8,32 @@
     </head>
     <body>
         <div>
+            <h5>Feuille d'emargement</h5>
+            <h3>
+                    Nom enseignant : &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Signature :
+                <br><br>
+                Date :
+            </h3>
+            {% if listUE or listGroupe %}
+                <h2>
+                    {% if listUE %}UE :
+                        {% for ue in listUE %}
+                            {{ ue }}
+                        {% endfor %}
+                        <br>
+                    {% endif %}
+                    {% if listGroupe %}Groupe :
+                        {% for groupe in listGroupe %}
+                            {{ groupe }}
+                        {% endfor %}
+                    {% endif %}
+                </h2>
+            {% endif %}
+            {% if commentaire %}<h2>{{ commentaire }} </h2>{% endif %}
+            <hr width="100%">
+
             <h4>Signature des étudiants</h4>
 
             <table style="width: 100%;border-collapse: collapse; ">
@@ -20,7 +46,6 @@
                 {% set i = 1 %}
                 {% for user in listUser %}
                     <tr style="border-bottom: 1px solid black;">
-                        {#{{ dump() }}#}
                         <td align="center" height="50" style="border-bottom: 1px solid black;">{{ i }}</td>
                         <td style="border-bottom: 1px solid black;">{% if user['nom'] %} {{ user['nom'] }} {% endif %}{% if user['prenom'] %} {{ user['prenom'] }} {% endif %}</td>
                         <td style="border-bottom: 1px solid black;">{% if user['parcours'] %} {{ user['parcours'] }} {% endif %}</td>

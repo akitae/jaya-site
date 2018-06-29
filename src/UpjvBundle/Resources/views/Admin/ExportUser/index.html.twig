@@ -99,7 +99,7 @@
                                         </td>
                                         <td>
                                             <ul>
-                                                <li style="list-style: none;">{{ user.parcours.annee }}</li>
+                                                <li style="list-style: none;">{% if user.parcours != null %}{{ user.parcours.annee }}{% endif %}</li>
                                             </ul>
                                         </td>
                                         <td>
