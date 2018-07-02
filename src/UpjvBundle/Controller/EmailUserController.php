@@ -145,13 +145,15 @@ class EmailUserController extends Controller
      * @param $body string
      */
     private function sendMailToUser ($object, $from, $listTo, $body) {
-        //var_dump('sendmail');
         $message = (new \Swift_Message($object))
             ->setFrom($from)
             ->setBcc($listTo)
             ->setBody($body, 'text/html');
 
-        $this->get('mailer')->send($message);
+        $mailer = \Swift_Mailer::newInstance(\Swift_MailTransport::newInstance());
+        $mailer->send($message);
+
+//        $this->get('mailer')->send($message);
     }
 
     /**
