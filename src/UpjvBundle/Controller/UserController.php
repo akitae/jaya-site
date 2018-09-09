@@ -58,7 +58,7 @@ class UserController extends Controller
                 
                 $user->setNom(strtoupper($user->getNom()));
 
-                if ($isNew == true) {
+                if ($isNew == true && $user->getPlainPassword() === null) {
                     $user->setPassword('jayaReborn');
                     $user->setPlainPassword('jayaReborn');
                 }
