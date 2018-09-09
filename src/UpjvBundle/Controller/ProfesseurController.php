@@ -54,7 +54,7 @@ class ProfesseurController extends Controller
             try{
                 $professeur = $form->getData();
 
-                if ($isNew) {
+                if ($isNew && $professeur->getPlainPassword() === null) {
                     $professeur->setPassword("jayaProfesseur");
                     $professeur->setPlainPassword("jayaProfesseur");
                     $professeur->addRole(Utilisateur::ROLE_PROFESSEUR);

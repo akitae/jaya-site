@@ -38,7 +38,7 @@ class UtilisateurType extends AbstractType
                     'class'         => 'form-control',
                     'placeholder'   => 'Le mot de passe par défaut est jayaReborn lors de la création'
                 ],
-                'label'         => 'Mot de passe (Laisser vide si il n\'est pas à changer)',
+                'label'         => 'Mot de passe (Laissez vide si il n\'est pas à changer)',
                 'required'      => false
             ])
             ->add('email', EmailType::class,[

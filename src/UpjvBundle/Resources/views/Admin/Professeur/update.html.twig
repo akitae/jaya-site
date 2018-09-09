@@ -26,6 +26,12 @@
                             <td>{{ form_label(form.username) }}</td>
                             <td>{{ form_widget(form.username) }}</td>
                         </tr>
+                        </tr>
+                        <tr class="alert-danger">
+                            <td>{{ form_label(form.plainPassword) }}</td>
+                            <td>{{ form_widget(form.plainPassword) }}</td>
+                        </tr>
+                        <tr>
                         <tr>
                             <td>{{ form_label(form.email) }}</td>
                             <td>{{ form_widget(form.email)}}</td>
@@ -38,12 +44,6 @@
                             <td>{{ form_label(form.enabled) }}</td>
                             <td>{{ form_widget(form.enabled)}}</td>
                         </tr>
-                        {% if isNew %}
-                            <tr>
-                                <td>Mot de passe</td>
-                                <td>Par défaut le mot de passe défini pour l'utilisateur est <b>jayaProfesseur</b></td>
-                            </tr>
-                        {% endif %}
                     </table>
                     <button type="button" onclick="location.href='{{ path('admin_professeur')}}';" class="btn btn-default pull-left"> Retour </button>
                     {{ form_row(form.save) }}

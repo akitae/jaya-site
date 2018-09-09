@@ -33,6 +33,14 @@ class ProfesseurType extends AbstractType
                 'attr' => ['class' => 'form-control'],
                 'label' => 'Identifiant'
             ])
+            ->add('plainPassword', TextType::class, [
+                'attr'          => [
+                    'class'         => 'form-control',
+                    'placeholder'   => 'Le mot de passe par défaut est jayaProfesseur lors de la création'
+                ],
+                'label'         => 'Mot de passe (Laissez vide si il n\'est pas à changer)',
+                'required'      => false
+            ])
             ->add('email', EmailType::class,[
                 'attr' => ['class' => 'form-control '],
                 'label' => 'Email'
