@@ -33,6 +33,14 @@ class UtilisateurType extends AbstractType
                 'attr' => ['class' => 'form-control '],
                 'label' => 'Prénom'
             ])
+            ->add('plainPassword', TextType::class, [
+                'attr'          => [
+                    'class'         => 'form-control',
+                    'placeholder'   => 'Le mot de passe par défaut est jayaReborn lors de la création'
+                ],
+                'label'         => 'Mot de passe (Laisser vide si il n\'est pas à changer)',
+                'required'      => false
+            ])
             ->add('email', EmailType::class,[
                 'attr' => ['class' => 'form-control '],
                 'label' => 'Email'
@@ -98,6 +106,4 @@ class UtilisateurType extends AbstractType
     {
         return 'upjvbundle_utilisateur';
     }
-
-
 }
