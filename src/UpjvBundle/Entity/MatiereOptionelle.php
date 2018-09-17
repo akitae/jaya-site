@@ -101,4 +101,11 @@ class MatiereOptionelle
         $this->ordre = $ordre;
     }
 
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->getOrdre(). ' '.$this->getMatiere()->getCode()." - ".$this->getMatiere()->getNom();
+    }
 }

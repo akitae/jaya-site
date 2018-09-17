@@ -29,6 +29,23 @@ class MatiereOptionelleRepository extends \Doctrine\ORM\EntityRepository
         return $queryBuilder->getQuery()->getResult();
     }
 
+    /**
+     * @param $user
+     * @return mixed
+     */
+    public function  findByUserOrderByOrdreAndPole($user) {
+        $queryBuilder = $this->createQueryBuilder('e');
+        $queryBuilder
+            ->join('e.matiere', 'm')
+            ->where('e.user = :user')
+            ->setParameter('user', $user)
+            ->orderBy('m.poleDeCompetence')
+            ->orderBy('e.ordre')
+        ;
+
+        return $queryBuilder->getQuery()->getResult();
+    }
+
     public function findBySemestre(Semestre $semestre){
         return $this
             ->createQueryBuilder('o')

@@ -38,6 +38,16 @@
                         <td>{{ user.parcours.nom }}</td>
                     </tr>
                     <tr>
+                        <td>Matières</td>
+                        <td>
+                            <ul>
+                                {% for matiere in user.matieres %}
+                                    <li>{{ matiere }}</li>
+                                {% endfor %}
+                            </ul>
+                        </td>
+                    </tr>
+                    <tr>
                         <td>Droit de l'utilisateur</td>
                         <td>
                             <ul>

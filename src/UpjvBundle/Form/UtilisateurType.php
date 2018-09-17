@@ -61,6 +61,15 @@ class UtilisateurType extends AbstractType
                         'class' => 'form-control'
                     ]
                 ])
+            ->add('matieres', EntityType::class, [
+                'attr'          => [
+                    'class'         => 'form-control'
+                ],
+                'class'         => 'UpjvBundle\Entity\Matiere',
+                'multiple'      => true,
+                'label'         => 'Matières attribué',
+                'required'      => false
+            ])
             ->add('roles', ChoiceType::class,
                 [
                     'choices' => array(
