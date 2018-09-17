@@ -39,8 +39,8 @@ class MatiereOptionelleRepository extends \Doctrine\ORM\EntityRepository
             ->join('e.matiere', 'm')
             ->where('e.user = :user')
             ->setParameter('user', $user)
-            ->orderBy('m.poleDeCompetence')
-            ->orderBy('e.ordre')
+            ->addOrderBy('m.poleDeCompetence')
+            ->addOrderBy('e.ordre')
         ;
 
         return $queryBuilder->getQuery()->getResult();
